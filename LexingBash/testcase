@@ -1,0 +1,13 @@
+testtest test data
+second line in the data
+another line without a trailing newline
+
+words-together  $split$apart; x |y; terminal
+not real bash!?
+
+normal|split;here
+not\;here\|though
+split\ me\ not
+finishing\;;then\\;
+
+prefix$var $afterspace;$x;prefix$y prefix$var $afterspace|$x|prefix$y prefix\ $var
