@@ -16,6 +16,8 @@
 %type <std::string> part
 %token <int> NL
 %token <std::string> TEXT
+%token <std::string> SGLQUOTE
+%token <std::string> DBLQUOTE
 %token <std::string> SEMI
 %token <std::string> PIPE
 %token <std::string> VAR
@@ -30,6 +32,8 @@ input 	: /* NISCHT */ { }
 part	: NL { std::cout << "NL" << std::endl; }
 		| BLANK { std::cout << "Blank " << $1 << " chars" << std::endl; }
 		| TEXT { std::cout << "Text: ->" << $1 << "<-" << std::endl; }
+		| DBLQUOTE { std::cout << "DBLQuote: ->" << $1 << "<-" << std::endl; }
+		| SGLQUOTE { std::cout << "SGLQuote: ->" << $1 << "<-" << std::endl; }
 		| VAR { std::cout << "Var: ->" << $1 << "<-" << std::endl; }
 		| SEMI { std::cout << "Semi" << std::endl; }
 		| PIPE { std::cout << "Pipe" << std::endl; }

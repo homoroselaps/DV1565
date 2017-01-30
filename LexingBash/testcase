@@ -1,3 +1,4 @@
+###
 testtest test data
 second line in the data
 another line without a trailing newline
@@ -10,4 +11,13 @@ not\;here\|though
 split\ me\ not
 finishing\;;then\\;
 
-prefix$var $afterspace;$x;prefix$y prefix$var $afterspace|$x|prefix$y prefix\ $var
+prefix$var $afterspace;$x;prefix$y
+prefix$var $afterspace|$x|prefix$y
+prefix\ $var
+
+prefix$var'$notavar' 'all one string'
+';' \; ; '|'\||
+###
+prefix$var"$anothervar" "all one string"
+";" \; ; "|"\||
+"one string$split another string"
