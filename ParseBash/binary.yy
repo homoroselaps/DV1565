@@ -20,7 +20,8 @@
 %type <Node> stream
 %type <Node> line
 %type <Node> optline
-%type <Node> part
+%type <Node> unit
+%type <Node> units
 
 %token <std::string> NL
 %token <std::string> SGLQUOTE
@@ -52,19 +53,28 @@ optline	: /* empty*/ { $$ = Node("optline","empty"); }
 				}
 				;
 
-line		: part {
+line		: units {
+					//$$ = Node("line", "");
+					//$$.children.push_back($1);
 					$$ = $1;
 				}
-				| line part {
+				| line SEMI units {
 					$$ = Node("line", "");
 					$$.children.push_back($1);
-					$$.children.push_back($2);
+					$$.children.push_back($3);
 				}
 				;
 
-part	: BLANK { $$ = Node("BLANK", ""); }
+units	: unit {
+				$$ = Node("units", "");
+				$$.children.push_back($1);
+			}
+			| units unit {
+				$$ = $1;
+				$$.children.push_back($2);
+			}
+
+unit	: BLANK { $$ = Node("BLANK", ""); }
 			| TEXT 	{ $$ = Node("TEXT", $1); }
-			| VAR 	{ $$ = Node("VAR", $1); }
-			| SEMI 	{ $$ = Node("SEMI", $1); }
 			| PIPE 	{ $$ = Node("PIPE", $1); }
-       	;
+      ;

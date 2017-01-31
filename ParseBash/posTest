@@ -1,3 +1,10 @@
+###
 wordsinlines ;|random
 
 ANon-emptyline
+###
+
+word -flag name
+cmd ;/path/bin;unstructured|x|sequence;blah
+works because; ;blank between
+similarly ;\;;blah
