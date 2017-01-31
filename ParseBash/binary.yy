@@ -4,6 +4,7 @@
 %define api.token.constructor
 %code requires {
 	#include "Node.hpp"
+	#define YYDEBUG 1
 }
 
 %code {
@@ -22,6 +23,8 @@
 %type <Node> optline
 %type <Node> unit
 %type <Node> units
+%type <Node> pipeline
+%type <Node> expression
 
 %token <std::string> NL
 %token <std::string> SGLQUOTE
@@ -53,28 +56,38 @@ optline	: /* empty*/ { $$ = Node("optline","empty"); }
 				}
 				;
 
-line		: units {
+line		: expression {
 					//$$ = Node("line", "");
 					//$$.children.push_back($1);
 					$$ = $1;
 				}
-				| line SEMI units {
+				| line SEMI expression {
 					$$ = Node("line", "");
 					$$.children.push_back($1);
 					$$.children.push_back($3);
 				}
 				;
+expression	:	pipeline { $$ = $1; }
+						| units { $$ = $1; }
+						;
 
-units	: unit {
-				$$ = Node("units", "");
-				$$.children.push_back($1);
-			}
-			| units unit {
-				$$ = $1;
-				$$.children.push_back($2);
-			}
+pipeline 	: expression PIPE expression {
+						$$ = Node("pipeline", "");
+						$$.children.push_back($1);
+						$$.children.push_back($3);
+					}
+					;
+
+units		: unit {
+					$$ = Node("units", "");
+					$$.children.push_back($1);
+				}
+				| units unit {
+					$$ = $1;
+					$$.children.push_back($2);
+				}
+				;
 
 unit	: BLANK { $$ = Node("BLANK", ""); }
 			| TEXT 	{ $$ = Node("TEXT", $1); }
-			| PIPE 	{ $$ = Node("PIPE", $1); }
       ;

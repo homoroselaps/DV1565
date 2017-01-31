@@ -11,7 +11,9 @@ void yy::parser::error(std::string const &err)
 int main(int argc, char **argv)
 {
 	yy::parser parser;
-	if( !parser.parse())
-		root.dump();
+	parser.set_debug_level(1);
+	if(!parser.parse())
+		std::cout << "Nope" << std::endl;
+	root.dump();
 	return 0;
 }
