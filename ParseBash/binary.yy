@@ -23,7 +23,6 @@
 %type <Node> optline
 %type <Node> unit
 %type <Node> units
-%type <Node> pipeline
 %type <Node> expression
 
 %token <std::string> NL
@@ -67,15 +66,13 @@ line		: expression {
 					$$.children.push_back($3);
 				}
 				;
-expression	:	pipeline { $$ = $1; }
-						| units { $$ = $1; }
-						;
 
-pipeline 	: expression PIPE expression {
+expression 	: expression PIPE units {
 						$$ = Node("pipeline", "");
 						$$.children.push_back($1);
 						$$.children.push_back($3);
 					}
+					| units { $$ = $1; }
 					;
 
 units		: unit {
