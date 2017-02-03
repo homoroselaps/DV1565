@@ -22,17 +22,20 @@
 %type <Node> line
 %type <Node> optline
 %type <Node> unit
-%type <Node> units
-%type <Node> expression
+%type <Node> command
+%type <Node> concat
+%type <Node> pipeline
+%type <Node> equal
 
 %token <std::string> NL
 %token <std::string> SGLQUOTE
 %token <std::string> DBLQUOTE
 %token <std::string> SEMI
 %token <std::string> PIPE
+%token <std::string> EQUAL
 %token <std::string> VAR
 %token <std::string> BLANK
-%token <std::string> TEXT
+%token <std::string> WORD
 %token END 0 "end of file"
 %%
 
@@ -55,36 +58,64 @@ optline	: /* empty*/ { $$ = Node("optline","empty"); }
 				}
 				;
 
-line		: expression {
-					//$$ = Node("line", "");
-					//$$.children.push_back($1);
+line		: pipeline {
 					$$ = $1;
 				}
-				| line SEMI expression {
-					$$ = Node("line", "");
-					$$.children.push_back($1);
+				| line SEMI pipeline {
+					$$ = $1;
 					$$.children.push_back($3);
 				}
 				;
 
-expression 	: expression PIPE units {
+pipeline	: equal { $$ = $1; }
+					| pipeline PIPE equal {
 						$$ = Node("pipeline", "");
 						$$.children.push_back($1);
 						$$.children.push_back($3);
-					}
-					| units { $$ = $1; }
+	 				}
 					;
 
-units		: unit {
-					$$ = Node("units", "");
+equal		: command { $$ = $1; }
+				| unit EQUAL concat BLANK equal {
+					$$ = Node("equal", "");
+					$$.children.push_back($1);
+					$$.children.push_back($3);
+					$$.children.push_back($5);
+				}
+				;
+
+
+command	: concat {
+					$$ = Node("command", "");
 					$$.children.push_back($1);
 				}
-				| units unit {
+				| command BLANK concat
+				{
 					$$ = $1;
+					$$.children.push_back($3);
+				}
+				| equal {
+					$$ = $1;
+				}
+				;
+
+concat	: unit {
+					$$ = $1;
+				}
+				| concat unit {
+					if ($1.tag!="concatenate") {
+						$$ = Node("concatenate", "");
+						$$.children.push_back($1);
+					} else {
+						$$ = $1;
+					}
 					$$.children.push_back($2);
 				}
 				;
 
-unit	: BLANK { $$ = Node("BLANK", ""); }
-			| TEXT 	{ $$ = Node("TEXT", $1); }
-      ;
+unit		: WORD 	{ $$ = Node("WORD", $1); }
+				| VAR { $$ = Node("VAR", $1); }
+				| SGLQUOTE { $$ = Node("SGLQUOTE", $1); }
+				| DBLQUOTE { $$ = Node("DBLQUOTE", $1); }
+				| EQUAL { $$ = Node("EQUAL", $1); }
+      	;

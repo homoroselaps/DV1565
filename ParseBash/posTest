@@ -7,8 +7,10 @@ word -flag name
 cmd ;/path/bin;unstructured|x|sequence;blah
 works because; ;blank between
 similarly ;\;;blah
-###
+
 word -flag name
 cmd ;/path/bin;unstructured|x|sequence;blah
 works because; ;blank between
 similarly ;\;|\|;blah
+cmd arg'same arg'$alsothesame|separate
+###x=y k="z$var more" cmd -flag=something
