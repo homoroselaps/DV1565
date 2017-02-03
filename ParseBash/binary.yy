@@ -26,6 +26,8 @@
 %type <Node> concat
 %type <Node> pipeline
 %type <Node> equal
+%type <Node> subshell
+
 
 %token <std::string> NL
 %token <std::string> SGLQUOTE
@@ -36,6 +38,8 @@
 %token <std::string> VAR
 %token <std::string> BLANK
 %token <std::string> WORD
+%token <std::string> SUBSHELL
+%token <std::string> CLSBRACE
 %token END 0 "end of file"
 %%
 
@@ -62,8 +66,22 @@ line		: pipeline {
 					$$ = $1;
 				}
 				| line SEMI pipeline {
-					$$ = $1;
+					if ($1.tag!="line") {
+						$$ = Node("line", "");
+						$$.children.push_back($1);
+					} else {
+						$$ = $1;
+					}
 					$$.children.push_back($3);
+				}
+				| line SEMI BLANK pipeline {
+				if ($1.tag!="line") {
+					$$ = Node("line", "");
+					$$.children.push_back($1);
+				} else {
+					$$ = $1;
+				}
+				$$.children.push_back($4);
 				}
 				;
 
@@ -118,4 +136,11 @@ unit		: WORD 	{ $$ = Node("WORD", $1); }
 				| SGLQUOTE { $$ = Node("SGLQUOTE", $1); }
 				| DBLQUOTE { $$ = Node("DBLQUOTE", $1); }
 				| EQUAL { $$ = Node("EQUAL", $1); }
+				| subshell { $$ = $1; }
       	;
+
+subshell: SUBSHELL stream CLSBRACE {
+					$$ = Node("subshell", "");
+					$$.children.push_back($2);
+				}
+				;

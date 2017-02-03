@@ -13,4 +13,6 @@ cmd ;/path/bin;unstructured|x|sequence;blah
 works because; ;blank between
 similarly ;\;|\|;blah
 cmd arg'same arg'$alsothesame|separate
-###x=y k="z$var more" cmd -flag=something
+x=y k="z$var more" cmd -flag=something
+diff <(ls|grep '^...') <(cat prefix; cut -c1-3 rest)
+###diff <(ls|grep '^...') <(cat prefix; cut -c1-3 rest)
