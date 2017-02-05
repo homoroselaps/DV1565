@@ -1,6 +1,6 @@
 #include <iostream>
-#include "binary.tab.hh"
-extern std::vector<int> nums;
+#include "binary.tab.h"
+extern Node root;
 
 void yy::parser::error(std::string const &err)
 {
@@ -10,10 +10,9 @@ void yy::parser::error(std::string const &err)
 int main(int argc, char **argv)
 {
 	yy::parser parser;
+	parser.set_debug_level(1);
 	if( !parser.parse())
-		std::cout << "It's a bingo! ";
-		for(int i : nums)
-			std::cout << i << " ";
-		std::cout << std::endl;
+		std::cout << "It's a bingo! " <<std::endl;
+	root.dump();
 	return 0;
 }
