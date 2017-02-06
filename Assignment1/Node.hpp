@@ -4,6 +4,17 @@
 #include <list>
 #include <iostream>
 
+enum ComparisonType {
+  EQUAL,
+  NEQUAL,
+  LESS,
+  LEQUAL,
+  GREATER,
+  GEQUAL,
+  AND,
+  OR
+};
+
 class Node {
 public:
   std::string tag, value;
@@ -47,9 +58,28 @@ public:
     str_value = value;
     type = Type::STR;
   }
-  Value(char * value): Value(std::string(value)) {}
+  Value(char * value): Value(std::string(value)) { }
   Value(bool value): Node("Value", std::to_string((int)value)) {
     bool_value = value;
     type = Type::BOOL;
   }
+};
+
+class Name: public Node {
+  std::string str_value = "";
+public:
+  Name(): Node("Name", "undefined") { }
+  Name(std::string value): Node("Name", value) {
+    str_value = value;
+  }
+  Name(char * value): Name(std::string(value)) {}
+};
+
+class Binop: public Node {
+    ComparisonType type;
+public:
+    Binop(): Node("Comparison", "") { }
+    Binop(ComparisonType _type): Node("Comparison", std::to_string((int)_type)) {
+      type = _type;
+    }
 };
