@@ -1,0 +1,120 @@
+chunk		: __stat _laststatsemi
+__stat  	: /* */
+			| __stat stat _semi
+
+_laststatsemi	: /**/
+				| laststat _semi
+
+_semi		: /* */ 
+			| ';'
+
+laststat	: RETURN explist
+			| RETURN
+			| BREAK
+			
+block		: chunk
+
+stat		: varlist '=' 'explist'
+			| functioncall
+			| DO block END
+			| WHILE exp DO block END
+			| REPEAT block UNTIL exp
+			| IF exp THEN block __elseif _else END
+			| FOR Name '=' exp ',' exp DO block END
+			| FOR Name '=' exp ',' exp ',' exp DO block END
+			| FOR namelist IN explist DO block END
+			| FUNCTION funcname funcbody
+			| LOCAL FUNCTION Name funcbody
+			| LOCAL namelist
+			| LOCAL namelist '=' explist
+
+__elseif	: /* */ 
+			| __elseif ELSEIF exp THEN block
+
+_else		: /* */
+			| ELSE block
+			
+varlist		: var
+			| varlist ',' var
+
+funcname	: Name __DotName 
+			: Name __DotName ':' Name
+
+__DotName	: /* */
+			| '.' Name
+			
+var 		: Name
+			| prefixexp '[' exp ']'
+			| prefixexp '.' Name
+
+namelist	: Name
+			| namelist ',' Name
+
+explist		: exp
+			| exp ',' explist
+			
+exp			: NIL
+			| FALSE
+			| TRUE
+			| Number
+			| String
+			| DDDOT
+			| function
+			| prefixexp
+			| tableconstructor
+			| exp binop exp
+			| unop exp
+			
+prefixexp	: var
+			| functioncall
+			| '(' exp ')'
+			
+functioncall: prefixexp args
+			| prefixexp ':' Name args
+
+args		: '(' ')'
+			| '(' explist ')'
+			| tableconstructor
+			| String
+
+function	: FUNCTION funcbody
+
+funcbody	: '(' ')' block END
+			| '(' parlist ')' block END
+			
+parlist		: namelist
+			| namelist ',' DDDOT
+			| DDDOT
+			
+tableconstructor	: '{' '}'
+					: '{' fieldlist '}'
+	
+fieldlist	: field __fieldsepfield
+			: field __fieldsepfield fieldsep
+			
+__fieldsepfield	: /* */
+				| fieldsep field
+	
+field		: '[' exp ']' '=' exp
+			| Name '=' exp
+			| exp
+	
+fieldsep	: ','
+			| ';'
+			
+binop		: '+'
+			| '-'
+			| '*'
+			| '/'
+			| '^'
+			| '%'
+			| '..'
+			| COMP
+			| AND
+			| OR
+		
+unop		: '-'
+			| NOT
+			| LENGTH
+			
+			
