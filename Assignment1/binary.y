@@ -29,12 +29,14 @@
 %token LENGTH NOT RETURN '='
 
 
+%left <Binop> OR
+%left <Binop> AND
 %left <Binop> COMP
-%left <Binop> AND OR
+%right CONCAT
 %left '+' '-'
 %left '*' '/' '%'
+%right LENGTH NOT
 %right '^'
-%right CONCAT
 
 %token <Value> NIL FALSE TRUE NUMBER STRING
 %token <Name> NAME
@@ -189,11 +191,6 @@ varlist		: var {
 						$$.add($1);
 					}
 					| varlist ',' var {
-						$$ = $1;
-						if ($$.tag != "varlist") {
-							$$ = Node("varlist", "");
-							$$.add($1);
-						}
 						$$.add($3);
 					}
 					;
