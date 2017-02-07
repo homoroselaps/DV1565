@@ -4,6 +4,7 @@
 #include "Function.h"
 #include "Table.h"
 #include "StringValue.h"
+
 class Library
 {
 public:
@@ -15,16 +16,17 @@ public:
 	~Library()
 	{
 	}
+
 	static void load(std::shared_ptr<Table> environment) {
-		auto print = std::make_shared<Function>(
-			[](std::vector<std::shared_ptr<Value>> args) {
+		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> &args) {
 			for (auto arg : args) {
 				std::cout << arg->getString();
 			}
 			std::cout << std::endl;
 			return std::make_shared<Value>();
-		});
-		environment->set(std::make_shared<StringValue>("print"), print);
+		};
+		auto print = std::make_shared<Function>(std::make_shared<Value>(), f);
+		environment->set(std::make_shared<StringValue>("print"), std::static_pointer_cast<Value>(print));
 	}
 };
 

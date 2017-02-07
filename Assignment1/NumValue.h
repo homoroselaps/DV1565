@@ -1,12 +1,11 @@
 #pragma once
 #include "Value.h"
-class NumValue :
-	public Value
+class NumValue : public Value
 {
 	double m_value;
 public:
 
-	NumValue(double value) :Value(Type::NUMBER),
+	NumValue(double value) :Value(ValueType::NUMBER),
 		m_value{ value }
 	{ }
 

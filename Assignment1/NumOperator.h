@@ -11,7 +11,7 @@ enum NumOperatorType {
 	DIV
 };
 
-class NumOperator : Expr
+class NumOperator : public Expr
 {
 	NumOperatorType m_type;
 	std::shared_ptr<Expr> m_left;
@@ -27,10 +27,10 @@ public:
 	~NumOperator()
 	{ }
 
-	std::shared_ptr<Value> evaluate() override
+	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
 	{
-		auto a = m_left->evaluate()->getNumber();
-		auto b = m_right->evaluate()->getNumber();
+		auto a = m_left->evaluate(environment)->getNumber();
+		auto b = m_right->evaluate(environment)->getNumber();
 		double result;
 		switch (m_type)
 		{

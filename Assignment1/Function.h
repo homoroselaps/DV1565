@@ -3,24 +3,30 @@
 #include <vector>
 #include <functional>
 
-typedef std::function<std::shared_ptr<Value>(std::vector<std::shared_ptr<Value>>)> Func;
+typedef std::function<std::shared_ptr<Value>(std::shared_ptr<Value>, std::vector<std::shared_ptr<Value>>&)> Func;
 
-class Function :
-	public Value
+class Function : public Value
 {
+	Func m_function;
+	std::shared_ptr<Value> m_context = nullptr;
 public:
-	Func function;
-	Function(Func &func)
+	
+	Function(std::shared_ptr<Value> context, Func func): Value(ValueType::FUNCTION)
 	{
-		this->function = func;
+		m_context = context;
+		m_function = func;
 	}
 
 	~Function()
 	{
 	}
 		
-	std::shared_ptr<Value> Invoke(std::vector<std::shared_ptr<Value>> & args) {
-		return function(args);
+	std::shared_ptr<Value> invoke(std::vector<std::shared_ptr<Value>> & args) {
+		return m_function(m_context, args);
+	}
+
+	void setContext(std::shared_ptr<Value> context) {
+		this->m_context = context;
 	}
 };
 

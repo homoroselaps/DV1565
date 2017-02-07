@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include "Value.h"
+#include "Table.h"
 class Expr
 {
 public:
@@ -13,6 +14,6 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate();
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) = 0;
 };
 

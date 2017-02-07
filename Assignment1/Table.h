@@ -4,7 +4,7 @@
 #include <map>
 #include <memory>
 
-class Table: Value
+class Table: public Value
 {
 public:
 	std::shared_ptr<Table> m_parentScope = nullptr;
@@ -14,7 +14,7 @@ public:
 	std::map<std::string, std::shared_ptr<Value>> m_stringMap;
 	std::map<std::shared_ptr<Value>, std::shared_ptr<Value>> m_refMap;
 
-	Table(): Value(Type::TABLE)
+	Table(): Value(ValueType::TABLE)
 	{
 		m_boolMap = std::map<bool, std::shared_ptr<Value>>{};
 		m_numMap = std::map<double, std::shared_ptr<Value>>{};
@@ -33,26 +33,26 @@ public:
 	std::shared_ptr<Value> get(std::shared_ptr<Value> key) {
 		switch (key->getType())
 		{
-		case Type::NIL:
+		case ValueType::NIL:
 			throw;
-		case Type::BOOL: {
+		case ValueType::BOOL: {
 			if (m_boolMap.count(key->getBool()))
 				return m_boolMap[key->getBool()];
 			else
 				break;
 		}
-		case Type::NUMBER:
+		case ValueType::NUMBER:
 			if (m_numMap.count(key->getNumber()))
 				return m_numMap[key->getNumber()];
 			else
 				break;
-		case Type::STRING:
+		case ValueType::STRING:
 			if (m_stringMap.count(key->getString()))
 				return m_stringMap[key->getString()];
 			else
 				break;
-		case Type::FUNCTION:
-		case Type::TABLE:
+		case ValueType::FUNCTION:
+		case ValueType::TABLE:
 			if (m_refMap.count(key))
 				return m_refMap[key];
 			else
@@ -69,16 +69,16 @@ public:
 	void set(std::shared_ptr<Value> key, std::shared_ptr<Value> value) {
 		switch (key->getType())
 		{
-		case Type::NIL:
+		case ValueType::NIL:
 			throw;
-		case Type::BOOL:
+		case ValueType::BOOL:
 			m_boolMap[key->getBool()] = value;
-		case Type::NUMBER:
+		case ValueType::NUMBER:
 			m_numMap[key->getNumber()] = value;
-		case Type::STRING:
+		case ValueType::STRING:
 			m_stringMap[key->getString()] = value;
-		case Type::FUNCTION:
-		case Type::TABLE:
+		case ValueType::FUNCTION:
+		case ValueType::TABLE:
 			m_refMap[key] = value;
 		}
 	}

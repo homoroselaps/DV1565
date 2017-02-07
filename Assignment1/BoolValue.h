@@ -1,12 +1,11 @@
 #pragma once
 #include "Value.h"
-class BoolValue :
-	public Value
+class BoolValue : public Value
 {
 	bool m_value;
 public:
 
-	BoolValue(bool value):Value(Type::BOOL),
+	BoolValue(bool value):Value(ValueType::BOOL),
 		m_value{value}
 	{ }
 

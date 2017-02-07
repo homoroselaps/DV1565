@@ -1,9 +1,11 @@
 #pragma once
 #include <memory>
 #include <string>
-#include "Table.h"
 
-enum Type
+class Function;
+class Table;
+
+enum ValueType
 {
 	NIL,
 	BOOL,
@@ -15,12 +17,11 @@ enum Type
 
 class Value
 {
-private:
-	Type m_type;
+	ValueType m_type;
 public:
 	
-	Value(): Value(Type::NIL) {}
-	Value(Type type) : m_type{ type } { };
+	Value(): Value(ValueType::NIL) {}
+	Value(ValueType type) : m_type{ type } { };
 	~Value() {};
 
 	virtual bool getBool() {
@@ -32,7 +33,7 @@ public:
 	}
 
 	virtual std::string getString() {
-		throw;
+		return "nil";
 	}
 
 	virtual std::shared_ptr<Function> getFunction() {
@@ -41,6 +42,8 @@ public:
 	virtual std::shared_ptr<Table> getTable() {
 		throw;
 	}
-	const Type getType() { return m_type; }
+	const ValueType getType() { return m_type; }
 };
 
+#include "Table.h"
+#include "Function.h"

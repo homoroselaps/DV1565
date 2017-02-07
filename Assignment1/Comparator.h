@@ -15,7 +15,7 @@ enum BoolComparatorType {
 	OR,
 };
 
-class BoolComparator: Expr
+class BoolComparator: public Expr
 {
 	BoolComparatorType m_type;
 	std::shared_ptr<Expr> m_left;
@@ -31,38 +31,38 @@ public:
 	~BoolComparator()
 	{ }
 
-	std::shared_ptr<Value> evaluate() override
+	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
 	{
-		auto leftValue = m_left->evaluate();
-		auto rightValue = m_right->evaluate();
+		auto leftValue = m_left->evaluate(environment);
+		auto rightValue = m_right->evaluate(environment);
 		bool result;
 		switch (leftValue->getType())
 		{
-		case Type::BOOL: {
+		case ValueType::BOOL: {
 			bool leftresult = leftValue->getBool();
 			bool rightresult = rightValue->getBool();
 			result = compare(leftresult, rightresult);
 			return std::make_shared<BoolValue>(result);
 		}
-		case Type::NUMBER: {
+		case ValueType::NUMBER: {
 			double leftresult = leftValue->getNumber();
 			double rightresult = rightValue->getNumber();
 			result = compare(leftresult, rightresult);
 			return std::make_shared<BoolValue>(result);
 		}
-		case Type::STRING: {
+		case ValueType::STRING: {
 			std::string leftresult = leftValue->getString();
 			std::string rightresult = rightValue->getString();
 			result = compare(leftresult, rightresult);
 			return std::make_shared<BoolValue>(result);
 		}
-		case Type::FUNCTION:
-		case Type::TABLE: {
+		case ValueType::FUNCTION:
+		case ValueType::TABLEARG: {
 			result = compare(leftValue, rightValue);
 			return std::make_shared<BoolValue>(result);
 		}
-		case Type::NIL:
-			return std::make_shared<BoolValue>(rightValue->getType() == Type::NIL);
+		case ValueType::NIL:
+			return std::make_shared<BoolValue>(rightValue->getType() == ValueType::NIL);
 		}
 	}
 
