@@ -8,7 +8,7 @@
 #include "Call.h"
 #include <memory>
 #include <string>
-class FunctionCall : public Statement
+class FunctionCall : public Expr
 {
 	std::shared_ptr<Expr> m_base;
 	std::shared_ptr<Expr> m_context;
@@ -30,7 +30,7 @@ public:
 	~FunctionCall()
 	{
 	}
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) {
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
 		auto base = m_base->evaluate(environment);
 		
 		auto context = m_context->evaluate(environment);
@@ -40,6 +40,18 @@ public:
 		function->setContext(context);
 		
 		return m_accessor->evaluate(base, environment);
+	}
+
+	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
+		auto children = std::vector<std::shared_ptr<Node>>{};
+		children.push_back(std::static_pointer_cast<Node>(m_base));
+		children.push_back(std::static_pointer_cast<Node>(m_context));
+		children.push_back(std::static_pointer_cast<Node>(m_accessor));
+		return children;
+	}
+
+	virtual std::string to_string() override {
+		return "FunctionCall(Expression)";
 	}
 
 };

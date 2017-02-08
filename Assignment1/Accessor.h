@@ -2,7 +2,7 @@
 #include "Node.hpp"
 #include "Table.h"
 #include <memory>
-class Accessor
+class Accessor : public Node
 {
 public:
 

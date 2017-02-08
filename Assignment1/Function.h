@@ -3,7 +3,7 @@
 #include <vector>
 #include <functional>
 
-typedef std::function<std::shared_ptr<Value>(std::shared_ptr<Value>, std::vector<std::shared_ptr<Value>>&)> Func;
+typedef std::function<std::shared_ptr<Value>(std::shared_ptr<Value>, std::vector<std::shared_ptr<Value>>)> Func;
 
 class Function : public Value
 {

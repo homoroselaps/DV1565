@@ -12,6 +12,10 @@ public:
 	~NumValue()
 	{ }
 
+	virtual double getNumber() override {
+		return m_value;
+	}
+
 	virtual std::string getString() override {
 		return std::to_string(m_value);
 	}

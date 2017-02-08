@@ -22,5 +22,15 @@ public:
 		m_expr->evaluate(environment);
 		return std::make_shared<Value>();
 	}
+
+	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
+		auto children = std::vector<std::shared_ptr<Node>>{};
+		children.push_back(std::static_pointer_cast<Node>(m_expr));
+		return children;
+	}
+
+	virtual std::string to_string() override {
+		return "ExprStatement(Statement)";
+	}
 };
 

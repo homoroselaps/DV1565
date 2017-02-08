@@ -24,5 +24,13 @@ public:
 		}
 		return result;
 	}
+	
+	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
+		auto children = std::vector<std::shared_ptr<Node>>{};
+		return children;
+	}
+	virtual std::string to_string() override {
+		return "Return(Statement)";
+	}
 };
 

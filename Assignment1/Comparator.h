@@ -3,6 +3,7 @@
 #include "BoolValue.h"
 #include "NumValue.h"
 #include "StringValue.h"
+#include "Node.hpp"
 
 enum BoolComparatorType {
 	EQUAL,
@@ -57,7 +58,7 @@ public:
 			return std::make_shared<BoolValue>(result);
 		}
 		case ValueType::FUNCTION:
-		case ValueType::TABLEARG: {
+		case ValueType::TABLE: {
 			result = compare(leftValue, rightValue);
 			return std::make_shared<BoolValue>(result);
 		}
@@ -130,7 +131,7 @@ public:
 		}
 	}
 
-	bool compare(std::shared_ptr<Value> &a, std::shared_ptr<Value> &b) {
+	bool compare(std::shared_ptr<Value> a, std::shared_ptr<Value> b) {
 		switch (m_type)
 		{
 		case EQUAL:
@@ -146,6 +147,16 @@ public:
 			throw "Invalid comparison";
 			break;
 		}
+	}
+
+	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
+		auto children = std::vector<std::shared_ptr<Node>>{};
+		children.push_back(std::static_pointer_cast<Node>(m_left));
+		children.push_back(std::static_pointer_cast<Node>(m_right));
+		return children;
+	}
+	virtual std::string to_string() override {
+		return "Comparator(Statement) Type: " + (int)m_type;
 	}
 };
 

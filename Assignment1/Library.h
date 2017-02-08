@@ -18,7 +18,7 @@ public:
 	}
 
 	static void load(std::shared_ptr<Table> environment) {
-		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> &args) {
+		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
 			for (auto arg : args) {
 				std::cout << arg->getString();
 			}

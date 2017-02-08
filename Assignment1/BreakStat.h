@@ -16,5 +16,11 @@ public:
 		isBreak = true;
 		return nullptr;
 	}
+	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
+		return std::vector<std::shared_ptr<Node>>{};
+	}
+	virtual std::string to_string() override {
+		return "Statement Base Class";
+	}
 };
 
