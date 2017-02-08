@@ -19,9 +19,9 @@
 	}
 }
 %type <Node> chunk __stat _semi laststat block stat __elseif varlist funcname
-%type <Node> __dotname var namelist explist exp prefixexp functioncall args
+%type <Node> __dotname var namelist explist exp prefixexp functioncall __args args
 %type <Node> function funcbody parlist tableconstructor fieldlist
-%type <Node> __fieldsepfield field fieldsep binop unop
+%type <Node> __fieldsepfield field fieldsep binopexp unop
 
 %token IF THEN ELSEIF ELSE END FOR DO REPEAT UNTIL BREAK IN WHILE LOCAL
 %token <std::string> ANY
@@ -29,16 +29,17 @@
 %token LENGTH NOT RETURN '='
 
 
-%left <Binop> OR
-%left <Binop> AND
-%left <Binop> COMP
+%left OR
+%left AND
+%left COMP
 %right CONCAT
 %left '+' '-'
-%left '*' '/' '%'
+%left '*' '%'
+%left '/'
 %right LENGTH NOT
 %right '^'
 
-%token <Value> NIL FALSE TRUE NUMBER STRING
+%token <Value2> NIL FALSE TRUE NUMBER STRING
 %token <Name> NAME
 %token NL
 %token BLK
@@ -93,7 +94,6 @@ stat			: varlist '=' explist {
 						$$.add($1);
 						$$.add($3);
 					}
-					| functioncall { $$ = $1; }
 					| DO block END {
 						$$ = Node("DoEnd","");
 						$$.add($2);
@@ -279,10 +279,8 @@ exp				: NIL { $$ = $1; }
 					| function { $$ = $1; }
 					| prefixexp { $$ = $1; }
 					| tableconstructor { $$ = $1; }
-					| exp binop exp {
-						$$ = $2;
-						$$.add($1);
-						$$.add($3);
+					| binopexp {
+						$$ = $1;
 					}
 					| unop exp {
 						$$ = $1;
@@ -306,6 +304,9 @@ prefixexp	: var {
 						$$ = $2;
 					}
 					;
+/* to promote reduction to prefixexp instead of stat */
+stat			: functioncall { $$ = $1; }
+					;
 
 functioncall			: prefixexp args {
 										$$ = Node("functioncall", "");
@@ -319,6 +320,15 @@ functioncall			: prefixexp args {
 										$$.add($4);
 									}
 									;
+
+__args	: args {
+					$$ = Node("acclist", "");
+					$$.add($1);
+				}
+				| __args args  {
+					$$.add($2);
+			 	}
+				;
 
 args		: '(' ')' { $$ = Node("args",""); }
 				| '(' explist ')' {
@@ -423,16 +433,56 @@ fieldsep: ',' { }
 				| ';' { }
 				;
 
-binop		: '+' { $$ = Node("binop", "+"); }
-				| '-' { $$ = Node("binop", "-"); }
-				| '*' { $$ = Node("binop", "*"); }
-				| '/' { $$ = Node("binop", "/"); }
-				| '^' { $$ = Node("binop", "^"); }
-				| '%' { $$ = Node("binop", "%%"); }
-				| CONCAT { $$ = Node("concat", ".."); }
-				| COMP{ $$ = $1; }
-				| AND	{ $$ = $1; }
-				| OR	{ $$ = $1; }
+binopexp: exp '+' exp {
+					$$ = Node("binop", "+");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp '-' exp {
+					$$ = Node("binop", "-");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp '*' exp {
+					$$ = Node("binop", "*");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp '/' exp {
+					$$ = Node("binop", "/");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp '^' exp {
+					$$ = Node("binop", "^");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp '%' exp {
+					$$ = Node("binop", "%%");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp CONCAT exp {
+					$$ = Node("concat", "-");
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp COMP exp {
+					 $$ = Node("COMP", "irgendwas");;
+					 $$.add($1);
+					 $$.add($3);
+				 }
+				| exp AND	exp {
+					$$ = Node("binop", "and");;
+					$$.add($1);
+					$$.add($3);
+				}
+				| exp OR exp {
+					 $$ = Node("binop", "or");;
+					 $$.add($1);
+					 $$.add($3);
+				 }
 				;
 
 unop		: '-' { $$ = Node("unop", "-"); }

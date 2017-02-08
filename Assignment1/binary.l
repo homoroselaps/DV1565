@@ -21,18 +21,18 @@
 [+\-*\/^%,\.\{\}\[\]\(\);:]     { return (yy::parser::token::yytokentype)yytext[0]; }
 "..."      { return yy::parser::make_DDDOT(Node("...","")); }
 ".."       { return yy::parser::make_CONCAT(); }
-[<]        { return yy::parser::make_COMP(LESS); }
-"<="       { return yy::parser::make_COMP(LEQUAL); }
-[>]        { return yy::parser::make_COMP(GREATER); }
-">="       { return yy::parser::make_COMP(GEQUAL); }
-"=="       { return yy::parser::make_COMP(EQUAL); }
-"~="       { return yy::parser::make_COMP(NEQUAL); }
-"and"      { return yy::parser::make_AND(AND); }
-"or"       { return yy::parser::make_OR(OR); }
+[<]        { return yy::parser::make_COMP(); }
+"<="       { return yy::parser::make_COMP(); }
+[>]        { return yy::parser::make_COMP(); }
+">="       { return yy::parser::make_COMP(); }
+"=="       { return yy::parser::make_COMP(); }
+"~="       { return yy::parser::make_COMP(); }
+"and"      { return yy::parser::make_AND(); }
+"or"       { return yy::parser::make_OR(); }
 [=]        { return (yy::parser::token::yytokentype)yytext[0]; }
 [#]        { return yy::parser::make_LENGTH(); }
 "not"      { return yy::parser::make_NOT(); }
-"nil"      { return yy::parser::make_NIL(Value()); }
+"nil"      { return yy::parser::make_NIL(Value2()); }
 "true"     { return yy::parser::make_TRUE(true); }
 "false"    { return yy::parser::make_FALSE(false); }
 "if"       { return yy::parser::make_IF(); }
@@ -54,7 +54,7 @@
 [0-9]+     { return yy::parser::make_NUMBER(atoi(yytext)); }
 [ \t]+     { /*return yy::parser::make_BLK();*/ }
 [\n]+      { /*return yy::parser::make_NL();*/ }
-[^0-9+\-*\/^%,;\.\{\}\[\]\(\)<>=~ \t\n'"#][a-zA-Z0-9]*  { return yy::parser::make_NAME(yytext); }
+[^0-9+\-*\/^%,;:\.\{\}\[\]\(\)<>=~ \t\n'"#][a-zA-Z0-9]*  { return yy::parser::make_NAME(yytext); }
 
 <<EOF>>    { return yy::parser::make_EOOF(); }
 %%

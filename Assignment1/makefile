@@ -3,7 +3,7 @@ parser: lex.yy.c binary.tab.o main.cc
 binary.tab.o: binary.tab.c
 	g++ -std=c++14 -g -c binary.tab.c
 binary.tab.c: binary.y
-	bison binary.y
+	bison binary.y --verbose
 lex.yy.c: binary.l binary.tab.c
 	flex binary.l
 clean:
