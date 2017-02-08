@@ -23,7 +23,7 @@ class BoolComparator: public Expr
 	std::shared_ptr<Expr> m_right;
 public:
 
-	BoolComparator(std::shared_ptr<Expr> &left, std::shared_ptr<Expr> &right, BoolComparatorType type)
+	BoolComparator(BoolComparatorType type, std::shared_ptr<Expr> left, std::shared_ptr<Expr> right)
 		: m_type{type}
 		, m_left{left}
 		, m_right{right}

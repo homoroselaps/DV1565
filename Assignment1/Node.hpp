@@ -6,17 +6,6 @@
 #include <memory>
 #include <vector>
 
-enum ComparisonType {
-  EQUAL,
-  NEQUAL,
-  LESS,
-  LEQUAL,
-  GREATER,
-  GEQUAL,
-  AND,
-  OR
-};
-
 class Node {
 public:
   std::string m_tag, m_value;

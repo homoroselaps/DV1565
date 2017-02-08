@@ -4,12 +4,27 @@
 %define api.token.constructor
 %code requires {
 	#define YYDEBUG 1
-	#include "Node.hpp"
-	#include "Value.h"
+	#include "Accessor.h"
 	#include "BoolLiteral.h"
-	#include "NumLiteral.h"
-	#include "StringLiteral.h"
+	#include "BreakStat.h"
+	#include "Call.h"
+	#include "Chunk.h"
+	#include "BoolComparator.h"
+	#include "Expr.h"
+	#include "ExprStatement.h"
+	#include "FunctionCall.h"
 	#include "NilLiteral.h"
+	#include "Node.hpp"
+	#include "NodeList.h"
+	#include "NameList.h"
+	#include "NumLiteral.h"
+	#include "NumOperator.h"
+	#include "ReturnStat.h"
+	#include "Statement.h"
+	#include "StringLiteral.h"
+	#include "Var.h"
+	#include "VarName.h"
+
 	#include <string>
 	#include <memory>
 }
@@ -17,6 +32,8 @@
 %code {
 	#define YY_DECL yy::parser::symbol_type yylex()
 	YY_DECL;
+	#define spc std::static_pointer_cast
+	#define dpc std::dynamic_pointer_cast
 
 	std::shared_ptr<Node> root;
 
@@ -35,9 +52,9 @@
 %token LENGTH NOT RETURN '='
 
 
-%left OR
-%left AND
-%left COMP
+%left <BoolComparatorType> OR
+%left <BoolComparatorType> AND
+%left <BoolComparatorType> COMP
 %right CONCAT
 %left '+' '-'
 %left '*' '%'
@@ -59,29 +76,25 @@
 %%
 
 chunk			: __stat {
-						$$ = std::make_shared<Node>("block", "");
-						for (auto child : $1->getChildren()) {
-							$$->add(child);
-						}
+						$$ = $1;
 						root = $$;
  					}
 					| __stat laststat _semi {
-						$$ = std::make_shared<Node>("block", "");
-						for (auto child : $1->getChildren()) {
-							$$->add(child);
-						}
-						$$->add($2);
+						auto node = dpc<Chunk>($1);
+						node->addStatement(dpc<Statement>($2));
+						$$ = spc<Node>(node);
 						root = $$;
 					}
 					;
 
-__stat  	: /* */ { $$ = std::make_shared<Node>(); }
+__stat  	: /* */ {
+						auto node = std::make_shared<Chunk>();
+						$$ = spc<Node>(node);
+					}
 					| __stat stat _semi {
-						$$ = $1;
-						if ($$->m_tag != "stats") {
-							$$ = std::make_shared<Node>("stats", "");
-						}
-						$$->add($2);
+						auto node = dpc<Chunk>($1);
+						node->addStatement(dpc<Statement>($2));
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -90,8 +103,14 @@ _semi			: /* */ { }
 					;
 
 laststat	: RETURN explist { $$ = std::make_shared<Node>("return", ""); }
-					| RETURN { $$ = std::make_shared<Node>("return", ""); }
-					| BREAK { $$ = std::make_shared<Node>("break", ""); }
+					| RETURN {
+						auto node = std::make_shared<ReturnStat>();
+						$$ = spc<Node>(node);
+					}
+					| BREAK {
+						auto node = std::make_shared<BreakStat>();
+						$$ = spc<Node>(node);
+					}
 					;
 
 block			: chunk { $$ = $1; }
@@ -220,19 +239,20 @@ funcname	: NAME __dotname {
 					}
 					;
 
-__dotname	: /* */ { $$ = std::make_shared<Node>(); }
+__dotname	: /* */ {
+						auto node = std::make_shared<NameList>();
+						$$ = spc<Node>(node);
+					}
 					| __dotname '.' NAME {
-						$$ = $1;
-						if ($$->m_tag != "funcname") {
-							$$ = std::make_shared<Node>("funcname", "");
-						}
-						//$$->add($3);
+						auto node = dpc<NameList>($1);
+						node->addString($3);
+						$$ = spc<Node>(node);
 					}
 					;
 
 var 			: NAME {
-						$$ = std::make_shared<Node>("var","");
-						//$$->add($1);
+						auto node = std::make_shared<VarName>($1);
+						$$ = spc<Node>(node);
 					}
 					| prefixexp '[' exp ']' {
 						$$ = std::make_shared<Node>("var","");
@@ -251,30 +271,26 @@ var 			: NAME {
 					;
 
 namelist	: NAME {
-						$$ = std::make_shared<Node>("namelist", "");
-						//$$->add($1);
+						auto node = std::make_shared<NameList>();
+						node->addString($1);
+						$$ = spc<Node>(node);
 					}
 					| namelist ',' NAME {
-						$$ = $1;
-						if ($$->m_tag != "namelist") {
-							$$ = std::make_shared<Node>("namelist", "");
-							$$->add($1);
-						}
-						//$$->add($3);
+						auto node = dpc<NameList>($1);
+						node->addString($3);
+						$$ = spc<Node>(node);
 					}
 					;
 
 explist		: exp {
-						$$ = std::make_shared<Node>("explist", "");
-						$$->add($1);
+						auto node = std::make_shared<NodeList>();
+						node->addChild($1);
+						$$ = spc<Node>(node);
 					}
 					| explist ',' exp {
-						$$ = $1;
-						if ($$->m_tag != "explist") {
-							$$ = std::make_shared<Node>("explist", "");
-							$$->add($1);
-						}
-						$$->add($3);
+						auto node = dpc<NodeList>($1);
+						node->addChild($3);
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -302,56 +318,49 @@ prefixexp	: var {
 						$$ = $1;
 					}
 					| functioncall {
-						$$ = std::make_shared<Node>("prefixexp","");
-						$$->add($1);
 						$$ = $1;
 					}
 					| '(' exp ')' {
-						$$ = std::make_shared<Node>("prefixexp","");
-						$$->add($2);
 						$$ = $2;
 					}
 					;
 /* to promote reduction to prefixexp instead of stat */
-stat			: functioncall { $$ = $1; }
+stat			: functioncall {
+						auto node = std::make_shared<ExprStatement>(dpc<Expr>($1));
+						$$ = spc<Node>(node);
+					}
 					;
 
 functioncall			: prefixexp args {
-										$$ = std::make_shared<Node>("functioncall", "");
-										$$->add($1);
-										$$->add($2);
+										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1),dpc<Accessor>($2));
+										$$ = spc<Node>(node);
 									}
 									| prefixexp ':' NAME args {
-										$$ = std::make_shared<Node>("functioncall", "");
-										$$->add($1);
-										//$$->add($3);
-										$$->add($4);
+										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1), dpc<Expr>(std::make_shared<VarName>($3)), dpc<Accessor>($4));
+										$$ = spc<Node>(node);
 									}
 									;
 
-__args	: args {
-					$$ = std::make_shared<Node>("acclist", "");
-					$$->add($1);
+args		: '(' ')' {
+					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
+					$$ = spc<Node>(node);
 				}
-				| __args args  {
-					$$->add($2);
-			 	}
-				;
-
-args		: '(' ')' { $$ = std::make_shared<Node>("args",""); }
 				| '(' explist ')' {
-					$$ = std::make_shared<Node>("args","");
+					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
 					for (auto child : $2->getChildren()) {
-						$$->add(child);
+						node->addArgument(dpc<Expr>(child));
 					}
+					$$ = spc<Node>(node);
 				}
 				| tableconstructor {
-					$$ = std::make_shared<Node>("args","");
-					$$->add($1);
+					auto node = std::make_shared<Call>(ArgumentType::TABLEARG);
+					node->addArgument(dpc<Expr>($1));
+					$$ = spc<Node>(node);
 				}
 				| STRING {
-					$$ = std::make_shared<Node>("args","");
-					//$$->add($1);
+					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
+					node->addArgument(dpc<Expr>(std::make_shared<StringLiteral>($1)));
+					$$ = spc<Node>(node);
 				}
 				;
 
@@ -442,24 +451,16 @@ fieldsep: ',' { }
 				;
 
 binopexp: exp '+' exp {
-					$$ = std::make_shared<Node>("binop", "+");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::PLUS,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '-' exp {
-					$$ = std::make_shared<Node>("binop", "-");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::MINUS,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '*' exp {
-					$$ = std::make_shared<Node>("binop", "*");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::MUL,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '/' exp {
-					$$ = std::make_shared<Node>("binop", "/");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::DIV,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '^' exp {
 					$$ = std::make_shared<Node>("binop", "^");
@@ -477,19 +478,13 @@ binopexp: exp '+' exp {
 					$$->add($3);
 				}
 				| exp COMP exp {
-					 $$ = std::make_shared<Node>("COMP", "irgendwas");;
-					 $$->add($1);
-					 $$->add($3);
+					 $$ = std::make_shared<BoolComparator>($2,dpc<Expr>($1),dpc<Expr>($3));
 				 }
 				| exp AND	exp {
-					$$ = std::make_shared<Node>("binop", "and");;
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<BoolComparator>($2,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp OR exp {
-					 $$ = std::make_shared<Node>("binop", "or");;
-					 $$->add($1);
-					 $$->add($3);
+					 $$ = std::make_shared<BoolComparator>($2,dpc<Expr>($1),dpc<Expr>($3));
 				 }
 				;
 
