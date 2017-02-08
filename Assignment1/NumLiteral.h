@@ -14,7 +14,7 @@ public:
 	{
 	}
 
-	~NumLiteral()
+	virtual ~NumLiteral()
 	{
 	}
 
@@ -31,4 +31,3 @@ public:
 	}
 
 };
-

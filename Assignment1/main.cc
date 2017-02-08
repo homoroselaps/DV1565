@@ -1,6 +1,6 @@
 #include <iostream>
 #include "binary.tab.h"
-extern Node root;
+extern std::shared_ptr<Node> root;
 
 void yy::parser::error(std::string const &err)
 {
@@ -13,6 +13,6 @@ int main(int argc, char **argv)
 	parser.set_debug_level(1);
 	if( !parser.parse())
 		std::cout << "It's a bingo! " <<std::endl;
-	root.dump();
+	root->dump();
 	return 0;
 }

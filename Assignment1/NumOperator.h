@@ -25,7 +25,7 @@ public:
 		, m_right{ right }
 	{ }
 
-	~NumOperator()
+	virtual ~NumOperator()
 	{ }
 
 	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
@@ -61,4 +61,3 @@ public:
 		return "NumOperator(Expression) Type: " + std::to_string(m_type);
 	}
 };
-

@@ -13,12 +13,12 @@ enum ArgumentType
 
 class Call : public Accessor
 {
-	
+
 	ArgumentType m_type = ArgumentType::LISTARG;
 	std::vector<std::shared_ptr<Expr>> m_exprArgs;
 	std::shared_ptr<Expr> m_tableArg;
 public:
-	
+
 
 	Call(ArgumentType type) : m_type{ type }
 	{
@@ -26,7 +26,7 @@ public:
 			m_exprArgs = std::vector<std::shared_ptr<Expr>>{};
 	}
 
-	~Call()
+	virtual ~Call()
 	{
 	}
 
@@ -69,4 +69,3 @@ public:
 		return "Call(Accessor)";
 	}
 };
-

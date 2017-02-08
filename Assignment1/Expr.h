@@ -11,7 +11,7 @@ public:
 	{
 	}
 
-	~Expr()
+	virtual ~Expr()
 	{
 	}
 
@@ -25,4 +25,3 @@ public:
 		return "(Expression)";
 	}
 };
-

@@ -19,7 +19,7 @@
 <DBLQOT>["]		{ BEGIN(0); }
 
 [+\-*\/^%,\.\{\}\[\]\(\);:]     { return (yy::parser::token::yytokentype)yytext[0]; }
-"..."      { return yy::parser::make_DDDOT(Node("...","")); }
+"..."      { return yy::parser::make_DDDOT(); }
 ".."       { return yy::parser::make_CONCAT(); }
 [<]        { return yy::parser::make_COMP(); }
 "<="       { return yy::parser::make_COMP(); }
@@ -32,9 +32,9 @@
 [=]        { return (yy::parser::token::yytokentype)yytext[0]; }
 [#]        { return yy::parser::make_LENGTH(); }
 "not"      { return yy::parser::make_NOT(); }
-"nil"      { return yy::parser::make_NIL(Value2()); }
-"true"     { return yy::parser::make_TRUE(true); }
-"false"    { return yy::parser::make_FALSE(false); }
+"nil"      { return yy::parser::make_NIL(); }
+"true"     { return yy::parser::make_TRUE(); }
+"false"    { return yy::parser::make_FALSE(); }
 "if"       { return yy::parser::make_IF(); }
 "elseif"   { return yy::parser::make_ELSEIF(); }
 "then"     { return yy::parser::make_THEN(); }

@@ -13,7 +13,7 @@ public:
 		m_stats = std::vector<std::shared_ptr<Statement>>{};
 	}
 
-	~Chunk()
+	virtual ~Chunk()
 	{
 	}
 
@@ -44,4 +44,3 @@ public:
 		return "Chunk(Statement)";
 	}
 };
-

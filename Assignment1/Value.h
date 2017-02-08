@@ -19,10 +19,10 @@ class Value
 {
 	ValueType m_type;
 public:
-	
+
 	Value(): Value(ValueType::NIL) {}
 	Value(ValueType type) : m_type{ type } { };
-	~Value() {};
+	virtual ~Value() {};
 
 	virtual bool getBool() {
 		throw;

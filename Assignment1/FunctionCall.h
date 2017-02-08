@@ -27,18 +27,18 @@ public:
 		m_context = std::make_shared<NilLiteral>();
 	}
 
-	~FunctionCall()
+	virtual ~FunctionCall()
 	{
 	}
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
 		auto base = m_base->evaluate(environment);
-		
+
 		auto context = m_context->evaluate(environment);
 		auto function = std::dynamic_pointer_cast<Function>(base);
 		if (!function)
 			throw "cant call " + base->getString();
 		function->setContext(context);
-		
+
 		return m_accessor->evaluate(base, environment);
 	}
 
@@ -55,4 +55,3 @@ public:
 	}
 
 };
-

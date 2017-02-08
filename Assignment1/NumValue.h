@@ -9,7 +9,7 @@ public:
 		m_value{ value }
 	{ }
 
-	~NumValue()
+	virtual ~NumValue()
 	{ }
 
 	virtual double getNumber() override {
@@ -20,4 +20,3 @@ public:
 		return std::to_string(m_value);
 	}
 };
-

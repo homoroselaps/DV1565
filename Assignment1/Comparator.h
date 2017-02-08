@@ -29,7 +29,7 @@ public:
 		, m_right{right}
 	{ }
 
-	~BoolComparator()
+	virtual ~BoolComparator()
 	{ }
 
 	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
@@ -159,4 +159,3 @@ public:
 		return "Comparator(Statement) Type: " + (int)m_type;
 	}
 };
-

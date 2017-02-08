@@ -26,7 +26,7 @@ public:
 		m_parentScope = parentScope;
 	}
 
-	~Table()
+	virtual ~Table()
 	{
 	}
 
@@ -83,4 +83,3 @@ public:
 		}
 	}
 };
-

@@ -14,7 +14,7 @@ public:
 	{
 	}
 
-	~BoolLiteral()
+	virtual ~BoolLiteral()
 	{
 	}
 
@@ -28,4 +28,3 @@ public:
 		return "Accessor Base Class";
 	}
 };
-

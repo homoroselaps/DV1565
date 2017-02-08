@@ -15,7 +15,7 @@ public:
 	{
 	}
 
-	~Var()
+	virtual ~Var()
 	{
 	}
 
@@ -36,4 +36,3 @@ public:
 		return "Var(Expression)";
 	}
 };
-

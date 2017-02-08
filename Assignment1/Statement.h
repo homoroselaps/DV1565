@@ -10,7 +10,7 @@ public:
 	{
 	}
 
-	~Statement()
+	virtual ~Statement()
 	{
 	}
 
@@ -24,4 +24,3 @@ public:
 		return "(Statement)";
 	}
 };
-

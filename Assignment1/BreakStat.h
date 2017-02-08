@@ -8,7 +8,7 @@ public:
 	{
 	}
 
-	~BreakStat()
+	virtual ~BreakStat()
 	{
 	}
 
@@ -23,4 +23,3 @@ public:
 		return "Statement Base Class";
 	}
 };
-

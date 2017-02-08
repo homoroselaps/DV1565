@@ -13,14 +13,14 @@ public:
 	{
 	}
 
-	~StringLiteral()
+	virtual ~StringLiteral()
 	{
 	}
 
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
 		return std::make_shared<StringValue>(m_value);
 	}
-	
+
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
 		return children;
@@ -30,4 +30,3 @@ public:
 	}
 
 };
-

@@ -10,10 +10,9 @@ public:
 	{
 	}
 
-	~Accessor()
+	virtual ~Accessor()
 	{
 	}
 
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> base, std::shared_ptr<Table> environment) = 0;
 };
-

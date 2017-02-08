@@ -9,11 +9,10 @@ public:
 		m_value{value}
 	{ }
 
-	~BoolValue()
+	virtual ~BoolValue()
 	{ }
 
 	virtual std::string getString() override {
 		return m_value ? "true" : "false";
 	}
 };
-

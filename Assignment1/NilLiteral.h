@@ -8,7 +8,7 @@ public:
 	{
 	}
 
-	~NilLiteral()
+	virtual ~NilLiteral()
 	{
 	}
 
@@ -24,4 +24,3 @@ public:
 		return "NilLiteral(Expression)";
 	}
 };
-

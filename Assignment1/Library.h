@@ -13,7 +13,7 @@ public:
 	{
 	}
 
-	~Library()
+	virtual ~Library()
 	{
 	}
 
@@ -29,4 +29,3 @@ public:
 		environment->set(std::make_shared<StringValue>("print"), std::static_pointer_cast<Value>(print));
 	}
 };
-

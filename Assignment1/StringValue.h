@@ -9,11 +9,10 @@ public:
 		m_value{ value }
 	{ }
 
-	~StringValue()
+	virtual ~StringValue()
 	{ }
 
 	virtual std::string getString() override {
 		return m_value;
 	}
 };
-

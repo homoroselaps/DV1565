@@ -14,14 +14,14 @@ public:
 	{
 	}
 
-	~VarName()
+	virtual ~VarName()
 	{
 	}
 
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
 		return environment->get(std::make_shared<StringValue>(m_name));
 	};
-	
+
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
 		return children;
@@ -30,4 +30,3 @@ public:
 		return "VarName(Expression) Value: " + m_name;
 	}
 };
-

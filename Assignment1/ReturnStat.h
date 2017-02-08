@@ -12,7 +12,7 @@ public:
 	{
 	}
 
-	~ReturnStat()
+	virtual ~ReturnStat()
 	{
 	}
 
@@ -24,7 +24,7 @@ public:
 		}
 		return result;
 	}
-	
+
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
 		return children;
@@ -33,4 +33,3 @@ public:
 		return "Return(Statement)";
 	}
 };
-

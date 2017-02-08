@@ -10,17 +10,17 @@ class Function : public Value
 	Func m_function;
 	std::shared_ptr<Value> m_context = nullptr;
 public:
-	
+
 	Function(std::shared_ptr<Value> context, Func func): Value(ValueType::FUNCTION)
 	{
 		m_context = context;
 		m_function = func;
 	}
 
-	~Function()
+	virtual ~Function()
 	{
 	}
-		
+
 	std::shared_ptr<Value> invoke(std::vector<std::shared_ptr<Value>> & args) {
 		return m_function(m_context, args);
 	}
@@ -29,4 +29,3 @@ public:
 		this->m_context = context;
 	}
 };
-

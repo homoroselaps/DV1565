@@ -14,10 +14,10 @@ public:
 	{
 	}
 
-	~ExprStatement()
+	virtual ~ExprStatement()
 	{
 	}
-	
+
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) {
 		m_expr->evaluate(environment);
 		return std::make_shared<Value>();
@@ -33,4 +33,3 @@ public:
 		return "ExprStatement(Statement)";
 	}
 };
-
