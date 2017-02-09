@@ -18,8 +18,8 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
-		return environment->get(std::make_shared<StringValue>(m_name));
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override {
+		return environment->castTable()->get(std::make_shared<StringValue>(m_name));
 	};
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {

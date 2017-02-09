@@ -2,17 +2,15 @@
 #include "Value.h"
 class StringValue : public Value
 {
-	std::string m_value;
 public:
 
-	StringValue(std::string value) :Value(ValueType::STRING),
-		m_value{ value }
+	StringValue(std::string value) : Value(value)
 	{ }
 
 	virtual ~StringValue()
 	{ }
 
 	virtual std::string getString() override {
-		return m_value;
+		return m_stringValue;
 	}
 };

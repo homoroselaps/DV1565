@@ -15,7 +15,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) = 0;
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) = 0;
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};

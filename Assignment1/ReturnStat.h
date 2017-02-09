@@ -16,7 +16,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		std::shared_ptr<Value> result = nullptr;
 		//TODO support Muliple Values
 		for (auto expr : m_exprList) {

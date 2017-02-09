@@ -23,7 +23,7 @@ public:
 		m_else = stat;
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) {
 		for (auto stat : m_ifStats) {
 			if (stat->evaluateCondition(environment)->getBool()) {
 				return stat->execute(environment, control);

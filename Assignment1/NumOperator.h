@@ -28,7 +28,7 @@ public:
 	virtual ~NumOperator()
 	{ }
 
-	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
+	std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override
 	{
 		auto a = m_left->evaluate(environment)->getNumber();
 		auto b = m_right->evaluate(environment)->getNumber();

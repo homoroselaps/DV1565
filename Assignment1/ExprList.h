@@ -20,12 +20,14 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) {
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) {
 		auto values = std::vector<std::shared_ptr<Value>>{};
 		for (auto expr : m_exprs) {
 			values.push_back(expr->evaluate(environment));
 		}
-		return std::make_shared<MultiValue>(values);
+		auto result = std::make_shared<Value>();
+		reinterpret_cast<MultiValue*>(result.get())->Create(values);
+		return result;
 	};
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {

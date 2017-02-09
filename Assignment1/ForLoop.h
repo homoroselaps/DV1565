@@ -25,11 +25,11 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		double index = m_start->evaluate(environment)->getNumber();
 		double step = m_step->evaluate(environment)->getNumber();
 		double limit = m_limit->evaluate(environment)->getNumber();
-		auto env = std::make_shared<Table>(environment);
+		auto env = std::make_shared<Value>(environment);
 		std::shared_ptr<Value> var = env->create(m_name);
 		while (step > 0 && index <= limit || step <= 0 && index >= limit)
 		{

@@ -16,9 +16,10 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		std::shared_ptr<Value> result = nullptr;
-		auto env = std::make_shared<Table>(environment);
+		auto env = std::make_shared<Value>();
+		auto _env = reinterpret_cast<Table*>(env.get())->Create(environment);
 		while (true)
 		{
 			auto cond = m_condition->evaluate(environment);

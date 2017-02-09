@@ -32,7 +32,7 @@ public:
 	virtual ~BoolComparator()
 	{ }
 
-	std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override
+	std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override
 	{
 		auto leftValue = m_left->evaluate(environment);
 		auto rightValue = m_right->evaluate(environment);
@@ -82,7 +82,7 @@ public:
 		case LEQUAL:
 		case GREATER:
 		case GEQUAL:
-			throw "Invalid comparison";
+			throw std::runtime_error("Invalid comparison");
 			break;
 		}
 	}
@@ -104,7 +104,7 @@ public:
 			return a >= b;
 		case OR:
 		case AND:
-			throw "Invalid comparison";
+			throw std::runtime_error("Invalid comparison");
 			break;
 		}
 	}
@@ -126,7 +126,7 @@ public:
 			return a >= b;
 		case OR:
 		case AND:
-			throw "Invalid comparison";
+			throw std::runtime_error("Invalid comparison");
 			break;
 		}
 	}
@@ -144,7 +144,7 @@ public:
 		case GEQUAL:
 		case OR:
 		case AND:
-			throw "Invalid comparison";
+			throw std::runtime_error("Invalid comparison");
 			break;
 		}
 	}

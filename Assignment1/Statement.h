@@ -22,7 +22,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) = 0;
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) = 0;
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};

@@ -7,15 +7,8 @@
 class Table: public Value
 {
 public:
-	std::shared_ptr<Table> m_parentScope = nullptr;
-
-	std::map<bool, std::shared_ptr<Value>> m_boolMap;
-	std::map<double, std::shared_ptr<Value>> m_numMap;
-	std::map<std::string, std::shared_ptr<Value>> m_stringMap;
-	std::map<std::shared_ptr<Value>, std::shared_ptr<Value>> m_refMap;
-
-	Table();
-	Table(std::shared_ptr<Table> parentScope);
+	Table * Create();
+	Table * Create(std::shared_ptr<Value> parentScope);
 
 	virtual ~Table()
 	{
@@ -26,5 +19,5 @@ public:
 	std::shared_ptr<Value> create(std::string name);
 	std::shared_ptr<Value> createGlobal(std::string name);
 
-	void set(std::shared_ptr<Value> key, std::shared_ptr<Value> value);
+	std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Value> value);
 };

@@ -14,11 +14,11 @@ public:
 
 	virtual ~IfStatement() { }
 
-	std::shared_ptr<Value> evaluateCondition(std::shared_ptr<Table> environment) {
+	std::shared_ptr<Value> evaluateCondition(std::shared_ptr<Value> environment) {
 		return m_cond->evaluate(environment);
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) {
 		return m_stat->execute(environment, control);
 	}
 

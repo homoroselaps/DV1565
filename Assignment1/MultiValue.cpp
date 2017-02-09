@@ -2,25 +2,19 @@
 #include "MultiValue.h"
 #include <cassert>
 
-MultiValue::MultiValue(std::vector<std::shared_ptr<Value>> &values) : Value(ValueType::MULTI) {
+MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
+	m_type = ValueType::MULTI;
 	m_values = std::vector<std::shared_ptr<Value>>{};
 	for (auto value : values) {
 		assert(value->getType() != ValueType::MULTI);
 		m_values.push_back(value);
 	}
+	return this;
 }
 
-MultiValue::MultiValue(std::initializer_list<std::shared_ptr<Value>> values) : Value(ValueType::MULTI)
-{
-	m_values = std::vector<std::shared_ptr<Value>>{};
-	for (auto value : values) {
-		assert(value->getType() != ValueType::MULTI);
-		m_values.push_back(value);
-	}
-}
-
-void MultiValue::assignMulti(std::shared_ptr<MultiValue> other) {
-	auto otherChild = other->m_values.begin();
+void MultiValue::assignMulti(std::shared_ptr<Value> other) {
+	auto _other = other->castMultiValue();
+	auto otherChild = _other->m_values.begin();
 	for (auto child = m_values.begin(); child != m_values.end(); child++) {
 		Value::assign(*child, *otherChild);
 	}

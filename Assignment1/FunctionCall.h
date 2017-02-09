@@ -31,19 +31,19 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override {
 		auto base = m_base->evaluate(environment);
-		auto function = std::dynamic_pointer_cast<Function>(base);
+		auto function = base->castFunction();
 		if (!function)
-			throw "cant call " + base->getString();
+			throw std::runtime_error("cant call " + base->getString());
 
 		auto context = m_context->evaluate(environment);
 		function->setContext(context);
 
 		auto arg = m_args->evaluate(environment);
 		std::vector<std::shared_ptr<Value>> arguments;
-		if (std::dynamic_pointer_cast<MultiValue>(arg)) {
-			arguments = std::dynamic_pointer_cast<MultiValue>(arg)->getValues();
+		if (arg->castMultiValue()) {
+			arguments = arg->castMultiValue()->getValues();
 		}
 		else {
 			arguments = std::vector<std::shared_ptr<Value>>{};

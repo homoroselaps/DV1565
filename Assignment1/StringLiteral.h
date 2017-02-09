@@ -17,7 +17,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Table> environment) override {
+	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override {
 		return std::make_shared<StringValue>(m_value);
 	}
 

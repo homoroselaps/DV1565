@@ -2,17 +2,15 @@
 #include "Value.h"
 class BoolValue : public Value
 {
-	bool m_value;
 public:
 
-	BoolValue(bool value):Value(ValueType::BOOL),
-		m_value{value}
+	BoolValue(bool value): Value(value)
 	{ }
 
 	virtual ~BoolValue()
 	{ }
 
 	virtual std::string getString() override {
-		return m_value ? "true" : "false";
+		return m_boolValue ? "true" : "false";
 	}
 };

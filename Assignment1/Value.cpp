@@ -6,14 +6,13 @@
 
 void Value::assign(std::shared_ptr<Value> left, std::shared_ptr<Value> right) {
 	if (left->getType() == ValueType::MULTI) {
-		auto l = std::dynamic_pointer_cast<MultiValue>(left);
+		auto _left = left->castMultiValue();
 		if (right->getType() == ValueType::MULTI) {
-			auto r = std::dynamic_pointer_cast<MultiValue>(right);
-			l->assignMulti(r);
+			_left->assignMulti(right);
 		}
 		else
 		{
-			l->assignSingle(right);
+			_left->assignSingle(right);
 		}
 	}
 	// left Value is a single Value
@@ -23,15 +22,33 @@ void Value::assign(std::shared_ptr<Value> left, std::shared_ptr<Value> right) {
 	case BOOL:
 	case NUMBER:
 	case STRING:
-		left = std::make_shared<Value>(*right);
+		left.swap(std::make_shared<Value>(*right));
 		break;
 	case FUNCTION:
 	case TABLE:
 		left = right;
 		break;
 	case MULTI:
-		auto r = std::dynamic_pointer_cast<MultiValue>(left);
+		auto _right = right->castMultiValue();
 		left.reset();
-		left = r->getFirst();
+		left = _right->getFirst();
 	}
+}
+
+Function * Value::castFunction()
+{
+	assert(m_type == ValueType::FUNCTION);
+	return reinterpret_cast<Function*>(this);
+}
+
+Table * Value::castTable()
+{
+	assert(m_type == ValueType::TABLE);
+	return reinterpret_cast<Table*>(this);
+}
+
+MultiValue * Value::castMultiValue()
+{
+	assert(m_type == ValueType::MULTI);
+	return reinterpret_cast<MultiValue*>(this);
 }

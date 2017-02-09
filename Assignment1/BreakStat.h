@@ -12,7 +12,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		control = ExecControl::BREAK;
 		return nullptr;
 	}

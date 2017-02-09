@@ -24,7 +24,7 @@ public:
 	}
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
-		throw "use getStrings";
+		throw std::runtime_error("use getStrings");
 	}
 
 	virtual std::string to_string() override {
