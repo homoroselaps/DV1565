@@ -2,8 +2,8 @@
 #include <memory>
 #include <string>
 
-class Function;
 class Table;
+class Function;
 
 enum ValueType
 {
@@ -13,6 +13,7 @@ enum ValueType
 	STRING,
 	FUNCTION,
 	TABLE,
+	MULTI,
 };
 
 class Value
@@ -39,11 +40,12 @@ public:
 	virtual std::shared_ptr<Function> getFunction() {
 		throw;
 	}
+	
 	virtual std::shared_ptr<Table> getTable() {
 		throw;
 	}
+
+	static void assign(std::shared_ptr<Value> left, std::shared_ptr<Value> right);
+
 	const ValueType getType() { return m_type; }
 };
-
-#include "Table.h"
-#include "Function.h"

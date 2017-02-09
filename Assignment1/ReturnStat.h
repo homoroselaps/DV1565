@@ -16,12 +16,13 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
 		std::shared_ptr<Value> result = nullptr;
 		//TODO support Muliple Values
 		for (auto expr : m_exprList) {
 			result = expr->evaluate(environment);
 		}
+		control = ExecControl::RETURN;
 		return result;
 	}
 

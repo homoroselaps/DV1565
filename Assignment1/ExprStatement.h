@@ -18,7 +18,7 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) {
 		m_expr->evaluate(environment);
 		return std::make_shared<Value>();
 	}

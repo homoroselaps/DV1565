@@ -21,15 +21,14 @@ public:
 		m_stats.push_back(stat);
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) override {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
 		auto env = std::make_shared<Table>(environment);
 		for (auto stat : m_stats) {
-			auto result = stat->execute(env, isBreak);
-			if (std::dynamic_pointer_cast<ReturnStat>(stat) || isBreak) {
+			auto result = stat->execute(env, control);
+			if (control) {
 				return result;
 			}
 		}
-		isBreak = false;
 		return nullptr;
 	}
 

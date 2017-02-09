@@ -12,8 +12,8 @@ public:
 	{
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, bool &isBreak) override {
-		isBreak = true;
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Table> environment, ExecControl &control) override {
+		control = ExecControl::BREAK;
 		return nullptr;
 	}
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
