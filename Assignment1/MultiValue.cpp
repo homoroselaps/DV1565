@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "MultiValue.h"
 #include <cassert>
 

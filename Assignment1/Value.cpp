@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Value.h"
 #include "BoolValue.h"
 #include "NumValue.h"
@@ -21,20 +20,10 @@ void Value::assign(std::shared_ptr<Value> left, std::shared_ptr<Value> right) {
 	switch (right->m_type)
 	{
 	case NIL:
-		left.reset();
-		left = std::make_shared<Value>();
-		break;
 	case BOOL:
-		left.reset();
-		left = std::make_shared<BoolValue>(right->getBool());
-		break;
 	case NUMBER:
-		left.reset();
-		left = std::make_shared<NumValue>(right->getNumber());
-		break;
 	case STRING:
-		left.reset();
-		left = std::make_shared<StringValue>(right->getString());
+		left = std::make_shared<Value>(*right);
 		break;
 	case FUNCTION:
 	case TABLE:

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Value.h"
+#include <vector>
 
 class MultiValue : public Value
 {
@@ -11,9 +12,7 @@ public:
 
 	MultiValue(std::initializer_list<std::shared_ptr<Value>> values);
 
-	virtual ~MultiValue()
-	{
-	}
+	virtual ~MultiValue() { }
 
 	void assignMulti(std::shared_ptr<MultiValue> other);
 

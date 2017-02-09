@@ -1,4 +1,4 @@
-#include "stdafx.h"
+
 #include "Function.h"
 
 Function::Function(std::shared_ptr<Value> context, Func func) : Value(ValueType::FUNCTION)
