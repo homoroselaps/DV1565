@@ -1,5 +1,5 @@
-parser: lex.yy.c binary.tab.o main.cc
-	g++ -std=c++14 -g -oparser binary.tab.o lex.yy.c main.cc
+parser: lex.yy.c binary.tab.o main.cc Function.cpp Value.cpp MultiValue.cpp Table.cpp
+	g++ -std=c++14 -g -oparser binary.tab.o lex.yy.c main.cc Function.cpp Value.cpp MultiValue.cpp Table.cpp
 binary.tab.o: binary.tab.c
 	g++ -std=c++14 -g -c binary.tab.c
 binary.tab.c: binary.y

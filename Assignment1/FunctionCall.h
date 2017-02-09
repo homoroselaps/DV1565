@@ -7,6 +7,7 @@
 #include "MultiValue.h"
 #include <memory>
 #include <string>
+
 class FunctionCall : public Expr
 {
 	std::shared_ptr<Expr> m_base;
@@ -35,7 +36,7 @@ public:
 		auto function = std::dynamic_pointer_cast<Function>(base);
 		if (!function)
 			throw "cant call " + base->getString();
-		
+
 		auto context = m_context->evaluate(environment);
 		function->setContext(context);
 

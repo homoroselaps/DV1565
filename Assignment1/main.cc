@@ -2,6 +2,7 @@
 #include "binary.tab.h"
 #include "Library.h"
 extern std::shared_ptr<Node> root;
+extern FILE* yyin;
 
 void yy::parser::error(std::string const &err)
 {
@@ -10,6 +11,14 @@ void yy::parser::error(std::string const &err)
 
 int main(int argc, char **argv)
 {
+	if (argc < 2) {
+		std::cout << "No input file specified!" << std::endl;
+		return 1;
+	}
+
+
+	yyin = fopen(argv[1], "r");
+
 	yy::parser parser;
 	parser.set_debug_level(1);
 	if( !parser.parse())
@@ -18,8 +27,8 @@ int main(int argc, char **argv)
 
 	auto env = std::make_shared<Table>();
 	Library::load(env);
-	bool isBreak = false;
+	ExecControl control = ExecControl::NONE;
 	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
-	chunk->execute(env, isBreak);
+	chunk->execute(env, control);
 	return 0;
 }

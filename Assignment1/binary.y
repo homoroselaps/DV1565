@@ -4,13 +4,12 @@
 %define api.token.constructor
 %code requires {
 	#define YYDEBUG 1
-	#include "Accessor.h"
 	#include "BoolLiteral.h"
 	#include "BreakStat.h"
-	#include "Call.h"
 	#include "Chunk.h"
 	#include "BoolComparator.h"
 	#include "Expr.h"
+	#include "ExprList.h"
 	#include "ExprStatement.h"
 	#include "FunctionCall.h"
 	#include "NilLiteral.h"
@@ -22,7 +21,6 @@
 	#include "ReturnStat.h"
 	#include "Statement.h"
 	#include "StringLiteral.h"
-	#include "Var.h"
 	#include "VarName.h"
 
 	#include <string>
@@ -42,7 +40,7 @@
 	}
 }
 %type <std::shared_ptr<Node>> chunk __stat _semi laststat block stat __elseif varlist funcname
-%type <std::shared_ptr<Node>> __dotname var namelist explist exp prefixexp functioncall __args args
+%type <std::shared_ptr<Node>> __dotname var namelist explist exp prefixexp functioncall args
 %type <std::shared_ptr<Node>> function funcbody parlist tableconstructor fieldlist
 %type <std::shared_ptr<Node>> __fieldsepfield field fieldsep binopexp unop
 
@@ -283,13 +281,13 @@ namelist	: NAME {
 					;
 
 explist		: exp {
-						auto node = std::make_shared<NodeList>();
-						node->addChild($1);
+						auto node = std::make_shared<ExprList>();
+						node->addExpression(spc<Expr>($1));
 						$$ = spc<Node>(node);
 					}
 					| explist ',' exp {
-						auto node = dpc<NodeList>($1);
-						node->addChild($3);
+						auto node = dpc<ExprList>($1);
+						node->addExpression(spc<Expr>($3));
 						$$ = spc<Node>(node);
 					}
 					;
@@ -332,34 +330,28 @@ stat			: functioncall {
 					;
 
 functioncall			: prefixexp args {
-										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1),dpc<Accessor>($2));
+										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1),dpc<Expr>($2));
 										$$ = spc<Node>(node);
 									}
 									| prefixexp ':' NAME args {
-										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1), dpc<Expr>(std::make_shared<VarName>($3)), dpc<Accessor>($4));
+										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1), dpc<Expr>(std::make_shared<VarName>($3)), dpc<Expr>($4));
 										$$ = spc<Node>(node);
 									}
 									;
 
 args		: '(' ')' {
-					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
+					auto node = std::make_shared<ExprList>();
 					$$ = spc<Node>(node);
 				}
 				| '(' explist ')' {
-					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
-					for (auto child : $2->getChildren()) {
-						node->addArgument(dpc<Expr>(child));
-					}
-					$$ = spc<Node>(node);
+					$$ = spc<Node>($2);
 				}
 				| tableconstructor {
-					auto node = std::make_shared<Call>(ArgumentType::TABLEARG);
-					node->addArgument(dpc<Expr>($1));
+					auto node = std::make_shared<Node>();
 					$$ = spc<Node>(node);
 				}
 				| STRING {
-					auto node = std::make_shared<Call>(ArgumentType::LISTARG);
-					node->addArgument(dpc<Expr>(std::make_shared<StringLiteral>($1)));
+					auto node = std::make_shared<StringLiteral>($1);
 					$$ = spc<Node>(node);
 				}
 				;
