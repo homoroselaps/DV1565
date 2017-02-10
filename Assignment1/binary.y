@@ -140,33 +140,20 @@ stat			: varlist '=' explist {
 						auto node = std::make_shared<Selection>();
 						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>($2),dpc<Statement>($4));
 						node->addElseIfStat(ifStat);
-
-
-
-
-						$$ = spc<Node>(node);
-
-						$$ = std::make_shared<Node>("selection", "");
-						auto first = std::make_shared<Node>("if", "");
-						first->add($2);
-						first->add($4);
-						$$->add(first);
-						for (auto child : $5->getChildren()) {
-							$$->add(child);
+						for (auto child : dpc<NodeList>($5)->getChildren()){
+							node->addElseIfStat(dpc<IfStatement>(child));
 						}
+						$$ = spc<Node>(node);
 					}
 					| IF exp THEN block __elseif ELSE block END {
-						$$ = std::make_shared<Node>("selection", "");
-						auto first = std::make_shared<Node>("if", "");
-						first->add($2);
-						first->add($4);
-						$$->add(first);
-						for (auto child : $5->getChildren()) {
-							$$->add(child);
+						auto node = std::make_shared<Selection>();
+						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>($2),dpc<Statement>($4));
+						node->addElseIfStat(ifStat);
+						for (auto child : dpc<NodeList>($5)->getChildren()){
+							node->addElseIfStat(dpc<IfStatement>(child));
 						}
-						auto last = std::make_shared<Node>("else", "");
-						last->add($7);
-						$$->add(last);
+						node->setElseStat(dpc<Statement>($7));
+						$$ = spc<Node>(node);
 					}
 					| FOR NAME '=' exp ',' exp DO block END {
 						$$ = std::make_shared<Node>("forrange", "");
@@ -210,16 +197,15 @@ stat			: varlist '=' explist {
 					}
 					;
 
-__elseif	: /* */ { $$ = std::make_shared<Node>(); }
+__elseif	: /* */ {
+						auto node = std::make_shared<NodeList>();
+						$$ = spc<Node>(node);
+					}
 					| __elseif ELSEIF exp THEN block {
-						$$ = $1;
-						if ($$->m_tag != "elseiflist") {
-							$$ = std::make_shared<Node>("elseiflist", "");
-						}
-						auto elseif = std::make_shared<Node>("if", "");
-						elseif->add($3);
-						elseif->add($5);
-						$$->add(elseif);
+						auto node = dpc<NodeList>($1);
+						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>($3),dpc<Statement>($5));
+						node->addChild(ifStat);
+						$$ = spc<Node>(node);
 					}
 					;
 
