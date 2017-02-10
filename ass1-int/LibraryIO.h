@@ -4,6 +4,7 @@
 #include "Function.h"
 #include "Table.h"
 #include "StringValue.h"
+#include "Utils.h"
 
 class LibraryIO
 {
@@ -49,7 +50,10 @@ public:
 	static std::shared_ptr<Value> write() {
 		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
 			for (auto arg : args) {
-				std::cout << arg->to_string();
+				std::string str = arg->to_string();
+				Utils::replace(str,"\\n","\n");
+				Utils::replace(str,"\\t","\t");
+				std::cout << str;
 			}
 			return std::make_shared<Value>();
 		};

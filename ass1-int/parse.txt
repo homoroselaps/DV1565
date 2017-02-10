@@ -1,0 +1,114 @@
+digraph {node0 [label="Chunk
+(Statement)" ]
+node1 [label="GlobalFunctionDefinition
+(Statement)" ]
+node0 -> node1
+node2 [label="NameListList
+(Helper)" ]
+node1 -> node2
+node3 [label="StringLiteral
+(Expression) Value: fibonacci" ]
+node2 -> node3
+node4 [label="FunctionBody
+(Expression)" ]
+node1 -> node4
+node5 [label="Chunk
+(Statement)" ]
+node4 -> node5
+node6 [label="Selector
+(Statement)" ]
+node5 -> node6
+node7 [label="If/ElseIf
+(Statement)" ]
+node6 -> node7
+node8 [label="Comparator
+(Statement) Type: 2" ]
+node7 -> node8
+node9 [label="VarName
+(Expression) Value: n" ]
+node8 -> node9
+node10 [label="NumberLiteral
+(Expression) Value: 3.000000" ]
+node8 -> node10
+node11 [label="Chunk
+(Statement)" ]
+node7 -> node11
+node12 [label="Return
+(Statement)" ]
+node11 -> node12
+node13 [label="ExprList
+(Expression)" ]
+node12 -> node13
+node14 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node13 -> node14
+node15 [label="Chunk
+(Statement)" ]
+node6 -> node15
+node16 [label="Return
+(Statement)" ]
+node15 -> node16
+node17 [label="ExprList
+(Expression)" ]
+node16 -> node17
+node18 [label="NumOperator
+(Expression) Type: 0" ]
+node17 -> node18
+node19 [label="FunctionCall
+(Expression)" ]
+node18 -> node19
+node20 [label="VarName
+(Expression) Value: fibonacci" ]
+node19 -> node20
+node21 [label="ExprList
+(Expression)" ]
+node19 -> node21
+node22 [label="NumOperator
+(Expression) Type: 1" ]
+node21 -> node22
+node23 [label="VarName
+(Expression) Value: n" ]
+node22 -> node23
+node24 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node22 -> node24
+node25 [label="FunctionCall
+(Expression)" ]
+node18 -> node25
+node26 [label="VarName
+(Expression) Value: fibonacci" ]
+node25 -> node26
+node27 [label="ExprList
+(Expression)" ]
+node25 -> node27
+node28 [label="NumOperator
+(Expression) Type: 1" ]
+node27 -> node28
+node29 [label="VarName
+(Expression) Value: n" ]
+node28 -> node29
+node30 [label="NumberLiteral
+(Expression) Value: 2.000000" ]
+node28 -> node30
+node31 [label="ExprStatement
+(Statement)" ]
+node0 -> node31
+node32 [label="FunctionCall
+(Expression)" ]
+node31 -> node32
+node33 [label="VarIndex
+(Expression)" ]
+node32 -> node33
+node34 [label="VarName
+(Expression) Value: io" ]
+node33 -> node34
+node35 [label="StringLiteral
+(Expression) Value: write" ]
+node33 -> node35
+node36 [label="ExprList
+(Expression)" ]
+node32 -> node36
+node37 [label="StringLiteral
+(Expression) Value: ...\n" ]
+node36 -> node37
+}

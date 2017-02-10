@@ -5,6 +5,8 @@
 #include <iostream>
 #include <memory>
 #include <vector>
+#include <algorithm>
+#include "Utils.h"
 
 class Node {
 public:
@@ -37,7 +39,9 @@ public:
 
   std::string dump_graphviz(int parent_id, int &count) {
 	  auto id = count++;
-	  auto result = "node"+std::to_string(id) + " [" + to_string() + " ]\n";
+    auto thisName = to_string();
+    Utils::replace(thisName, "(", "\n(");
+	  auto result = "node"+std::to_string(id) + " [label=\"" + thisName + "\" ]\n";
 	  if (parent_id >= 0) {
 		  result += "node" + std::to_string(parent_id) + " -> " + "node" + std::to_string(id) + "\n";
 	  }

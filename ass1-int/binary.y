@@ -459,14 +459,10 @@ binopexp: exp '+' exp {
 					$$ = std::make_shared<NumOperator>(NumOperatorType::DIV,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '^' exp {
-					$$ = std::make_shared<Node>("binop", "^");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::POW,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp '%' exp {
-					$$ = std::make_shared<Node>("binop", "%%");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<NumOperator>(NumOperatorType::MOD,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp CONCAT exp {
 					$$ = std::make_shared<Node>("concat", "-");

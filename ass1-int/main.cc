@@ -1,7 +1,8 @@
 #include <iostream>
+#include <fstream>
 #include "binary.tab.h"
-#include "StdLibrary.h"
-#include "IoLibrary.h"
+#include "LibraryStd.h"
+#include "LibraryIO.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 
@@ -22,14 +23,22 @@ int main(int argc, char **argv)
 
 	yy::parser parser;
 	parser.set_debug_level(1);
-	if( !parser.parse())
+	if( !parser.parse()) {
 		std::cout << "It's a bingo! " <<std::endl;
+	} else {
+		return 1;
+	}
 	root->dump();
+
+	std::ofstream outputfile{"parse.txt", std::ios::out | std::ios::trunc};
+	outputfile << Node::to_graphviz(*std::static_pointer_cast<Node>(root));
+	outputfile.close();
+
 
 	auto env = std::make_shared<Value>();
 	reinterpret_cast<Table*>(env.get())->Create();
-	StdLibrary::load(env);
-	IoLibrary::load(env);
+	LibraryStd::load(env);
+	LibraryIO::load(env);
 	ExecControl control = ExecControl::NONE;
 	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
 	chunk->execute(env, control);

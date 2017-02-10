@@ -73,7 +73,6 @@ public:
 
 		auto fun = std::make_shared<Value>();
 		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(paraCount, f);
-		std::cout << "Function created: " + fun->to_string() << std::endl;
 		return fun;
 	}
 

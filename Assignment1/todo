@@ -1,4 +1,0 @@
-lex unsigned ints
-lex basic math operators
-lex function call with parameters
-interpret

@@ -4,6 +4,7 @@
 #include "NumValue.h"
 #include "StringValue.h"
 #include "Node.hpp"
+#include <cmath>
 
 enum NumOperatorType {
 	PLUS,

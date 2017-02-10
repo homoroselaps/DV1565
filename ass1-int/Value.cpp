@@ -65,8 +65,11 @@ std::string Value::to_string() {
 			return "nil";
 		case BOOL:
 			return std::to_string(m_boolValue);
-		case NUMBER:
-			return std::to_string(m_numValue);
+		case NUMBER: {
+			auto result = std::to_string(m_numValue);
+			result.erase(result.find_last_not_of('0') + 2, std::string::npos );
+			return result;
+		}
 		case STRING:
 			return m_stringValue;
 		case FUNCTION:
