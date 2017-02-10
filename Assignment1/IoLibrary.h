@@ -5,32 +5,35 @@
 #include "Table.h"
 #include "StringValue.h"
 
-class StdLibrary
+class IoLibrary
 {
 public:
 
-	StdLibrary()
+	IoLibrary()
 	{
 	}
 
-	virtual ~StdLibrary()
+	virtual ~IoLibrary()
 	{
 	}
 
-	static std::shared_ptr<Value> print() {
+	static std::shared_ptr<Value> write() {
 		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
 			for (auto arg : args) {
 				std::cout << arg->to_string();
 			}
-			std::cout << std::endl;
 			return std::make_shared<Value>();
 		};
 		auto fun = std::make_shared<Value>();
-		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(-1, f);
+		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(1, f);
 		return fun;
 	}
 
 	static void load(std::shared_ptr<Value> environment) {
-		environment->castTable()->create("print", print());
+		auto io = std::make_shared<Value>();
+		auto _io = reinterpret_cast<Table*>(io.get())->Create();
+		_io->set(std::make_shared<StringValue>("write"), write());
+		environment->castTable()->set(std::make_shared<StringValue>("io"), io);
 	}
 };
+
