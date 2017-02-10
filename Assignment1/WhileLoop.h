@@ -8,7 +8,7 @@ class WhileLoop : public Statement
 
 public:
 
-	WhileLoop()
+	WhileLoop(std::shared_ptr<Expr> cond, std::shared_ptr<Statement> block) : m_condition{ cond }, m_block{ block }
 	{
 	}
 
