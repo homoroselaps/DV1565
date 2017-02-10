@@ -9,7 +9,9 @@ enum NumOperatorType {
 	PLUS,
 	MINUS,
 	MUL,
-	DIV
+	DIV,
+	POW,
+	MOD,
 };
 
 class NumOperator : public Expr
@@ -17,6 +19,10 @@ class NumOperator : public Expr
 	NumOperatorType m_type;
 	std::shared_ptr<Expr> m_left;
 	std::shared_ptr<Expr> m_right;
+
+	int doubleToInt(double x) {
+		return (int)(x+0.5f);
+	}
 public:
 
 	NumOperator(NumOperatorType type, std::shared_ptr<Expr> left, std::shared_ptr<Expr> right)
@@ -46,6 +52,12 @@ public:
 			break;
 		case MUL:
 			result = a * b;
+			break;
+		case MOD:
+			result = doubleToInt(a) % doubleToInt(b);
+			break;
+		case POW:
+			result = std::pow(a,b);
 			break;
 		}
 		return std::make_shared<NumValue>(result);

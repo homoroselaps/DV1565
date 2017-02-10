@@ -27,6 +27,27 @@ public:
     }
   }
 
+  static std::string to_graphviz(Node &node) {
+	  std::string result = "digraph {";
+	  int count = 0;
+	  result += node.dump_graphviz(-1, count);
+	  result += "}";
+	  return result;
+  }
+
+  std::string dump_graphviz(int parent_id, int &count) {
+	  auto id = count++;
+	  auto result = "node"+std::to_string(id) + " [" + to_string() + " ]\n";
+	  if (parent_id >= 0) {
+		  result += "node" + std::to_string(parent_id) + " -> " + "node" + std::to_string(id) + "\n";
+	  }
+	  auto children = getChildren();
+	  for (auto child : children) {
+		  result += child->dump_graphviz(id, count);
+	  }
+	  return result;
+  }
+
   virtual std::vector<std::shared_ptr<Node>> getChildren() {
     return std::vector<std::shared_ptr<Node>>{};
   };

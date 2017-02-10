@@ -5,15 +5,15 @@
 #include "Table.h"
 #include "StringValue.h"
 
-class StdLibrary
+class LibraryStd
 {
 public:
 
-	StdLibrary()
+	LibraryStd()
 	{
 	}
 
-	virtual ~StdLibrary()
+	virtual ~LibraryStd()
 	{
 	}
 

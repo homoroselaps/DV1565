@@ -5,26 +5,40 @@
 #include "Table.h"
 #include "StringValue.h"
 
-class IoLibrary
+class LibraryIO
 {
+	LibraryIO() { }
+
+	virtual ~LibraryIO() { }
 public:
-
-	IoLibrary()
-	{
-	}
-
-	virtual ~IoLibrary()
-	{
-	}
-
 	static std::shared_ptr<Value> read() {
 		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
-			for (auto arg : args) {
-				std::cout << arg->to_string();
+			auto firstArg = args.front();
+			switch (firstArg->getType())
+			{
+			case NUMBER: {
+				throw std::runtime_error("IO write: flag not supported");
 			}
-			double number;
-			std::cin >> number;
-
+			case STRING: {
+				if (firstArg->getString() == "*number") {
+					double number;
+					std::cin >> number;
+					return std::make_shared<Value>(number);
+				}
+				else if (firstArg->getString() == "*line") {
+					std::string input_line;
+					while (std::cin) {
+						std::getline(std::cin, input_line);
+					};
+					return std::make_shared<Value>(input_line);
+				}
+				else {
+					throw std::runtime_error("IO write: flag not supported");
+				}
+			}
+			default:
+				throw std::runtime_error("IO write: argument type not supported");
+			}
 			return std::make_shared<Value>();
 		};
 		auto fun = std::make_shared<Value>();
@@ -48,6 +62,7 @@ public:
 		auto io = std::make_shared<Value>();
 		auto _io = reinterpret_cast<Table*>(io.get())->Create();
 		_io->set(std::make_shared<StringValue>("write"), write());
+		_io->set(std::make_shared<StringValue>("read"), read());
 		environment->castTable()->set(std::make_shared<StringValue>("io"), io);
 	}
 };
