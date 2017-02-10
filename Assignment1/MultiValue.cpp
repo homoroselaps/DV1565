@@ -1,5 +1,6 @@
 
 #include "MultiValue.h"
+#include "Value.h"
 #include <cassert>
 
 MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
@@ -12,16 +13,12 @@ MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
 	return this;
 }
 
-void MultiValue::assignMulti(std::shared_ptr<Value> other) {
+void MultiValue::assignMultiValue(std::shared_ptr<Value> other) {
 	auto _other = other->castMultiValue();
 	auto otherChild = _other->m_values.begin();
 	for (auto child = m_values.begin(); child != m_values.end(); child++) {
-		Value::assign(*child, *otherChild);
+		(*child)->assign(*otherChild);
 	}
-}
-
-void MultiValue::assignSingle(std::shared_ptr<Value> other) {
-	Value::assign(m_values.front(), other);
 }
 
 std::vector<std::shared_ptr<Value>> MultiValue::getValues()

@@ -6,12 +6,47 @@
 #include <cassert>
 #include <vector>
 
+
 class Table;
 class Function;
 class Value;
 class MultiValue;
 
 typedef std::function<std::shared_ptr<Value>(std::shared_ptr<Value>, std::vector<std::shared_ptr<Value>>)> Func;
+
+class FunctionData {
+public:
+	//Function member
+	int m_paraCount;
+	Func m_func;
+	std::shared_ptr<Value> m_context = nullptr;
+
+	FunctionData(std::shared_ptr<Value> context, int paraCount, Func func)
+		: m_paraCount{ paraCount }
+		, m_func{ func }
+		, m_context{ context } {}
+};
+
+class TableData {
+public:
+	std::shared_ptr<Value> m_parentScope = nullptr;
+
+	std::map<bool, std::shared_ptr<Value>> m_boolMap;
+	std::map<double, std::shared_ptr<Value>> m_numMap;
+	std::map<std::string, std::shared_ptr<Value>> m_stringMap;
+	std::map<std::shared_ptr<Value>, std::shared_ptr<Value>> m_refMap;
+
+	TableData() {
+		m_boolMap = std::map<bool, std::shared_ptr<Value>>{};
+		m_numMap = std::map<double, std::shared_ptr<Value>>{};
+		m_stringMap = std::map<std::string, std::shared_ptr<Value>>{};
+		m_refMap = std::map<std::shared_ptr<Value>, std::shared_ptr<Value>>{};
+	}
+
+	TableData(std::shared_ptr<Value> parentScope): TableData() {
+		m_parentScope = parentScope;
+	}
+};
 
 enum ValueType
 {
@@ -40,22 +75,14 @@ protected:
 	//StringValue member
 	std::string m_stringValue;
 
-
-	//Table member
-	std::shared_ptr<Value> m_parentScope = nullptr;
-
-	std::map<bool, std::shared_ptr<Value>> m_boolMap;
-	std::map<double, std::shared_ptr<Value>> m_numMap;
-	std::map<std::string, std::shared_ptr<Value>> m_stringMap;
-	std::map<std::shared_ptr<Value>, std::shared_ptr<Value>> m_refMap;
-
 	//MultiValue member
 	std::vector<std::shared_ptr<Value>> m_values;
 
 	//Function member
-	int m_paraCount;
-	Func m_function;
-	std::shared_ptr<Value> m_context = nullptr;
+	std::shared_ptr<FunctionData> m_function;
+	
+	//Table member
+	std::shared_ptr<TableData> m_table;
 
 	Value(ValueType type) {
 		m_type = type;
@@ -63,19 +90,35 @@ protected:
 
 public:
 
-	Value(): Value(ValueType::NIL) {}
+	Value(): Value(ValueType::NIL) {
+		assignNil();
+	}
 
 	Value(std::string value) : Value(ValueType::STRING){
-		m_stringValue = value;
+		assignString(value);
 	}
 
 	Value(double value) : Value(ValueType::NUMBER) {
-		m_numValue = value;
+		assignNumber(value);
 	}
 
 	Value(bool value) : Value(ValueType::BOOL) {
-		m_boolValue = value;
+		assignBool(value);
 	}
+
+	void assignNil();
+
+	void assignBool(bool value);
+
+	void assignNumber(double value);
+
+	void assignString(std::string value);
+
+	void assignTable(std::shared_ptr<Value> other);
+
+	void assignFunction(std::shared_ptr<Value> other);
+
+	void assignMultiValue(std::shared_ptr<Value> other);
 
 	virtual ~Value() {};
 
@@ -147,7 +190,7 @@ public:
 		}
 	}
 
-	static void assign(std::shared_ptr<Value> left, std::shared_ptr<Value> right);
+	void assign(std::shared_ptr<Value> right);
 
 	const ValueType getType() { return m_type; }
 
