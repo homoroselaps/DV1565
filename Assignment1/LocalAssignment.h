@@ -19,7 +19,7 @@ public:
 
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) {
 		auto values = m_values->evaluate(environment);
-		
+
 		auto vars = std::vector<std::shared_ptr<Value>>{};
 		for (auto name : m_nameList->getStrings()) {
 			vars.push_back(environment->castTable()->create(name, std::make_shared<Value>()));
@@ -32,7 +32,7 @@ public:
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
-		children.push_back(std::static_pointer_cast<Node>(m_base));
+		children.push_back(std::static_pointer_cast<Node>(m_nameList));
 		children.push_back(std::static_pointer_cast<Node>(m_values));
 		return children;
 	}
@@ -41,4 +41,3 @@ public:
 		return "LocalAssignment(Statement)";
 	}
 };
-

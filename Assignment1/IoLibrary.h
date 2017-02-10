@@ -17,6 +17,21 @@ public:
 	{
 	}
 
+	static std::shared_ptr<Value> read() {
+		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
+			for (auto arg : args) {
+				std::cout << arg->to_string();
+			}
+			double number;
+			std::cin >> number;
+
+			return std::make_shared<Value>();
+		};
+		auto fun = std::make_shared<Value>();
+		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(1, f);
+		return fun;
+	}
+
 	static std::shared_ptr<Value> write() {
 		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
 			for (auto arg : args) {
@@ -25,7 +40,7 @@ public:
 			return std::make_shared<Value>();
 		};
 		auto fun = std::make_shared<Value>();
-		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(1, f);
+		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(-1, f);
 		return fun;
 	}
 
@@ -36,4 +51,3 @@ public:
 		environment->castTable()->set(std::make_shared<StringValue>("io"), io);
 	}
 };
-

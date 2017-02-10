@@ -8,8 +8,15 @@
 
 %x SGLQOT
 %x DBLQOT
+%x COMMENT
 
 %%
+--[^\[][^\n]*\n   { /* SingleLine Comment*/ }
+--\[\[            { BEGIN(COMMENT); }
+<COMMENT>[^\]]*   { /* MultiLine Comment*/ }
+<COMMENT>\][^\]]  { /* MultiLine Comment*/ }
+<COMMENT>\]\]     { BEGIN(0); }
+
 [']				{ BEGIN(SGLQOT); }
 <SGLQOT>[^']*	{ return yy::parser::make_STRING(yytext); }
 <SGLQOT>[']		{ BEGIN(0); }

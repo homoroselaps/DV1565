@@ -7,8 +7,13 @@ MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
 	m_type = ValueType::MULTI;
 	m_values = std::vector<std::shared_ptr<Value>>{};
 	for (auto value : values) {
-		assert(value->getType() != ValueType::MULTI);
-		m_values.push_back(value);
+		if (value->getType() == ValueType::MULTI) {
+			for (auto subValue : value->castMultiValue()->getValues()) {
+				m_values.push_back(subValue);
+			}
+		} else {
+			m_values.push_back(value);
+		}
 	}
 	return this;
 }

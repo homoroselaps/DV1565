@@ -14,6 +14,8 @@
 	#include "ExprStatement.h"
 	#include "FunctionCall.h"
 	#include "FunctionBody.h"
+	#include "ForLoop.h"
+	#include "GlobalFunctionDef.h"
 	#include "IfStatement.h"
 	#include "NilLiteral.h"
 	#include "Node.hpp"
@@ -21,6 +23,9 @@
 	#include "NameList.h"
 	#include "NumLiteral.h"
 	#include "NumOperator.h"
+	#include "LocalAssignment.h"
+	#include "LocalDef.h"
+	#include "LocalFunctionDef.h"
 	#include "ReturnStat.h"
 	#include "RepeatLoop.h"
 	#include "Selection.h"
@@ -107,7 +112,10 @@ _semi			: /* */ { }
 					| ';' { }
 					;
 
-laststat	: RETURN explist { $$ = std::make_shared<Node>("return", ""); }
+laststat	: RETURN explist {
+						auto node = std::make_shared<ReturnStat>(dpc<ExprList>($2));
+						$$ = spc<Node>(node);
+ 					}
 					| RETURN {
 						auto node = std::make_shared<ReturnStat>();
 						$$ = spc<Node>(node);
@@ -156,19 +164,22 @@ stat			: varlist '=' explist {
 						$$ = spc<Node>(node);
 					}
 					| FOR NAME '=' exp ',' exp DO block END {
-						$$ = std::make_shared<Node>("forrange", "");
-						//$$->add($2);
-						$$->add($4);
-						$$->add($6);
-						$$->add($8);
+						auto node = std::make_shared<ForLoop>($2,
+							dpc<Expr>($4),
+							dpc<Expr>($6),
+							dpc<Expr>(std::make_shared<NumLiteral>(1)),
+							dpc<Statement>($8)
+							);
+						$$ = spc<Node>(node);
 					}
 					| FOR NAME '=' exp ',' exp ',' exp DO block END {
-						$$ = std::make_shared<Node>("foriter", "");
-						//$$->add($2);
-						$$->add($4);
-						$$->add($6);
-						$$->add($8);
-						$$->add($10);
+						auto node = std::make_shared<ForLoop>($2,
+							dpc<Expr>($4),
+							dpc<Expr>($6),
+							dpc<Expr>($8),
+							dpc<Statement>($10)
+							);
+						$$ = spc<Node>(node);
 					}
 					| FOR namelist IN explist DO block END {
 						$$ = std::make_shared<Node>("forlist", "");
@@ -177,23 +188,26 @@ stat			: varlist '=' explist {
 						$$->add($6);
 					}
 					| FUNCTION funcname funcbody {
-						$$ = std::make_shared<Node>("funcdef", "");
-						$$->add($2);
-						$$->add($3);
+						auto node = std::make_shared<GlobalFunctionDef>(
+							dpc<NameList>($2),
+							dpc<FunctionBody>($3)
+							);
+						$$ = spc<Node>(node);
 					}
 					| LOCAL FUNCTION NAME funcbody {
-						$$ = std::make_shared<Node>("funcdeflocal", "");
-						//$$->add($3);
-						$$->add($4);
+						auto node = std::make_shared<LocalFunctionDef>(
+							$3,
+							dpc<FunctionBody>($4)
+							);
+						$$ = spc<Node>(node);
 					}
 					| LOCAL namelist {
-						$$ = std::make_shared<Node>("deflocal", "");
-						$$->add($2);
+						auto node = std::make_shared<LocalDef>(dpc<NameList>($2));
+						$$ = spc<Node>(node);
 					}
 					| LOCAL namelist '=' explist {
-						$$ = std::make_shared<Node>("localassign", "");
-						$$->add($2);
-						$$->add($4);
+						auto node = std::make_shared<LocalAssignment>(dpc<NameList>($2), dpc<Expr>($4));
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -226,6 +240,7 @@ funcname	: NAME __dotname {
 							node->addString($1);
 							for (auto name : dpc<NameList>($2)->getStrings()) {
 								node->addString(name);
+								std::cout << "#####" << name << "#####" << std::endl;
 							}
 							$$ = spc<Node>(node);
 					}

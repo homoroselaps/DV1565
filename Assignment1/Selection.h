@@ -39,13 +39,17 @@ public:
 		auto children = std::vector<std::shared_ptr<Node>>{};
 		for (auto child : m_ifStats) {
 			children.push_back(std::static_pointer_cast<Node>(child));
+			assert(children.back());
+		}
+		if (m_else) {
+			children.push_back(std::static_pointer_cast<Node>(m_else));
+			assert(children.back());
 		}
 		return children;
 	}
 
 	virtual std::string to_string() override {
-		return "If(Statement)";
+		return "Selector(Statement)";
 	}
 
 };
-

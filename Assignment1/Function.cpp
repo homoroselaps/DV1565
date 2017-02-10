@@ -8,7 +8,7 @@ Function * Function::Create(int paraCount, Func func)
 }
 
 std::shared_ptr<Value> Function::invoke(std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> & args) {
-	if (m_function->m_paraCount > 0 && args.size() != m_function->m_paraCount)
-		throw std::runtime_error("Parameters do not match");
+	if (m_function->m_paraCount >= 0 && args.size() != m_function->m_paraCount)
+		throw std::runtime_error("Parameters do not match:" + std::to_string(m_function->m_paraCount) + " != " + std::to_string(args.size()));
 	return m_function->m_func(context, args);
 }

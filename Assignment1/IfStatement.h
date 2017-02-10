@@ -18,12 +18,14 @@ public:
 		return m_cond->evaluate(environment);
 	}
 
-	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) {
+	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		return m_stat->execute(environment, control);
 	}
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
+		children.push_back(std::static_pointer_cast<Node>(m_cond));
+		children.push_back(std::static_pointer_cast<Node>(m_stat));
 		return children;
 	}
 
@@ -31,4 +33,3 @@ public:
 		return "If/ElseIf(Statement)";
 	}
 };
-

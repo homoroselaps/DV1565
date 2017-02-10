@@ -58,6 +58,30 @@ void Value::assignFunction(std::shared_ptr<Value> other)
 	m_function = other->m_function;
 }
 
+std::string Value::to_string() {
+	switch (m_type)
+	{
+		case NIL:
+			return "nil";
+		case BOOL:
+			return std::to_string(m_boolValue);
+		case NUMBER:
+			return std::to_string(m_numValue);
+		case STRING:
+			return m_stringValue;
+		case FUNCTION:
+			return "Function{" + pointerToStr((void*)this) + "}";
+		case TABLE:
+			return "Table{" + pointerToStr((void*)this) + "}";
+		case MULTI: {
+			auto output = "MultiValue{" + pointerToStr((void*)this) + ": ";
+			for (auto value : castMultiValue()->getValues()) output += value->to_string() + ", ";
+			return  output + "}";
+		}
+	}
+	return "Invalid Object";
+}
+
 void Value::assign(std::shared_ptr<Value> right) {
 	switch (right->m_type)
 	{

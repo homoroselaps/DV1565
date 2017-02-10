@@ -13,7 +13,7 @@ class ForLoop :
 	std::shared_ptr<Statement> m_block;
 public:
 
-	ForLoop(std::string name, std::shared_ptr<Expr> start, std::shared_ptr<Expr> limit, std::shared_ptr<Expr> step, std::shared_ptr<Statement> block) 
+	ForLoop(std::string name, std::shared_ptr<Expr> start, std::shared_ptr<Expr> limit, std::shared_ptr<Expr> step, std::shared_ptr<Statement> block)
 		: m_name  { name }
 		, m_start { start }
 		, m_limit { limit }
@@ -27,8 +27,9 @@ public:
 		double index = m_start->evaluate(environment)->getNumber();
 		double step = m_step->evaluate(environment)->getNumber();
 		double limit = m_limit->evaluate(environment)->getNumber();
-		auto env = std::make_shared<Value>(environment);
-		std::shared_ptr<Value> var = env->castTable()->create(m_name,std::make_shared<Value>());
+		auto env = std::make_shared<Value>();
+		auto _env = reinterpret_cast<Table*>(env.get())->Create(environment);
+		std::shared_ptr<Value> var = _env->create(m_name,std::make_shared<Value>());
 		while (step > 0 && index <= limit || step <= 0 && index >= limit)
 		{
 			var->assignNumber(index);
@@ -39,6 +40,7 @@ public:
 			}
 			index += step;
 		}
+		return nullptr;
 	}
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
@@ -46,6 +48,7 @@ public:
 		children.push_back(std::static_pointer_cast<Node>(m_start));
 		children.push_back(std::static_pointer_cast<Node>(m_limit));
 		children.push_back(std::static_pointer_cast<Node>(m_step));
+		children.push_back(std::static_pointer_cast<Node>(m_block));
 		return children;
 	}
 
@@ -53,4 +56,3 @@ public:
 		return "ForLoop(Statement) Name:" + m_name;
 	}
 };
-

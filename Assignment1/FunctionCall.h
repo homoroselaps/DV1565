@@ -40,15 +40,15 @@ public:
 			context = std::make_shared<Value>();
 		} else {
 			context = base;
-			func = base->castTable()->get(m_special)->castFunction();
+			func = base->castTable()->get(std::make_shared<Value>(m_special))->castFunction();
 		}
-		
+
 		if (!func)
 			throw std::runtime_error("cant call " + base->getString());
 
 		auto arg = m_args->evaluate(environment);
 		std::vector<std::shared_ptr<Value>> arguments;
-		if (arg->castMultiValue()) {
+		if (arg->getType() == ValueType::MULTI) {
 			arguments = arg->castMultiValue()->getValues();
 		}
 		else {

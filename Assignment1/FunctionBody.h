@@ -23,18 +23,17 @@ public:
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) {
 		auto paraNames = m_paraList->getStrings();
 		auto block = m_block;
-		
-		//Create local environment
-		auto env = std::make_shared<Value>();
-		auto _env = reinterpret_cast<Table*>(env.get())->Create(environment);
-		
+		auto env_copy = environment;
+
 		//Define Function Wrapper
-		Func f = [paraNames, block, env](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
-			auto _env = env->castTable();
+		Func f = [paraNames, block, env_copy](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
+			//Create local environment
+			auto env = std::make_shared<Value>();
+			auto _env = reinterpret_cast<Table*>(env.get())->Create(env_copy);
 			_env->create("self", context);
 			auto argItr = args.begin();
 			bool foundDDDot = false;
-			
+
 			//fill the parameters with the arguments
 			for (auto paraItr = paraNames.begin(); paraItr != paraNames.end(); paraItr++) {
 				if (*paraItr == "...") {
@@ -54,7 +53,7 @@ public:
 				auto _mv = reinterpret_cast<MultiValue*>(mv.get())->Create(values);
 				_env->create("...", mv);
 			}
-			
+
 			ExecControl control = ExecControl::NONE;
 			auto result = block->execute(env, control);
 			if (control == ExecControl::RETURN)
@@ -74,6 +73,7 @@ public:
 
 		auto fun = std::make_shared<Value>();
 		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(paraCount, f);
+		std::cout << "Function created: " + fun->to_string() << std::endl;
 		return fun;
 	}
 
@@ -86,4 +86,3 @@ public:
 		return "FunctionBody(Expression)";
 	}
 };
-

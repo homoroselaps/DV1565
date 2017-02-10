@@ -1,8 +1,5 @@
 #pragma once
 #include "Expr.h"
-#include "BoolValue.h"
-#include "NumValue.h"
-#include "StringValue.h"
 #include "Node.hpp"
 
 enum BoolComparatorType {
@@ -43,27 +40,29 @@ public:
 			bool leftresult = leftValue->getBool();
 			bool rightresult = rightValue->getBool();
 			result = compare(leftresult, rightresult);
-			return std::make_shared<BoolValue>(result);
+			return std::make_shared<Value>(result);
 		}
 		case ValueType::NUMBER: {
 			double leftresult = leftValue->getNumber();
 			double rightresult = rightValue->getNumber();
 			result = compare(leftresult, rightresult);
-			return std::make_shared<BoolValue>(result);
+			return std::make_shared<Value>(result);
 		}
 		case ValueType::STRING: {
 			std::string leftresult = leftValue->getString();
 			std::string rightresult = rightValue->getString();
 			result = compare(leftresult, rightresult);
-			return std::make_shared<BoolValue>(result);
+			return std::make_shared<Value>(result);
 		}
 		case ValueType::FUNCTION:
 		case ValueType::TABLE: {
 			result = compare(leftValue, rightValue);
-			return std::make_shared<BoolValue>(result);
+			return std::make_shared<Value>(result);
 		}
 		case ValueType::NIL:
 			return std::make_shared<BoolValue>(rightValue->getType() == ValueType::NIL);
+		case MULTI:
+			throw std::runtime_error("Cant compare MultiValue");
 		}
 	}
 
@@ -156,6 +155,6 @@ public:
 		return children;
 	}
 	virtual std::string to_string() override {
-		return "Comparator(Statement) Type: " + (int)m_type;
+		return "Comparator(Statement) Type: " + std::to_string(m_type);
 	}
 };

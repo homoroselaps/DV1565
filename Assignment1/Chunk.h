@@ -1,6 +1,7 @@
 #pragma once
 #include "Statement.h"
 #include "ReturnStat.h"
+#include "Table.h"
 #include <memory>
 #include <vector>
 class Chunk : public Statement
@@ -23,8 +24,7 @@ public:
 
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		auto env = std::make_shared<Value>();
-		Table* table = reinterpret_cast<Table*>(env.get());
-		table->Create(environment);
+		auto _env = reinterpret_cast<Table*>(env.get())->Create(environment);
 		for (auto stat : m_stats) {
 			auto result = stat->execute(env, control);
 			if (control) {

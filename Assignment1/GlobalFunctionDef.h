@@ -28,10 +28,10 @@ public:
 
 		std::shared_ptr<Value> var = globalEnv;
 		std::string funcName;
-		
-		if (m_nameList->getStrings().size())
+
+		if (!m_nameList->getStrings().size())
 			throw std::runtime_error("No Function Name specified");
-		
+
 		auto list = m_nameList->getStrings();
 		if (m_nameList->getSpecial() != "")
 			list.push_back(m_nameList->getSpecial());
@@ -43,12 +43,13 @@ public:
 			}
 			else {
 				//all others from previous var
-				var = var->castTable()->get(*name);
+				var = var->castTable()->get(std::make_shared<Value>(*name));
 			}
 		}
 
 		auto func = m_funcBody->evaluate(environment);
 		var->castTable()->create(funcName, func);
+		return nullptr;
 	}
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {

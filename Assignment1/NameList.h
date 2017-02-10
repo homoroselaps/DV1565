@@ -38,7 +38,8 @@ public:
 		for (auto str : m_strings) {
 			children.push_back(std::static_pointer_cast<Node>(std::make_shared<StringLiteral>(str)));
 		}
-		children.push_back(std::static_pointer_cast<Node>(std::make_shared<StringLiteral>(m_special)));
+		if (m_special != "")
+			children.push_back(std::static_pointer_cast<Node>(std::make_shared<StringLiteral>(m_special)));
 		return children;
 	}
 

@@ -20,8 +20,8 @@ public:
     for(int i=0; i<depth; ++i) {
       std::cout << "  ";
     }
-	auto children = getChildren();
-	std::cout << to_string() << std::endl;
+    std::cout << to_string() << std::endl;
+  	auto children = getChildren();
     for (auto child : children) {
       child->dump(depth+1);
     }

@@ -132,8 +132,8 @@ public:
 		{
 		case NIL:
 			return false;
-			return m_boolValue;
 		case BOOL:
+			return m_boolValue;
 		case NUMBER:
 		case STRING:
 		case FUNCTION:
@@ -178,28 +178,7 @@ public:
 		}
 	}
 
-	std::string to_string() {
-		switch (m_type)
-		{
-		case NIL:
-			return "nil";
-		case BOOL:
-			return std::to_string(m_boolValue);
-		case NUMBER:
-			return std::to_string(m_numValue);
-		case STRING:
-			return m_stringValue;
-		case FUNCTION:
-			return "Function{" + pointerToStr((void*)this) + "}";
-		case TABLE:
-			return "Table{" + pointerToStr((void*)this) + "}";
-		case MULTI: {
-
-			return "MultiValue{" + pointerToStr((void*)this) + "}";
-		}
-		}
-		return "Invalid Object";
-	}
+	std::string to_string();
 
 	void assign(std::shared_ptr<Value> right);
 

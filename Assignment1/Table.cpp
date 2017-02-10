@@ -60,11 +60,6 @@ std::shared_ptr<Value> Table::get(std::shared_ptr<Value> key) {
 	}
 }
 
-std::shared_ptr<Value> Table::get(std::string name)
-{
-	return m_table->m_stringMap[name];
-}
-
 std::shared_ptr<Value> Table::create(std::string name, std::shared_ptr<Value> value)
 {
 	if (name == "")

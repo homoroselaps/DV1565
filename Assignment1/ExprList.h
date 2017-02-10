@@ -25,9 +25,13 @@ public:
 		for (auto expr : m_exprs) {
 			values.push_back(expr->evaluate(environment));
 		}
-		auto result = std::make_shared<Value>();
-		reinterpret_cast<MultiValue*>(result.get())->Create(values);
-		return result;
+		if (values.size() == 1) {
+			return values.front();
+		} else {
+			auto result = std::make_shared<Value>();
+			reinterpret_cast<MultiValue*>(result.get())->Create(values);
+			return result;
+		}
 	};
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
@@ -43,4 +47,3 @@ public:
 	}
 
 };
-
