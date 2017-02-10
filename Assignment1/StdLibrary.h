@@ -31,6 +31,6 @@ public:
 	}
 
 	static void load(std::shared_ptr<Value> environment) {
-		environment->castTable()->set(std::make_shared<StringValue>("print"), print());
+		environment->castTable()->set("print", print());
 	}
 };

@@ -18,7 +18,7 @@ public:
 	std::shared_ptr<Value> get(std::string name);
 	std::shared_ptr<Value> create(std::string name, std::shared_ptr<Value> value);
 	std::shared_ptr<Value> getParentScope();
-	
 
-	std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Value> value);
+
+	std::shared_ptr<Value> set(std::shared_ptr<Value> key, std::shared_ptr<Value> value);
 };

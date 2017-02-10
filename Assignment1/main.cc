@@ -1,6 +1,6 @@
 #include <iostream>
 #include "binary.tab.h"
-#include "Library.h"
+#include "StdLibrary.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
 	root->dump();
 
 	auto env = std::make_shared<Table>();
-	Library::load(env);
+	StdLibrary::load(env);
 	ExecControl control = ExecControl::NONE;
 	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
 	chunk->execute(env, control);

@@ -5,6 +5,7 @@
 #include <functional>
 #include <cassert>
 #include <vector>
+#include <sstream>
 
 
 class Table;
@@ -78,12 +79,18 @@ protected:
 
 	//Function member
 	std::shared_ptr<FunctionData> m_function;
-	
+
 	//Table member
 	std::shared_ptr<TableData> m_table;
 
 	Value(ValueType type) {
 		m_type = type;
+	}
+
+	std::string pointerToStr(const void * address) {
+		std::stringstream ss;
+		ss << address;
+		return ss.str();
 	}
 
 public:
@@ -183,11 +190,13 @@ public:
 		case STRING:
 			return m_stringValue;
 		case FUNCTION:
-			return "Function{" + std::to_string((int)this) + "}";
+			return "Function{" + pointerToStr((void*)this) + "}";
 		case TABLE:
-			return "Table{" + std::to_string((int)this) + "}";
-		case MULTI:
-			return "MultiValue{" + std::to_string((int)this) + "}";
+			return "Table{" + pointerToStr((void*)this) + "}";
+		case MULTI: {
+
+			return "MultiValue{" + pointerToStr((void*)this) + "}";
+		}
 		}
 		return "Invalid Object";
 	}
