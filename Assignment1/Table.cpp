@@ -65,17 +65,17 @@ std::shared_ptr<Value> Table::get(std::string name)
 	return m_table->m_stringMap[name];
 }
 
-std::shared_ptr<Value> Table::create(std::string name)
+std::shared_ptr<Value> Table::create(std::string name, std::shared_ptr<Value> value)
 {
-	m_table->m_stringMap[name] = std::make_shared<Value>();
+	if (name == "")
+		throw std::runtime_error("Cant define Variable without name");
+	m_table->m_stringMap[name] = value;
 	return m_table->m_stringMap[name];
 }
 
-std::shared_ptr<Value> Table::createGlobal(std::string name)
+std::shared_ptr<Value> Table::getParentScope()
 {
-	if (m_table->m_parentScope)
-		return m_table->m_parentScope->castTable()->createGlobal(name);
-	return create(name);
+	return m_table->m_parentScope;
 }
 
 std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Value> value) {
@@ -96,5 +96,8 @@ std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Va
 	case ValueType::TABLE:
 		m_table->m_refMap[key] = value;
 		return value;
+	case ValueType::MULTI:
+		throw std::runtime_error("Cant insert MultiValue into Table");
 	}
+	return nullptr;
 }

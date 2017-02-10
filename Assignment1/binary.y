@@ -334,7 +334,7 @@ functioncall			: prefixexp args {
 										$$ = spc<Node>(node);
 									}
 									| prefixexp ':' NAME args {
-										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1), dpc<Expr>(std::make_shared<VarName>($3)), dpc<Expr>($4));
+										auto node = std::make_shared<FunctionCall>(dpc<Expr>($1), $3, dpc<Expr>($4));
 										$$ = spc<Node>(node);
 									}
 									;

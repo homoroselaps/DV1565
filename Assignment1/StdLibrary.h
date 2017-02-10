@@ -26,7 +26,7 @@ public:
 			return std::make_shared<Value>();
 		};
 		auto fun = std::make_shared<Value>();
-		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(std::make_shared<Value>(), -1, f);
+		auto _fun = reinterpret_cast<Function*>(fun.get())->Create(-1, f);
 		return fun;
 	}
 

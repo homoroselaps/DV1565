@@ -17,7 +17,13 @@ void MultiValue::assignMultiValue(std::shared_ptr<Value> other) {
 	auto _other = other->castMultiValue();
 	auto otherChild = _other->m_values.begin();
 	for (auto child = m_values.begin(); child != m_values.end(); child++) {
-		(*child)->assign(*otherChild);
+		if (otherChild != _other->m_values.end()) {
+			(*child)->assign(*otherChild);
+			otherChild++;
+		}
+		else {
+			(*child)->assignNil();
+		}
 	}
 }
 

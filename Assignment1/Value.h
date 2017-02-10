@@ -19,12 +19,10 @@ public:
 	//Function member
 	int m_paraCount;
 	Func m_func;
-	std::shared_ptr<Value> m_context = nullptr;
 
-	FunctionData(std::shared_ptr<Value> context, int paraCount, Func func)
+	FunctionData(int paraCount, Func func)
 		: m_paraCount{ paraCount }
-		, m_func{ func }
-		, m_context{ context } {}
+		, m_func{ func } {}
 };
 
 class TableData {
@@ -134,6 +132,7 @@ public:
 		case FUNCTION:
 		case TABLE:
 		case MULTI:
+		default:
 			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Bool");
 		}
 	}
@@ -150,6 +149,7 @@ public:
 		case FUNCTION:
 		case TABLE:
 		case MULTI:
+		default:
 			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Number");
 		}
 	}
@@ -166,6 +166,7 @@ public:
 		case FUNCTION:
 		case TABLE:
 		case MULTI:
+		default:
 			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Number");
 		}
 	}
@@ -173,14 +174,14 @@ public:
 	std::string to_string() {
 		switch (m_type)
 		{
+		case NIL:
+			return "nil";
+		case BOOL:
+			return std::to_string(m_boolValue);
 		case NUMBER:
 			return std::to_string(m_numValue);
 		case STRING:
 			return m_stringValue;
-		case BOOL:
-			return std::to_string(m_boolValue);
-		case NIL:
-			return "nil";
 		case FUNCTION:
 			return "Function{" + std::to_string((int)this) + "}";
 		case TABLE:
@@ -188,6 +189,7 @@ public:
 		case MULTI:
 			return "MultiValue{" + std::to_string((int)this) + "}";
 		}
+		return "Invalid Object";
 	}
 
 	void assign(std::shared_ptr<Value> right);
