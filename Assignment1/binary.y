@@ -4,6 +4,7 @@
 %define api.token.constructor
 %code requires {
 	#define YYDEBUG 1
+	#include "Assignment.h"
 	#include "BoolLiteral.h"
 	#include "BreakStat.h"
 	#include "Chunk.h"
@@ -12,6 +13,7 @@
 	#include "ExprList.h"
 	#include "ExprStatement.h"
 	#include "FunctionCall.h"
+	#include "FunctionBody.h"
 	#include "NilLiteral.h"
 	#include "Node.hpp"
 	#include "NodeList.h"
@@ -22,6 +24,7 @@
 	#include "Statement.h"
 	#include "StringLiteral.h"
 	#include "VarName.h"
+	#include "VarIndex.h"
 
 	#include <string>
 	#include <memory>
@@ -115,18 +118,15 @@ block			: chunk { $$ = $1; }
 					;
 
 stat			: varlist '=' explist {
-						$$ = std::make_shared<Node>("assign", "");
-						$$->add($1);
-						$$->add($3);
+						auto node = std::make_shared<Assignment>(dpc<Expr>($1), dpc<Expr>($3));
+						$$ = spc<Node>(node);
 					}
 					| DO block END {
-						$$ = std::make_shared<Node>("DoEnd","");
-						$$->add($2);
+						$$ = $2;
 					}
 					| WHILE exp DO block END {
-						$$ = std::make_shared<Node>("While","");
-						$$->add($2);
-						$$->add($4);
+						/*auto node = std::make_shared<WhileLoop>(dpc<Expr>($1), dpc<Expr>($3));
+						$$ = spc<Node>(node);*/
 					}
 					| REPEAT block UNTIL exp {
 						$$ = std::make_shared<Node>("Repeat", "");
@@ -212,28 +212,33 @@ __elseif	: /* */ { $$ = std::make_shared<Node>(); }
 					;
 
 varlist		: var {
-						$$ = std::make_shared<Node>("varlist", "");
-						$$->add($1);
+						auto node = std::make_shared<ExprList>();
+						node->addExpression(dpc<Expr>($1));
+						$$ = spc<Node>(node);
 					}
 					| varlist ',' var {
-						$$->add($3);
+						auto node = dpc<ExprList>($1);
+						node->addExpression(dpc<Expr>($3));
+						$$ = spc<Node>(node);
 					}
 					;
 
 funcname	: NAME __dotname {
-						$$ = std::make_shared<Node>("funcname", "");
-						//$$->add($1);
-						for (auto child : $2->getChildren()) {
-								$$->add(child);
-						}
+							auto node = std::make_shared<NameList>();
+							node->addString($1);
+							for (auto name : dpc<NameList>($2)->getStrings()) {
+								node->addString(name);
+							}
+							$$ = spc<Node>(node);
 					}
 					| NAME __dotname ':' NAME {
-						$$ = std::make_shared<Node>("funcnamethis", "");
-						//$$->add($1);
-						for (auto child : $2->getChildren()) {
-								$$->add(child);
+						auto node = std::make_shared<NameList>();
+						node->addString($1);
+						for (auto name : dpc<NameList>($2)->getStrings()) {
+							node->addString(name);
 						}
-						//$$->add($4);
+						node->setSpecial($4);
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -253,18 +258,12 @@ var 			: NAME {
 						$$ = spc<Node>(node);
 					}
 					| prefixexp '[' exp ']' {
-						$$ = std::make_shared<Node>("var","");
-						auto accessor = std::make_shared<Node>("accindex", "");
-						accessor->add($1);
-						accessor->add($3);
-						$$->add(accessor);
+						auto node = std::make_shared<VarIndex>(spc<Expr>($1),spc<Expr>($3));
+						$$ = spc<Node>(node);
 					}
 					| prefixexp '.' NAME {
-						$$ = std::make_shared<Node>("var","");
-						auto accessor = std::make_shared<Node>("accmember", "");
-						accessor->add($1);
-						//accessor->add($3);
-						$$->add(accessor);
+						auto node = std::make_shared<VarIndex>(spc<Expr>($1),spc<Expr>(std::make_shared<StringLiteral>($3)));
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -297,7 +296,7 @@ exp				: NIL { $$ = std::make_shared<NilLiteral>(); }
 					| TRUE { $$ = std::make_shared<BoolLiteral>(true); }
 					| NUMBER { $$ = std::make_shared<NumLiteral>($1); }
 					| STRING { $$ = std::make_shared<StringLiteral>($1); }
-					| DDDOT { $$ = std::make_shared<Node>("DDDOT", ""); }
+					| DDDOT { }
 					| function { $$ = $1; }
 					| prefixexp { $$ = $1; }
 					| tableconstructor { $$ = $1; }
@@ -311,8 +310,6 @@ exp				: NIL { $$ = std::make_shared<NilLiteral>(); }
 					;
 
 prefixexp	: var {
-						$$ = std::make_shared<Node>("prefixexp","");
-						$$->add($1);
 						$$ = $1;
 					}
 					| functioncall {
@@ -344,7 +341,7 @@ args		: '(' ')' {
 					$$ = spc<Node>(node);
 				}
 				| '(' explist ')' {
-					$$ = spc<Node>($2);
+					$$ = $2;
 				}
 				| tableconstructor {
 					auto node = std::make_shared<Node>();
@@ -362,33 +359,27 @@ function: FUNCTION funcbody {
 				;
 
 funcbody: '(' ')' block END {
-					$$ = std::make_shared<Node>("function", "");
-					$$->add(std::make_shared<Node>("parlist",""));
-					$$->add($3);
+					auto node = std::make_shared<FunctionBody>(std::make_shared<NameList>(),dpc<Chunk>($3));
+					$$ = spc<Node>(node);
 				}
 				| '(' parlist ')' block END {
-					$$ = std::make_shared<Node>("function", "");
-					$$->add($2);
-					$$->add($4);
+					auto node = std::make_shared<FunctionBody>(dpc<NameList>($2),dpc<Chunk>($4));
+					$$ = spc<Node>(node);
 				}
 				;
 
 parlist	: namelist {
-					$$ = std::make_shared<Node>("parlist", "");
-					for (auto child : $1->getChildren()) {
-						$$->add(child);
-					}
+					$$ = $1;
 				}
 				| namelist ',' DDDOT {
-					$$ = std::make_shared<Node>("parlist", "");
-					for (auto child : $1->getChildren()) {
-						$$->add(child);
-					}
-					//$$->add($3);
+					auto node = dpc<NameList>($1);
+					node->addString("...");
+					$$ = spc<Node>(node);
 				}
 				| DDDOT {
-					$$ = std::make_shared<Node>("namelist", "");
-					//$$->add($1);
+					auto node = std::make_shared<NameList>();
+					node->addString("...");
+					$$ = spc<Node>(node);
 				}
 				;
 

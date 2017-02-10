@@ -1,6 +1,7 @@
 #include <iostream>
 #include "binary.tab.h"
 #include "StdLibrary.h"
+#include "IoLibrary.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 
@@ -25,8 +26,10 @@ int main(int argc, char **argv)
 		std::cout << "It's a bingo! " <<std::endl;
 	root->dump();
 
-	auto env = std::make_shared<Table>();
+	auto env = std::make_shared<Value>();
+	reinterpret_cast<Table*>(env.get())->Create();
 	StdLibrary::load(env);
+	IoLibrary::load(env);
 	ExecControl control = ExecControl::NONE;
 	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
 	chunk->execute(env, control);
