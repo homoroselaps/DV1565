@@ -21,19 +21,17 @@ public:
 		, m_block { block }
 	{ }
 
-	virtual ~ForLoop()
-	{
-	}
+	virtual ~ForLoop() { }
 
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		double index = m_start->evaluate(environment)->getNumber();
 		double step = m_step->evaluate(environment)->getNumber();
 		double limit = m_limit->evaluate(environment)->getNumber();
 		auto env = std::make_shared<Value>(environment);
-		std::shared_ptr<Value> var = env->create(m_name);
+		std::shared_ptr<Value> var = env->castTable()->create(m_name,std::make_shared<Value>());
 		while (step > 0 && index <= limit || step <= 0 && index >= limit)
 		{
-			var = std::make_shared<NumValue>(index);
+			var->assignNumber(index);
 			auto result = m_block->execute(env, control);
 			if (control) {
 				if (control == ExecControl::BREAK) control = ExecControl::NONE;
@@ -50,6 +48,7 @@ public:
 		children.push_back(std::static_pointer_cast<Node>(m_step));
 		return children;
 	}
+
 	virtual std::string to_string() override {
 		return "ForLoop(Statement) Name:" + m_name;
 	}
