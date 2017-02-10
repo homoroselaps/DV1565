@@ -14,6 +14,7 @@
 	#include "ExprStatement.h"
 	#include "FunctionCall.h"
 	#include "FunctionBody.h"
+	#include "IfStatement.h"
 	#include "NilLiteral.h"
 	#include "Node.hpp"
 	#include "NodeList.h"
@@ -21,10 +22,13 @@
 	#include "NumLiteral.h"
 	#include "NumOperator.h"
 	#include "ReturnStat.h"
+	#include "RepeatLoop.h"
+	#include "Selection.h"
 	#include "Statement.h"
 	#include "StringLiteral.h"
 	#include "VarName.h"
 	#include "VarIndex.h"
+	#include "WhileLoop.h"
 
 	#include <string>
 	#include <memory>
@@ -125,15 +129,23 @@ stat			: varlist '=' explist {
 						$$ = $2;
 					}
 					| WHILE exp DO block END {
-						/*auto node = std::make_shared<WhileLoop>(dpc<Expr>($1), dpc<Expr>($3));
-						$$ = spc<Node>(node);*/
+						auto node = std::make_shared<WhileLoop>(dpc<Expr>($2), dpc<Statement>($4));
+						$$ = spc<Node>(node);
 					}
 					| REPEAT block UNTIL exp {
-						$$ = std::make_shared<Node>("Repeat", "");
-						$$->add($2);
-						$$->add($4);
+						auto node = std::make_shared<RepeatLoop>(dpc<Expr>($4), dpc<Statement>($2));
+						$$ = spc<Node>(node);
 					}
 					| IF exp THEN block __elseif END {
+						auto node = std::make_shared<Selection>();
+						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>($2),dpc<Statement>($4));
+						node->addElseIfStat(ifStat);
+
+
+
+
+						$$ = spc<Node>(node);
+
 						$$ = std::make_shared<Node>("selection", "");
 						auto first = std::make_shared<Node>("if", "");
 						first->add($2);
