@@ -96,3 +96,13 @@ std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Va
 	}
 	return nullptr;
 }
+
+int Table::getLength()
+{
+	double maxIndex = 0;
+	for (auto it = m_table->m_numMap.begin(); it != m_table->m_numMap.end(); ++it) {
+		if (m_table->m_numMap[it->first]->getType() != ValueType::NIL)
+			maxIndex = std::fmax(maxIndex, it->first);
+	}
+	return maxIndex + 1;
+}

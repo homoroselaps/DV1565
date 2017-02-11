@@ -183,9 +183,6 @@ stat			: varlist '=' explist {
 					}
 					| FOR namelist IN explist DO block END {
 						$$ = std::make_shared<Node>("forlist", "");
-						$$->add($2);
-						$$->add($4);
-						$$->add($6);
 					}
 					| FUNCTION funcname funcbody {
 						auto node = std::make_shared<GlobalFunctionDef>(
@@ -240,7 +237,6 @@ funcname	: NAME __dotname {
 							node->addString($1);
 							for (auto name : dpc<NameList>($2)->getStrings()) {
 								node->addString(name);
-								std::cout << "#####" << name << "#####" << std::endl;
 							}
 							$$ = spc<Node>(node);
 					}
@@ -309,14 +305,21 @@ exp				: NIL { $$ = std::make_shared<NilLiteral>(); }
 					| TRUE { $$ = std::make_shared<BoolLiteral>(true); }
 					| NUMBER { $$ = std::make_shared<NumLiteral>($1); }
 					| STRING { $$ = std::make_shared<StringLiteral>($1); }
-					| DDDOT { }
+					| DDDOT { $$ = std::make_shared<StringLiteral>("..."); }
 					| function { $$ = $1; }
 					| prefixexp { $$ = $1; }
 					| tableconstructor { $$ = $1; }
 					| binopexp {
 						$$ = $1;
 					}
-					| unop exp {
+					| '-' exp {
+						$$ = std::make_shared<NumOperator>(NumOperatorType::MINUS,spc<Expr>(std::make_shared<NumLiteral>(0)),dpc<Expr>($2));
+					}
+					| NOT exp {
+						$$ = $1;
+						$$->add($2);
+					}
+					| LENGTH exp {
 						$$ = $1;
 						$$->add($2);
 					}
@@ -479,10 +482,4 @@ binopexp: exp '+' exp {
 					 $$ = std::make_shared<BoolComparator>($2,dpc<Expr>($1),dpc<Expr>($3));
 				 }
 				;
-
-unop		: '-' { $$ = std::make_shared<Node>("unop", "-"); }
-				| NOT	{ $$ = std::make_shared<Node>("NOT", ""); }
-				| LENGTH { $$ = std::make_shared<Node>("LENGTH", "("); }
-				;
-
 %%

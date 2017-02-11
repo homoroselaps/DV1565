@@ -19,4 +19,5 @@ public:
 	std::shared_ptr<Value> getParentScope();
 
 	std::shared_ptr<Value> set(std::shared_ptr<Value> key, std::shared_ptr<Value> value);
+	int getLength();
 };

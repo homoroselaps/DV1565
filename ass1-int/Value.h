@@ -138,6 +138,7 @@ public:
 		case STRING:
 		case FUNCTION:
 		case TABLE:
+			return true;
 		case MULTI:
 		default:
 			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Bool");
