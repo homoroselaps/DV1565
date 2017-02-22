@@ -12,3 +12,11 @@ std::shared_ptr<Value> Function::invoke(std::shared_ptr<Value> context, std::vec
 		throw std::runtime_error("Parameters do not match:" + std::to_string(m_function->m_paraCount) + " != " + std::to_string(args.size()));
 	return m_function->m_func(context, args);
 }
+
+std::shared_ptr<Value> Function::copy() {
+	auto fun = std::make_shared<Value>();
+	auto _fun = reinterpret_cast<Function*>(fun.get());
+	_fun->m_function = m_function;
+	_fun->m_type = m_type;
+	return fun;
+}

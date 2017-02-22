@@ -3,6 +3,8 @@
 #include "NumValue.h"
 #include "StringValue.h"
 #include "MultiValue.h"
+#include "Function.h"
+#include "Table.h"
 
 void Value::assignMultiValue(std::shared_ptr<Value> other)
 {
@@ -129,11 +131,9 @@ std::shared_ptr<Value> Value::copy() {
 		val->assignString(m_stringValue);
 		break;
 	case FUNCTION:
-		val->assignFunction(std::make_shared<Value>(this));
-		break;
+		return castFunction()->copy();
 	case TABLE:
-		val->assignTable(std::make_shared<Value>(this));
-		break;
+		return castTable()->copy();
 	case MULTI:
 		return castMultiValue()->copy();
 	}

@@ -106,3 +106,11 @@ int Table::getLength()
 	}
 	return maxIndex-1;
 }
+
+std::shared_ptr<Value> Table::copy() {
+	auto table = std::make_shared<Value>();
+	auto _table = reinterpret_cast<Table*>(table.get());
+	_table->m_table = m_table;
+	_table->m_type = m_type;
+	return table;
+}

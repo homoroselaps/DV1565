@@ -8,4 +8,5 @@ public:
 	Function * Create(int paraCount, Func func);
 
 	std::shared_ptr<Value> invoke(std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> & args);
+	std::shared_ptr<Value> copy();
 };
