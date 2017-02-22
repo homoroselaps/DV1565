@@ -18,6 +18,7 @@ public:
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) {
 		auto base = m_base->evaluate(environment)->castTable();
 		auto index = m_index->evaluate(environment);
+		std::cout << to_string() << index->to_string() << " " << base->get(index)->to_string() << std::endl;
 		return base->get(index);
 	}
 
@@ -31,4 +32,3 @@ public:
 		return "VarIndex(Expression)";
 	}
 };
-

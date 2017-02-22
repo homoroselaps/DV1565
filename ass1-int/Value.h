@@ -103,6 +103,9 @@ public:
 		assignString(value);
 	}
 
+	Value(int value) : Value((double)value) {}
+	Value(unsigned int value) : Value((double)value) {}
+	Value(long unsigned int value) : Value((double)value) {}
 	Value(double value) : Value(ValueType::NUMBER) {
 		assignNumber(value);
 	}

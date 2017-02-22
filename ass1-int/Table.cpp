@@ -99,10 +99,10 @@ std::shared_ptr<Value> Table::set(std::shared_ptr<Value> key, std::shared_ptr<Va
 
 int Table::getLength()
 {
-	double maxIndex = 0;
-	for (auto it = m_table->m_numMap.begin(); it != m_table->m_numMap.end(); ++it) {
-		if (m_table->m_numMap[it->first]->getType() != ValueType::NIL)
-			maxIndex = std::fmax(maxIndex, it->first);
+	int maxIndex = 1;
+	while(m_table->m_numMap.count((double)maxIndex)
+				&& m_table->m_numMap[(double)maxIndex]->getType() != ValueType::NIL) {
+		maxIndex++;
 	}
-	return maxIndex + 1;
+	return maxIndex-1;
 }

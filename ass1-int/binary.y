@@ -12,6 +12,9 @@
 	#include "Expr.h"
 	#include "ExprList.h"
 	#include "ExprStatement.h"
+	#include "FieldCount.h"
+	#include "FieldIndex.h"
+	#include "FieldList.h"
 	#include "FunctionCall.h"
 	#include "FunctionBody.h"
 	#include "ForLoop.h"
@@ -23,6 +26,8 @@
 	#include "NameList.h"
 	#include "NumLiteral.h"
 	#include "NumOperator.h"
+	#include "NotOperator.h"
+	#include "LengthOperator.h"
 	#include "LocalAssignment.h"
 	#include "LocalDef.h"
 	#include "LocalFunctionDef.h"
@@ -31,6 +36,7 @@
 	#include "Selection.h"
 	#include "Statement.h"
 	#include "StringLiteral.h"
+	#include "TableConstructor.h"
 	#include "VarName.h"
 	#include "VarIndex.h"
 	#include "WhileLoop.h"
@@ -309,19 +315,17 @@ exp				: NIL { $$ = std::make_shared<NilLiteral>(); }
 					| function { $$ = $1; }
 					| prefixexp { $$ = $1; }
 					| tableconstructor { $$ = $1; }
-					| binopexp {
-						$$ = $1;
-					}
+					| binopexp { $$ = $1; }
 					| '-' exp {
 						$$ = std::make_shared<NumOperator>(NumOperatorType::MINUS,spc<Expr>(std::make_shared<NumLiteral>(0)),dpc<Expr>($2));
 					}
 					| NOT exp {
-						$$ = $1;
-						$$->add($2);
+						auto node = std::make_shared<NotOperator>(dpc<Expr>($2));
+						$$ = spc<Node>(node);
 					}
 					| LENGTH exp {
-						$$ = $1;
-						$$->add($2);
+						auto node = std::make_shared<LengthOperator>(dpc<Expr>($2));
+						$$ = spc<Node>(node);
 					}
 					;
 
@@ -399,50 +403,48 @@ parlist	: namelist {
 				}
 				;
 
-tableconstructor	: '{' '}' { $$ = std::make_shared<Node>("tableconstructor", ""); }
+tableconstructor	: '{' '}' {
+										auto node = std::make_shared<TableConstructor>();
+										$$ = spc<Node>(node);
+									}
 									| '{' fieldlist '}' {
-										$$ = std::make_shared<Node>("tableconstructor", "");
-										$$->add($2);
+										auto node = std::make_shared<TableConstructor>(dpc<FieldList>($2));
+										$$ = spc<Node>(node);
 									}
 									;
 
-fieldlist					: field __fieldsepfield {
-										$$ = std::make_shared<Node>("fieldlist", "");
-										$$->add($1);
-										for (auto child : $2->getChildren()) {
-												$$->add(child);
-										}
-									}
-									| field __fieldsepfield fieldsep {
-										$$ = std::make_shared<Node>("fieldlist", "");
-										$$->add($1);
-										for (auto child : $2->getChildren()) {
-												$$->add(child);
-										}
-									}
-									;
-
-__fieldsepfield		: /* */ { $$ = std::make_shared<Node>(); }
-									| __fieldsepfield fieldsep field {
+fieldlist					: __fieldsepfield {
 										$$ = $1;
-										if ($$->m_tag != "fieldlist") {
-											$$ = std::make_shared<Node>("fieldlist", "");
-										}
-										$$->add($3);
+									}
+									| __fieldsepfield fieldsep {
+										$$ = $1;
+									}
+									;
+
+__fieldsepfield		: field {
+										auto node = std::make_shared<FieldList>();
+										node->addField(dpc<Field>($1));
+										$$ = spc<Node>(node);
+ 									}
+									| __fieldsepfield fieldsep field {
+										auto node = dpc<FieldList>($1);
+										node->addField(dpc<Field>($3));
+										$$ = spc<Node>(node);
 									}
 									;
 
 field		: '[' exp ']' '=' exp {
-					$$ = std::make_shared<Node>("IndexValue", "");
-					$$->add($2);
-					$$->add($5);
+					auto node = std::make_shared<FieldIndex>(dpc<Expr>($2),dpc<Expr>($5));
+					$$ = spc<Node>(node);
 				}
 				| NAME '=' exp {
-					$$ = std::make_shared<Node>("KeyValue", "");
-					//$$->add($1);
-					$$->add($3);
+					auto node = std::make_shared<FieldIndex>(std::make_shared<StringLiteral>($1),dpc<Expr>($3));
+					$$ = spc<Node>(node);
 				}
-				| exp { $$ = $1; }
+				| exp {
+					auto node = std::make_shared<FieldCount>(dpc<Expr>($1));
+					$$ = spc<Node>(node);
+				}
 				;
 
 fieldsep: ',' { }

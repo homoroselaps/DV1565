@@ -8,19 +8,21 @@ class TableConstructor :
 public:
 
 	TableConstructor() {};
-	TableConstructor(std::vector<std::shared_ptr<FieldList>> fieldList) : m_fieldList{fieldList}
+	TableConstructor(std::shared_ptr<FieldList> fieldList) : m_fieldList{fieldList}
 	{
 	}
 
 	virtual ~TableConstructor()
 	{
 	}
-	
+
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override {
 		auto table = std::make_shared<Value>();
 		reinterpret_cast<Table*>(table.get())->Create();
-		if (m_fieldList)
-			m_fieldList->execute(environment, table, 0);
+		if (m_fieldList) {
+			m_fieldList->execute(environment, table, 1);
+		}
+		std::cout << to_string() << environment->castTable()->get(std::make_shared<Value>((double)2))->to_string() << std::endl;
 		return table;
 	}
 
@@ -31,7 +33,6 @@ public:
 		return children;
 	}
 	virtual std::string to_string() override {
-		return "(Expression)";
+		return "TableConstructor(Expression)";
 	}
 };
-
