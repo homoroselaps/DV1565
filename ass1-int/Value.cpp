@@ -75,9 +75,9 @@ std::string Value::to_string() {
 		case STRING:
 			return m_stringValue;
 		case FUNCTION:
-			return "Function{" + pointerToStr((void*)this) + "}";
+			return "Function{" + pointerToStr((void*)m_function.get()) + "}";
 		case TABLE:
-			return "Table{" + pointerToStr((void*)this) + "}";
+			return "Table{" + pointerToStr((void*)m_table.get()) + "}";
 		case MULTI: {
 			auto output = "MultiValue{" + pointerToStr((void*)this) + ": ";
 			for (auto value : castMultiValue()->getValues()) output += value->to_string() + ", ";

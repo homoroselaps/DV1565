@@ -5,15 +5,7 @@
 #include "StringValue.h"
 #include "Node.hpp"
 #include <cmath>
-
-enum NumOperatorType {
-	PLUS,
-	MINUS,
-	MUL,
-	DIV,
-	POW,
-	MOD,
-};
+#include "Utils.h"
 
 class NumOperator : public Expr
 {
@@ -71,6 +63,6 @@ public:
 		return children;
 	}
 	virtual std::string to_string() override {
-		return "NumOperator(Expression) Type: " + std::to_string(m_type);
+		return "NumOperator(Expression) Type: " + Utils::to_string(m_type);
 	}
 };

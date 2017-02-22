@@ -1,17 +1,7 @@
 #pragma once
 #include "Expr.h"
 #include "Node.hpp"
-
-enum BoolComparatorType {
-	EQUAL,
-	NEQUAL,
-	LESS,
-	LEQUAL,
-	GREATER,
-	GEQUAL,
-	AND,
-	OR,
-};
+#include "Utils.h"
 
 class BoolComparator: public Expr
 {
@@ -155,6 +145,6 @@ public:
 		return children;
 	}
 	virtual std::string to_string() override {
-		return "Comparator(Statement) Type: " + std::to_string(m_type);
+		return "Comparator(Statement) Type: " + Utils::to_string(m_type);
 	}
 };

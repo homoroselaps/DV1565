@@ -49,7 +49,7 @@
 
 #line 51 "binary.tab.c" // lalr1.cc:412
 // Unqualified %code blocks.
-#line 48 "binary.y" // lalr1.cc:413
+#line 49 "binary.y" // lalr1.cc:413
 
 	#define YY_DECL yy::parser::symbol_type yylex()
 	YY_DECL;
@@ -208,7 +208,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.move< int > (that.value);
+        value.move< double > (that.value);
         break;
 
       case 52: // chunk
@@ -268,7 +268,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.copy< int > (that.value);
+        value.copy< double > (that.value);
         break;
 
       case 52: // chunk
@@ -536,7 +536,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        yylhs.value.build< int > ();
+        yylhs.value.build< double > ();
         break;
 
       case 52: // chunk
@@ -587,7 +587,7 @@ namespace yy {
           switch (yyn)
             {
   case 2:
-#line 94 "binary.y" // lalr1.cc:859
+#line 95 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 						root = yylhs.value.as< std::shared_ptr<Node> > ();
@@ -596,7 +596,7 @@ namespace yy {
     break;
 
   case 3:
-#line 98 "binary.y" // lalr1.cc:859
+#line 99 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<Chunk>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addStatement(dpc<Statement>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
@@ -607,7 +607,7 @@ namespace yy {
     break;
 
   case 4:
-#line 106 "binary.y" // lalr1.cc:859
+#line 107 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<Chunk>();
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -616,7 +616,7 @@ namespace yy {
     break;
 
   case 5:
-#line 110 "binary.y" // lalr1.cc:859
+#line 111 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<Chunk>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addStatement(dpc<Statement>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
@@ -626,19 +626,19 @@ namespace yy {
     break;
 
   case 6:
-#line 117 "binary.y" // lalr1.cc:859
+#line 118 "binary.y" // lalr1.cc:859
     { }
 #line 632 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 7:
-#line 118 "binary.y" // lalr1.cc:859
+#line 119 "binary.y" // lalr1.cc:859
     { }
 #line 638 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 8:
-#line 121 "binary.y" // lalr1.cc:859
+#line 122 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ReturnStat>(dpc<ExprList>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -647,7 +647,7 @@ namespace yy {
     break;
 
   case 9:
-#line 125 "binary.y" // lalr1.cc:859
+#line 126 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ReturnStat>();
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -656,7 +656,7 @@ namespace yy {
     break;
 
   case 10:
-#line 129 "binary.y" // lalr1.cc:859
+#line 130 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<BreakStat>();
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -665,13 +665,13 @@ namespace yy {
     break;
 
   case 11:
-#line 135 "binary.y" // lalr1.cc:859
+#line 136 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > (); }
 #line 671 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 12:
-#line 138 "binary.y" // lalr1.cc:859
+#line 139 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<Assignment>(dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()), dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -680,7 +680,7 @@ namespace yy {
     break;
 
   case 13:
-#line 142 "binary.y" // lalr1.cc:859
+#line 143 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = yystack_[1].value.as< std::shared_ptr<Node> > ();
 					}
@@ -688,7 +688,7 @@ namespace yy {
     break;
 
   case 14:
-#line 145 "binary.y" // lalr1.cc:859
+#line 146 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<WhileLoop>(dpc<Expr>(yystack_[3].value.as< std::shared_ptr<Node> > ()), dpc<Statement>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -697,7 +697,7 @@ namespace yy {
     break;
 
   case 15:
-#line 149 "binary.y" // lalr1.cc:859
+#line 150 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<RepeatLoop>(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()), dpc<Statement>(yystack_[2].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -706,7 +706,7 @@ namespace yy {
     break;
 
   case 16:
-#line 153 "binary.y" // lalr1.cc:859
+#line 154 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<Selection>();
 						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>(yystack_[4].value.as< std::shared_ptr<Node> > ()),dpc<Statement>(yystack_[2].value.as< std::shared_ptr<Node> > ()));
@@ -720,7 +720,7 @@ namespace yy {
     break;
 
   case 17:
-#line 162 "binary.y" // lalr1.cc:859
+#line 163 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<Selection>();
 						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>(yystack_[6].value.as< std::shared_ptr<Node> > ()),dpc<Statement>(yystack_[4].value.as< std::shared_ptr<Node> > ()));
@@ -735,7 +735,7 @@ namespace yy {
     break;
 
   case 18:
-#line 172 "binary.y" // lalr1.cc:859
+#line 173 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ForLoop>(yystack_[7].value.as< std::string > (),
 							dpc<Expr>(yystack_[5].value.as< std::shared_ptr<Node> > ()),
@@ -749,7 +749,7 @@ namespace yy {
     break;
 
   case 19:
-#line 181 "binary.y" // lalr1.cc:859
+#line 182 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ForLoop>(yystack_[9].value.as< std::string > (),
 							dpc<Expr>(yystack_[7].value.as< std::shared_ptr<Node> > ()),
@@ -763,7 +763,7 @@ namespace yy {
     break;
 
   case 20:
-#line 190 "binary.y" // lalr1.cc:859
+#line 191 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<Node>("forlist", "");
 					}
@@ -771,7 +771,7 @@ namespace yy {
     break;
 
   case 21:
-#line 193 "binary.y" // lalr1.cc:859
+#line 194 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<GlobalFunctionDef>(
 							dpc<NameList>(yystack_[1].value.as< std::shared_ptr<Node> > ()),
@@ -783,7 +783,7 @@ namespace yy {
     break;
 
   case 22:
-#line 200 "binary.y" // lalr1.cc:859
+#line 201 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<LocalFunctionDef>(
 							yystack_[1].value.as< std::string > (),
@@ -795,7 +795,7 @@ namespace yy {
     break;
 
   case 23:
-#line 207 "binary.y" // lalr1.cc:859
+#line 208 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<LocalDef>(dpc<NameList>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -804,7 +804,7 @@ namespace yy {
     break;
 
   case 24:
-#line 211 "binary.y" // lalr1.cc:859
+#line 212 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<LocalAssignment>(dpc<NameList>(yystack_[2].value.as< std::shared_ptr<Node> > ()), dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -813,7 +813,7 @@ namespace yy {
     break;
 
   case 25:
-#line 217 "binary.y" // lalr1.cc:859
+#line 218 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<NodeList>();
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -822,7 +822,7 @@ namespace yy {
     break;
 
   case 26:
-#line 221 "binary.y" // lalr1.cc:859
+#line 222 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<NodeList>(yystack_[4].value.as< std::shared_ptr<Node> > ());
 						auto ifStat = std::make_shared<IfStatement>(dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Statement>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
@@ -833,7 +833,7 @@ namespace yy {
     break;
 
   case 27:
-#line 229 "binary.y" // lalr1.cc:859
+#line 230 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ExprList>();
 						node->addExpression(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
@@ -843,7 +843,7 @@ namespace yy {
     break;
 
   case 28:
-#line 234 "binary.y" // lalr1.cc:859
+#line 235 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<ExprList>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addExpression(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
@@ -853,7 +853,7 @@ namespace yy {
     break;
 
   case 29:
-#line 241 "binary.y" // lalr1.cc:859
+#line 242 "binary.y" // lalr1.cc:859
     {
 							auto node = std::make_shared<NameList>();
 							node->addString(yystack_[1].value.as< std::string > ());
@@ -866,7 +866,7 @@ namespace yy {
     break;
 
   case 30:
-#line 249 "binary.y" // lalr1.cc:859
+#line 250 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<NameList>();
 						node->addString(yystack_[3].value.as< std::string > ());
@@ -880,7 +880,7 @@ namespace yy {
     break;
 
   case 31:
-#line 260 "binary.y" // lalr1.cc:859
+#line 261 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<NameList>();
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -889,7 +889,7 @@ namespace yy {
     break;
 
   case 32:
-#line 264 "binary.y" // lalr1.cc:859
+#line 265 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<NameList>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addString(yystack_[0].value.as< std::string > ());
@@ -899,7 +899,7 @@ namespace yy {
     break;
 
   case 33:
-#line 271 "binary.y" // lalr1.cc:859
+#line 272 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<VarName>(yystack_[0].value.as< std::string > ());
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -908,7 +908,7 @@ namespace yy {
     break;
 
   case 34:
-#line 275 "binary.y" // lalr1.cc:859
+#line 276 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<VarIndex>(spc<Expr>(yystack_[3].value.as< std::shared_ptr<Node> > ()),spc<Expr>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -917,7 +917,7 @@ namespace yy {
     break;
 
   case 35:
-#line 279 "binary.y" // lalr1.cc:859
+#line 280 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<VarIndex>(spc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),spc<Expr>(std::make_shared<StringLiteral>(yystack_[0].value.as< std::string > ())));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -926,7 +926,7 @@ namespace yy {
     break;
 
   case 36:
-#line 285 "binary.y" // lalr1.cc:859
+#line 286 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<NameList>();
 						node->addString(yystack_[0].value.as< std::string > ());
@@ -936,7 +936,7 @@ namespace yy {
     break;
 
   case 37:
-#line 290 "binary.y" // lalr1.cc:859
+#line 291 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<NameList>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addString(yystack_[0].value.as< std::string > ());
@@ -946,7 +946,7 @@ namespace yy {
     break;
 
   case 38:
-#line 297 "binary.y" // lalr1.cc:859
+#line 298 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ExprList>();
 						node->addExpression(spc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
@@ -956,7 +956,7 @@ namespace yy {
     break;
 
   case 39:
-#line 302 "binary.y" // lalr1.cc:859
+#line 303 "binary.y" // lalr1.cc:859
     {
 						auto node = dpc<ExprList>(yystack_[2].value.as< std::shared_ptr<Node> > ());
 						node->addExpression(spc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
@@ -966,67 +966,67 @@ namespace yy {
     break;
 
   case 40:
-#line 309 "binary.y" // lalr1.cc:859
+#line 310 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NilLiteral>(); }
 #line 972 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 41:
-#line 310 "binary.y" // lalr1.cc:859
+#line 311 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<BoolLiteral>(false); }
 #line 978 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 42:
-#line 311 "binary.y" // lalr1.cc:859
+#line 312 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<BoolLiteral>(true); }
 #line 984 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 43:
-#line 312 "binary.y" // lalr1.cc:859
-    { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumLiteral>(yystack_[0].value.as< int > ()); }
+#line 313 "binary.y" // lalr1.cc:859
+    { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumLiteral>(yystack_[0].value.as< double > ()); }
 #line 990 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 44:
-#line 313 "binary.y" // lalr1.cc:859
+#line 314 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<StringLiteral>(yystack_[0].value.as< std::string > ()); }
 #line 996 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 45:
-#line 314 "binary.y" // lalr1.cc:859
+#line 315 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<StringLiteral>("..."); }
 #line 1002 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 46:
-#line 315 "binary.y" // lalr1.cc:859
+#line 316 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > (); }
 #line 1008 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 47:
-#line 316 "binary.y" // lalr1.cc:859
+#line 317 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > (); }
 #line 1014 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 48:
-#line 317 "binary.y" // lalr1.cc:859
+#line 318 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > (); }
 #line 1020 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 49:
-#line 318 "binary.y" // lalr1.cc:859
+#line 319 "binary.y" // lalr1.cc:859
     { yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > (); }
 #line 1026 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 50:
-#line 319 "binary.y" // lalr1.cc:859
+#line 320 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::MINUS,spc<Expr>(std::make_shared<NumLiteral>(0)),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 					}
@@ -1034,7 +1034,7 @@ namespace yy {
     break;
 
   case 51:
-#line 322 "binary.y" // lalr1.cc:859
+#line 323 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<NotOperator>(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1043,7 +1043,7 @@ namespace yy {
     break;
 
   case 52:
-#line 326 "binary.y" // lalr1.cc:859
+#line 327 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<LengthOperator>(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1052,7 +1052,7 @@ namespace yy {
     break;
 
   case 53:
-#line 332 "binary.y" // lalr1.cc:859
+#line 333 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 					}
@@ -1060,7 +1060,7 @@ namespace yy {
     break;
 
   case 54:
-#line 335 "binary.y" // lalr1.cc:859
+#line 336 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 					}
@@ -1068,7 +1068,7 @@ namespace yy {
     break;
 
   case 55:
-#line 338 "binary.y" // lalr1.cc:859
+#line 339 "binary.y" // lalr1.cc:859
     {
 						yylhs.value.as< std::shared_ptr<Node> > () = yystack_[1].value.as< std::shared_ptr<Node> > ();
 					}
@@ -1076,7 +1076,7 @@ namespace yy {
     break;
 
   case 56:
-#line 343 "binary.y" // lalr1.cc:859
+#line 344 "binary.y" // lalr1.cc:859
     {
 						auto node = std::make_shared<ExprStatement>(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 						yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1085,7 +1085,7 @@ namespace yy {
     break;
 
   case 57:
-#line 349 "binary.y" // lalr1.cc:859
+#line 350 "binary.y" // lalr1.cc:859
     {
 										auto node = std::make_shared<FunctionCall>(dpc<Expr>(yystack_[1].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1094,7 +1094,7 @@ namespace yy {
     break;
 
   case 58:
-#line 353 "binary.y" // lalr1.cc:859
+#line 354 "binary.y" // lalr1.cc:859
     {
 										auto node = std::make_shared<FunctionCall>(dpc<Expr>(yystack_[3].value.as< std::shared_ptr<Node> > ()), yystack_[1].value.as< std::string > (), dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1103,7 +1103,7 @@ namespace yy {
     break;
 
   case 59:
-#line 359 "binary.y" // lalr1.cc:859
+#line 360 "binary.y" // lalr1.cc:859
     {
 					auto node = std::make_shared<ExprList>();
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
@@ -1112,7 +1112,7 @@ namespace yy {
     break;
 
   case 60:
-#line 363 "binary.y" // lalr1.cc:859
+#line 364 "binary.y" // lalr1.cc:859
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = yystack_[1].value.as< std::shared_ptr<Node> > ();
 				}
@@ -1120,12 +1120,11 @@ namespace yy {
     break;
 
   case 61:
-#line 366 "binary.y" // lalr1.cc:859
+#line 367 "binary.y" // lalr1.cc:859
     {
-					auto node = std::make_shared<Node>();
-					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
+					yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 				}
-#line 1129 "binary.tab.c" // lalr1.cc:859
+#line 1128 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 62:
@@ -1134,7 +1133,7 @@ namespace yy {
 					auto node = std::make_shared<StringLiteral>(yystack_[0].value.as< std::string > ());
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1138 "binary.tab.c" // lalr1.cc:859
+#line 1137 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 63:
@@ -1142,7 +1141,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 				}
-#line 1146 "binary.tab.c" // lalr1.cc:859
+#line 1145 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 64:
@@ -1151,7 +1150,7 @@ namespace yy {
 					auto node = std::make_shared<FunctionBody>(std::make_shared<NameList>(),dpc<Chunk>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1155 "binary.tab.c" // lalr1.cc:859
+#line 1154 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 65:
@@ -1160,7 +1159,7 @@ namespace yy {
 					auto node = std::make_shared<FunctionBody>(dpc<NameList>(yystack_[3].value.as< std::shared_ptr<Node> > ()),dpc<Chunk>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1164 "binary.tab.c" // lalr1.cc:859
+#line 1163 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 66:
@@ -1168,7 +1167,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 				}
-#line 1172 "binary.tab.c" // lalr1.cc:859
+#line 1171 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 67:
@@ -1178,7 +1177,7 @@ namespace yy {
 					node->addString("...");
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1182 "binary.tab.c" // lalr1.cc:859
+#line 1181 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 68:
@@ -1188,7 +1187,7 @@ namespace yy {
 					node->addString("...");
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1192 "binary.tab.c" // lalr1.cc:859
+#line 1191 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 69:
@@ -1197,7 +1196,7 @@ namespace yy {
 										auto node = std::make_shared<TableConstructor>();
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 									}
-#line 1201 "binary.tab.c" // lalr1.cc:859
+#line 1200 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 70:
@@ -1206,7 +1205,7 @@ namespace yy {
 										auto node = std::make_shared<TableConstructor>(dpc<FieldList>(yystack_[1].value.as< std::shared_ptr<Node> > ()));
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 									}
-#line 1210 "binary.tab.c" // lalr1.cc:859
+#line 1209 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 71:
@@ -1214,7 +1213,7 @@ namespace yy {
     {
 										yylhs.value.as< std::shared_ptr<Node> > () = yystack_[0].value.as< std::shared_ptr<Node> > ();
 									}
-#line 1218 "binary.tab.c" // lalr1.cc:859
+#line 1217 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 72:
@@ -1222,7 +1221,7 @@ namespace yy {
     {
 										yylhs.value.as< std::shared_ptr<Node> > () = yystack_[1].value.as< std::shared_ptr<Node> > ();
 									}
-#line 1226 "binary.tab.c" // lalr1.cc:859
+#line 1225 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 73:
@@ -1232,7 +1231,7 @@ namespace yy {
 										node->addField(dpc<Field>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
  									}
-#line 1236 "binary.tab.c" // lalr1.cc:859
+#line 1235 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 74:
@@ -1242,7 +1241,7 @@ namespace yy {
 										node->addField(dpc<Field>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 										yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 									}
-#line 1246 "binary.tab.c" // lalr1.cc:859
+#line 1245 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 75:
@@ -1251,7 +1250,7 @@ namespace yy {
 					auto node = std::make_shared<FieldIndex>(dpc<Expr>(yystack_[3].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1255 "binary.tab.c" // lalr1.cc:859
+#line 1254 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 76:
@@ -1260,7 +1259,7 @@ namespace yy {
 					auto node = std::make_shared<FieldIndex>(std::make_shared<StringLiteral>(yystack_[2].value.as< std::string > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1264 "binary.tab.c" // lalr1.cc:859
+#line 1263 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 77:
@@ -1269,19 +1268,19 @@ namespace yy {
 					auto node = std::make_shared<FieldCount>(dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 					yylhs.value.as< std::shared_ptr<Node> > () = spc<Node>(node);
 				}
-#line 1273 "binary.tab.c" // lalr1.cc:859
+#line 1272 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 78:
 #line 450 "binary.y" // lalr1.cc:859
     { }
-#line 1279 "binary.tab.c" // lalr1.cc:859
+#line 1278 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 79:
 #line 451 "binary.y" // lalr1.cc:859
     { }
-#line 1285 "binary.tab.c" // lalr1.cc:859
+#line 1284 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 80:
@@ -1289,7 +1288,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::PLUS,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1293 "binary.tab.c" // lalr1.cc:859
+#line 1292 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 81:
@@ -1297,7 +1296,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::MINUS,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1301 "binary.tab.c" // lalr1.cc:859
+#line 1300 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 82:
@@ -1305,7 +1304,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::MUL,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1309 "binary.tab.c" // lalr1.cc:859
+#line 1308 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 83:
@@ -1313,7 +1312,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::DIV,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1317 "binary.tab.c" // lalr1.cc:859
+#line 1316 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 84:
@@ -1321,7 +1320,7 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::POW,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1325 "binary.tab.c" // lalr1.cc:859
+#line 1324 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 85:
@@ -1329,45 +1328,43 @@ namespace yy {
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<NumOperator>(NumOperatorType::MOD,dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1333 "binary.tab.c" // lalr1.cc:859
+#line 1332 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 86:
 #line 472 "binary.y" // lalr1.cc:859
     {
-					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<Node>("concat", "-");
-					yylhs.value.as< std::shared_ptr<Node> > ()->add(yystack_[2].value.as< std::shared_ptr<Node> > ());
-					yylhs.value.as< std::shared_ptr<Node> > ()->add(yystack_[0].value.as< std::shared_ptr<Node> > ());
+					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<StringOperator>(dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1343 "binary.tab.c" // lalr1.cc:859
+#line 1340 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 87:
-#line 477 "binary.y" // lalr1.cc:859
+#line 475 "binary.y" // lalr1.cc:859
     {
 					 yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<BoolComparator>(yystack_[1].value.as< BoolComparatorType > (),dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				 }
-#line 1351 "binary.tab.c" // lalr1.cc:859
+#line 1348 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 88:
-#line 480 "binary.y" // lalr1.cc:859
+#line 478 "binary.y" // lalr1.cc:859
     {
 					yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<BoolComparator>(yystack_[1].value.as< BoolComparatorType > (),dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				}
-#line 1359 "binary.tab.c" // lalr1.cc:859
+#line 1356 "binary.tab.c" // lalr1.cc:859
     break;
 
   case 89:
-#line 483 "binary.y" // lalr1.cc:859
+#line 481 "binary.y" // lalr1.cc:859
     {
 					 yylhs.value.as< std::shared_ptr<Node> > () = std::make_shared<BoolComparator>(yystack_[1].value.as< BoolComparatorType > (),dpc<Expr>(yystack_[2].value.as< std::shared_ptr<Node> > ()),dpc<Expr>(yystack_[0].value.as< std::shared_ptr<Node> > ()));
 				 }
-#line 1367 "binary.tab.c" // lalr1.cc:859
+#line 1364 "binary.tab.c" // lalr1.cc:859
     break;
 
 
-#line 1371 "binary.tab.c" // lalr1.cc:859
+#line 1368 "binary.tab.c" // lalr1.cc:859
             default:
               break;
             }
@@ -1757,15 +1754,15 @@ namespace yy {
   const unsigned short int
   parser::yyrline_[] =
   {
-       0,    94,    94,    98,   106,   110,   117,   118,   121,   125,
-     129,   135,   138,   142,   145,   149,   153,   162,   172,   181,
-     190,   193,   200,   207,   211,   217,   221,   229,   234,   241,
-     249,   260,   264,   271,   275,   279,   285,   290,   297,   302,
-     309,   310,   311,   312,   313,   314,   315,   316,   317,   318,
-     319,   322,   326,   332,   335,   338,   343,   349,   353,   359,
-     363,   366,   370,   376,   381,   385,   391,   394,   399,   406,
+       0,    95,    95,    99,   107,   111,   118,   119,   122,   126,
+     130,   136,   139,   143,   146,   150,   154,   163,   173,   182,
+     191,   194,   201,   208,   212,   218,   222,   230,   235,   242,
+     250,   261,   265,   272,   276,   280,   286,   291,   298,   303,
+     310,   311,   312,   313,   314,   315,   316,   317,   318,   319,
+     320,   323,   327,   333,   336,   339,   344,   350,   354,   360,
+     364,   367,   370,   376,   381,   385,   391,   394,   399,   406,
      410,   416,   419,   424,   429,   436,   440,   444,   450,   451,
-     454,   457,   460,   463,   466,   469,   472,   477,   480,   483
+     454,   457,   460,   463,   466,   469,   472,   475,   478,   481
   };
 
   // Print the state stack on the debug stream.
@@ -1800,6 +1797,6 @@ namespace yy {
 
 
 } // yy
-#line 1804 "binary.tab.c" // lalr1.cc:1167
-#line 487 "binary.y" // lalr1.cc:1168
+#line 1801 "binary.tab.c" // lalr1.cc:1167
+#line 485 "binary.y" // lalr1.cc:1168
 

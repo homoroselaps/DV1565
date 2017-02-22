@@ -25,7 +25,7 @@ public:
 		{
 			result = m_block->execute(env, control);
 			auto cond = m_condition->evaluate(env);
-			if (!cond->getBool() || control) {
+			if (cond->getBool() || control) {
 				if (control == ExecControl::BREAK) control = ExecControl::NONE;
 				return result;
 			}

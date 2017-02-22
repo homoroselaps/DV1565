@@ -36,6 +36,7 @@
 	#include "Selection.h"
 	#include "Statement.h"
 	#include "StringLiteral.h"
+	#include "StringOperator.h"
 	#include "TableConstructor.h"
 	#include "VarName.h"
 	#include "VarIndex.h"
@@ -60,7 +61,7 @@
 %type <std::shared_ptr<Node>> chunk __stat _semi laststat block stat __elseif varlist funcname
 %type <std::shared_ptr<Node>> __dotname var namelist explist exp prefixexp functioncall args
 %type <std::shared_ptr<Node>> function funcbody parlist tableconstructor fieldlist
-%type <std::shared_ptr<Node>> __fieldsepfield field fieldsep binopexp unop
+%type <std::shared_ptr<Node>> __fieldsepfield field fieldsep binopexp
 
 %token IF THEN ELSEIF ELSE END FOR DO REPEAT UNTIL BREAK IN WHILE LOCAL
 %token <std::string> ANY
@@ -79,7 +80,7 @@
 %right '^'
 
 %token NIL FALSE TRUE
-%token <int> NUMBER
+%token <double> NUMBER
 %token <std::string> STRING
 %token <std::string> NAME
 %token NL
@@ -364,8 +365,7 @@ args		: '(' ')' {
 					$$ = $2;
 				}
 				| tableconstructor {
-					auto node = std::make_shared<Node>();
-					$$ = spc<Node>(node);
+					$$ = $1;
 				}
 				| STRING {
 					auto node = std::make_shared<StringLiteral>($1);
@@ -470,9 +470,7 @@ binopexp: exp '+' exp {
 					$$ = std::make_shared<NumOperator>(NumOperatorType::MOD,dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp CONCAT exp {
-					$$ = std::make_shared<Node>("concat", "-");
-					$$->add($1);
-					$$->add($3);
+					$$ = std::make_shared<StringOperator>(dpc<Expr>($1),dpc<Expr>($3));
 				}
 				| exp COMP exp {
 					 $$ = std::make_shared<BoolComparator>($2,dpc<Expr>($1),dpc<Expr>($3));

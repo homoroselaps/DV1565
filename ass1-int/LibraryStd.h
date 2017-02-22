@@ -4,6 +4,7 @@
 #include "Function.h"
 #include "Table.h"
 #include "StringValue.h"
+#include "Utils.h"
 
 class LibraryStd
 {
@@ -20,7 +21,10 @@ public:
 	static std::shared_ptr<Value> print() {
 		Func f = [](std::shared_ptr<Value> context, std::vector<std::shared_ptr<Value>> args) {
 			for (auto arg : args) {
-				std::cout << arg->to_string();
+				auto str = arg->to_string();
+				Utils::replace(str,"\\n","\n");
+				Utils::replace(str,"\\t","\t");
+				std::cout << str;
 			}
 			std::cout << std::endl;
 			return std::make_shared<Value>();

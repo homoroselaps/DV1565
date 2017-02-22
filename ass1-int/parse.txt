@@ -7,573 +7,315 @@ node2 [label="ExprList
 (Expression)" ]
 node1 -> node2
 node3 [label="VarName
-(Expression) Value: a" ]
+(Expression) Value: list" ]
 node2 -> node3
-node4 [label="VarName
-(Expression) Value: b" ]
-node2 -> node4
-node5 [label="VarName
-(Expression) Value: c" ]
-node2 -> node5
-node6 [label="ExprList
+node4 [label="ExprList
 (Expression)" ]
-node1 -> node6
-node7 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
+node1 -> node4
+node5 [label="TableConstructor
+(Expression)" ]
+node4 -> node5
+node6 [label="FieldList
+(Field)" ]
+node5 -> node6
+node7 [label="FieldCount
+(Field)" ]
 node6 -> node7
 node8 [label="NumberLiteral
-(Expression) Value: 2.000000" ]
-node6 -> node8
-node9 [label="NumberLiteral
-(Expression) Value: 3.000000" ]
+(Expression) Value: 5.000000" ]
+node7 -> node8
+node9 [label="FieldCount
+(Field)" ]
 node6 -> node9
-node10 [label="Assignment
-(Statement)" ]
-node0 -> node10
-node11 [label="ExprList
-(Expression)" ]
-node10 -> node11
-node12 [label="VarName
-(Expression) Value: a" ]
+node10 [label="NumberLiteral
+(Expression) Value: 6.000000" ]
+node9 -> node10
+node11 [label="FieldCount
+(Field)" ]
+node6 -> node11
+node12 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
 node11 -> node12
-node13 [label="VarName
-(Expression) Value: b" ]
-node11 -> node13
-node14 [label="VarName
-(Expression) Value: c" ]
-node11 -> node14
-node15 [label="ExprList
-(Expression)" ]
-node10 -> node15
-node16 [label="VarName
-(Expression) Value: c" ]
+node13 [label="FieldCount
+(Field)" ]
+node6 -> node13
+node14 [label="NumberLiteral
+(Expression) Value: 2.000000" ]
+node13 -> node14
+node15 [label="FieldCount
+(Field)" ]
+node6 -> node15
+node16 [label="NumberLiteral
+(Expression) Value: 9.000000" ]
 node15 -> node16
-node17 [label="NilLiteral
-(Expression)" ]
-node15 -> node17
-node18 [label="VarName
-(Expression) Value: a" ]
-node15 -> node18
-node19 [label="ExprStatement
-(Statement)" ]
-node0 -> node19
-node20 [label="FunctionCall
-(Expression)" ]
+node17 [label="FieldCount
+(Field)" ]
+node6 -> node17
+node18 [label="NumberLiteral
+(Expression) Value: 14.000000" ]
+node17 -> node18
+node19 [label="FieldCount
+(Field)" ]
+node6 -> node19
+node20 [label="NumberLiteral
+(Expression) Value: 2.000000" ]
 node19 -> node20
-node21 [label="VarName
-(Expression) Value: print" ]
-node20 -> node21
-node22 [label="ExprList
-(Expression)" ]
-node20 -> node22
-node23 [label="VarName
-(Expression) Value: a" ]
-node22 -> node23
-node24 [label="ExprStatement
-(Statement)" ]
-node0 -> node24
-node25 [label="FunctionCall
-(Expression)" ]
-node24 -> node25
-node26 [label="VarName
-(Expression) Value: print" ]
+node21 [label="FieldCount
+(Field)" ]
+node6 -> node21
+node22 [label="NumberLiteral
+(Expression) Value: 15.000000" ]
+node21 -> node22
+node23 [label="FieldCount
+(Field)" ]
+node6 -> node23
+node24 [label="NumberLiteral
+(Expression) Value: 6.000000" ]
+node23 -> node24
+node25 [label="FieldCount
+(Field)" ]
+node6 -> node25
+node26 [label="NumberLiteral
+(Expression) Value: 7.000000" ]
 node25 -> node26
-node27 [label="ExprList
-(Expression)" ]
-node25 -> node27
-node28 [label="VarName
-(Expression) Value: b" ]
+node27 [label="FieldCount
+(Field)" ]
+node6 -> node27
+node28 [label="NumberLiteral
+(Expression) Value: 8.000000" ]
 node27 -> node28
-node29 [label="ExprStatement
-(Statement)" ]
-node0 -> node29
-node30 [label="FunctionCall
-(Expression)" ]
+node29 [label="FieldCount
+(Field)" ]
+node6 -> node29
+node30 [label="NumberLiteral
+(Expression) Value: 97.000000" ]
 node29 -> node30
-node31 [label="VarName
-(Expression) Value: print" ]
-node30 -> node31
+node31 [label="Assignment
+(Statement)" ]
+node0 -> node31
 node32 [label="ExprList
 (Expression)" ]
-node30 -> node32
+node31 -> node32
 node33 [label="VarName
-(Expression) Value: c" ]
+(Expression) Value: itemCount" ]
 node32 -> node33
-node34 [label="Assignment
-(Statement)" ]
-node0 -> node34
-node35 [label="ExprList
+node34 [label="ExprList
+(Expression)" ]
+node31 -> node34
+node35 [label="LengthOperator
 (Expression)" ]
 node34 -> node35
 node36 [label="VarName
 (Expression) Value: list" ]
 node35 -> node36
-node37 [label="ExprList
-(Expression)" ]
-node34 -> node37
-node38 [label="TableConstructor
-(Expression)" ]
+node37 [label="RepeatLoop
+(Statement)" ]
+node0 -> node37
+node38 [label="Chunk
+(Statement)" ]
 node37 -> node38
-node39 [label="FieldList
-(Field)" ]
+node39 [label="Assignment
+(Statement)" ]
 node38 -> node39
-node40 [label="FieldCount
-(Field)" ]
+node40 [label="ExprList
+(Expression)" ]
 node39 -> node40
-node41 [label="NumberLiteral
-(Expression) Value: 5.000000" ]
+node41 [label="VarName
+(Expression) Value: hasChanged" ]
 node40 -> node41
-node42 [label="FieldCount
-(Field)" ]
+node42 [label="ExprList
+(Expression)" ]
 node39 -> node42
-node43 [label="NumberLiteral
-(Expression) Value: 6.000000" ]
+node43 [label="BoolLiteral
+(Expression) Value: false" ]
 node42 -> node43
-node44 [label="FieldCount
-(Field)" ]
-node39 -> node44
-node45 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
+node44 [label="Assignment
+(Statement)" ]
+node38 -> node44
+node45 [label="ExprList
+(Expression)" ]
 node44 -> node45
-node46 [label="FieldCount
-(Field)" ]
-node39 -> node46
-node47 [label="NumberLiteral
-(Expression) Value: 2.000000" ]
-node46 -> node47
-node48 [label="FieldCount
-(Field)" ]
-node39 -> node48
-node49 [label="NumberLiteral
-(Expression) Value: 9.000000" ]
-node48 -> node49
-node50 [label="FieldCount
-(Field)" ]
-node39 -> node50
-node51 [label="NumberLiteral
-(Expression) Value: 14.000000" ]
-node50 -> node51
-node52 [label="FieldCount
-(Field)" ]
-node39 -> node52
-node53 [label="NumberLiteral
-(Expression) Value: 2.000000" ]
-node52 -> node53
-node54 [label="FieldCount
-(Field)" ]
-node39 -> node54
-node55 [label="NumberLiteral
-(Expression) Value: 15.000000" ]
-node54 -> node55
-node56 [label="FieldCount
-(Field)" ]
-node39 -> node56
-node57 [label="NumberLiteral
-(Expression) Value: 6.000000" ]
-node56 -> node57
-node58 [label="FieldCount
-(Field)" ]
-node39 -> node58
-node59 [label="NumberLiteral
-(Expression) Value: 7.000000" ]
-node58 -> node59
-node60 [label="FieldCount
-(Field)" ]
-node39 -> node60
-node61 [label="NumberLiteral
-(Expression) Value: 8.000000" ]
-node60 -> node61
-node62 [label="FieldCount
-(Field)" ]
-node39 -> node62
-node63 [label="NumberLiteral
-(Expression) Value: 97.000000" ]
-node62 -> node63
-node64 [label="Assignment
-(Statement)" ]
-node0 -> node64
-node65 [label="ExprList
-(Expression)" ]
-node64 -> node65
-node66 [label="VarName
+node46 [label="VarName
 (Expression) Value: itemCount" ]
-node65 -> node66
-node67 [label="ExprList
+node45 -> node46
+node47 [label="ExprList
 (Expression)" ]
-node64 -> node67
-node68 [label="LengthOperator
-(Expression)" ]
-node67 -> node68
-node69 [label="VarName
-(Expression) Value: list" ]
-node68 -> node69
-node70 [label="ExprStatement
+node44 -> node47
+node48 [label="NumOperator
+(Expression) Type: Minus" ]
+node47 -> node48
+node49 [label="VarName
+(Expression) Value: itemCount" ]
+node48 -> node49
+node50 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node48 -> node50
+node51 [label="ForLoop
+(Statement) Name:i" ]
+node38 -> node51
+node52 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node51 -> node52
+node53 [label="VarName
+(Expression) Value: itemCount" ]
+node51 -> node53
+node54 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node51 -> node54
+node55 [label="Chunk
 (Statement)" ]
-node0 -> node70
-node71 [label="FunctionCall
+node51 -> node55
+node56 [label="Selector
+(Statement)" ]
+node55 -> node56
+node57 [label="If/ElseIf
+(Statement)" ]
+node56 -> node57
+node58 [label="Comparator
+(Statement) Type: Greater" ]
+node57 -> node58
+node59 [label="VarIndex
 (Expression)" ]
+node58 -> node59
+node60 [label="VarName
+(Expression) Value: list" ]
+node59 -> node60
+node61 [label="VarName
+(Expression) Value: i" ]
+node59 -> node61
+node62 [label="VarIndex
+(Expression)" ]
+node58 -> node62
+node63 [label="VarName
+(Expression) Value: list" ]
+node62 -> node63
+node64 [label="NumOperator
+(Expression) Type: Plus" ]
+node62 -> node64
+node65 [label="VarName
+(Expression) Value: i" ]
+node64 -> node65
+node66 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node64 -> node66
+node67 [label="Chunk
+(Statement)" ]
+node57 -> node67
+node68 [label="Assignment
+(Statement)" ]
+node67 -> node68
+node69 [label="ExprList
+(Expression)" ]
+node68 -> node69
+node70 [label="VarIndex
+(Expression)" ]
+node69 -> node70
+node71 [label="VarName
+(Expression) Value: list" ]
 node70 -> node71
 node72 [label="VarName
-(Expression) Value: print" ]
-node71 -> node72
-node73 [label="ExprList
+(Expression) Value: i" ]
+node70 -> node72
+node73 [label="VarIndex
 (Expression)" ]
-node71 -> node73
+node69 -> node73
 node74 [label="VarName
-(Expression) Value: itemCount" ]
+(Expression) Value: list" ]
 node73 -> node74
-node75 [label="Assignment
-(Statement)" ]
-node0 -> node75
-node76 [label="ExprList
-(Expression)" ]
+node75 [label="NumOperator
+(Expression) Type: Plus" ]
+node73 -> node75
+node76 [label="VarName
+(Expression) Value: i" ]
 node75 -> node76
-node77 [label="VarName
-(Expression) Value: itemCount" ]
-node76 -> node77
+node77 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node75 -> node77
 node78 [label="ExprList
 (Expression)" ]
-node75 -> node78
-node79 [label="NumOperator
-(Expression) Type: 1" ]
+node68 -> node78
+node79 [label="VarIndex
+(Expression)" ]
 node78 -> node79
 node80 [label="VarName
-(Expression) Value: itemCount" ]
+(Expression) Value: list" ]
 node79 -> node80
-node81 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
+node81 [label="NumOperator
+(Expression) Type: Plus" ]
 node79 -> node81
-node82 [label="ExprStatement
-(Statement)" ]
-node0 -> node82
-node83 [label="FunctionCall
+node82 [label="VarName
+(Expression) Value: i" ]
+node81 -> node82
+node83 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node81 -> node83
+node84 [label="VarIndex
 (Expression)" ]
-node82 -> node83
-node84 [label="VarName
-(Expression) Value: print" ]
-node83 -> node84
-node85 [label="ExprList
-(Expression)" ]
-node83 -> node85
+node78 -> node84
+node85 [label="VarName
+(Expression) Value: list" ]
+node84 -> node85
 node86 [label="VarName
-(Expression) Value: itemCount" ]
-node85 -> node86
-node87 [label="RepeatLoop
+(Expression) Value: i" ]
+node84 -> node86
+node87 [label="Assignment
 (Statement)" ]
-node0 -> node87
-node88 [label="Chunk
-(Statement)" ]
+node67 -> node87
+node88 [label="ExprList
+(Expression)" ]
 node87 -> node88
-node89 [label="Assignment
-(Statement)" ]
+node89 [label="VarName
+(Expression) Value: hasChanged" ]
 node88 -> node89
 node90 [label="ExprList
 (Expression)" ]
-node89 -> node90
-node91 [label="VarName
-(Expression) Value: hasChanged" ]
+node87 -> node90
+node91 [label="BoolLiteral
+(Expression) Value: true" ]
 node90 -> node91
-node92 [label="ExprList
-(Expression)" ]
-node89 -> node92
-node93 [label="Accessor Base Class" ]
+node92 [label="Comparator
+(Statement) Type: Equal" ]
+node37 -> node92
+node93 [label="VarName
+(Expression) Value: hasChanged" ]
 node92 -> node93
-node94 [label="Assignment
-(Statement)" ]
-node88 -> node94
-node95 [label="ExprList
-(Expression)" ]
-node94 -> node95
-node96 [label="VarName
-(Expression) Value: itemCount" ]
+node94 [label="BoolLiteral
+(Expression) Value: false" ]
+node92 -> node94
+node95 [label="ForLoop
+(Statement) Name:i" ]
+node0 -> node95
+node96 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
 node95 -> node96
-node97 [label="ExprList
-(Expression)" ]
-node94 -> node97
-node98 [label="NumOperator
-(Expression) Type: 1" ]
-node97 -> node98
-node99 [label="VarName
+node97 [label="VarName
 (Expression) Value: itemCount" ]
-node98 -> node99
-node100 [label="NumberLiteral
+node95 -> node97
+node98 [label="NumberLiteral
 (Expression) Value: 1.000000" ]
-node98 -> node100
-node101 [label="ForLoop
-(Statement) Name:i" ]
-node88 -> node101
-node102 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
+node95 -> node98
+node99 [label="Chunk
+(Statement)" ]
+node95 -> node99
+node100 [label="ExprStatement
+(Statement)" ]
+node99 -> node100
+node101 [label="FunctionCall
+(Expression)" ]
+node100 -> node101
+node102 [label="VarName
+(Expression) Value: print" ]
 node101 -> node102
-node103 [label="VarName
-(Expression) Value: itemCount" ]
+node103 [label="ExprList
+(Expression)" ]
 node101 -> node103
-node104 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node101 -> node104
-node105 [label="Chunk
-(Statement)" ]
-node101 -> node105
-node106 [label="Selector
-(Statement)" ]
-node105 -> node106
-node107 [label="If/ElseIf
-(Statement)" ]
-node106 -> node107
-node108 [label="Comparator
-(Statement) Type: 4" ]
-node107 -> node108
-node109 [label="VarIndex
+node104 [label="VarIndex
 (Expression)" ]
-node108 -> node109
-node110 [label="VarName
+node103 -> node104
+node105 [label="VarName
 (Expression) Value: list" ]
-node109 -> node110
-node111 [label="VarName
+node104 -> node105
+node106 [label="VarName
 (Expression) Value: i" ]
-node109 -> node111
-node112 [label="VarIndex
-(Expression)" ]
-node108 -> node112
-node113 [label="VarName
-(Expression) Value: list" ]
-node112 -> node113
-node114 [label="NumOperator
-(Expression) Type: 0" ]
-node112 -> node114
-node115 [label="VarName
-(Expression) Value: i" ]
-node114 -> node115
-node116 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node114 -> node116
-node117 [label="Chunk
-(Statement)" ]
-node107 -> node117
-node118 [label="ExprStatement
-(Statement)" ]
-node117 -> node118
-node119 [label="FunctionCall
-(Expression)" ]
-node118 -> node119
-node120 [label="VarName
-(Expression) Value: print" ]
-node119 -> node120
-node121 [label="ExprList
-(Expression)" ]
-node119 -> node121
-node122 [label="StringLiteral
-(Expression) Value: switch" ]
-node121 -> node122
-node123 [label="ExprStatement
-(Statement)" ]
-node117 -> node123
-node124 [label="FunctionCall
-(Expression)" ]
-node123 -> node124
-node125 [label="VarName
-(Expression) Value: print" ]
-node124 -> node125
-node126 [label="ExprList
-(Expression)" ]
-node124 -> node126
-node127 [label="VarIndex
-(Expression)" ]
-node126 -> node127
-node128 [label="VarName
-(Expression) Value: list" ]
-node127 -> node128
-node129 [label="VarName
-(Expression) Value: i" ]
-node127 -> node129
-node130 [label="ExprStatement
-(Statement)" ]
-node117 -> node130
-node131 [label="FunctionCall
-(Expression)" ]
-node130 -> node131
-node132 [label="VarName
-(Expression) Value: print" ]
-node131 -> node132
-node133 [label="ExprList
-(Expression)" ]
-node131 -> node133
-node134 [label="VarIndex
-(Expression)" ]
-node133 -> node134
-node135 [label="VarName
-(Expression) Value: list" ]
-node134 -> node135
-node136 [label="NumOperator
-(Expression) Type: 0" ]
-node134 -> node136
-node137 [label="VarName
-(Expression) Value: i" ]
-node136 -> node137
-node138 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node136 -> node138
-node139 [label="Assignment
-(Statement)" ]
-node117 -> node139
-node140 [label="ExprList
-(Expression)" ]
-node139 -> node140
-node141 [label="VarIndex
-(Expression)" ]
-node140 -> node141
-node142 [label="VarName
-(Expression) Value: list" ]
-node141 -> node142
-node143 [label="VarName
-(Expression) Value: i" ]
-node141 -> node143
-node144 [label="VarIndex
-(Expression)" ]
-node140 -> node144
-node145 [label="VarName
-(Expression) Value: list" ]
-node144 -> node145
-node146 [label="NumOperator
-(Expression) Type: 0" ]
-node144 -> node146
-node147 [label="VarName
-(Expression) Value: i" ]
-node146 -> node147
-node148 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node146 -> node148
-node149 [label="ExprList
-(Expression)" ]
-node139 -> node149
-node150 [label="VarIndex
-(Expression)" ]
-node149 -> node150
-node151 [label="VarName
-(Expression) Value: list" ]
-node150 -> node151
-node152 [label="NumOperator
-(Expression) Type: 0" ]
-node150 -> node152
-node153 [label="VarName
-(Expression) Value: i" ]
-node152 -> node153
-node154 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node152 -> node154
-node155 [label="VarIndex
-(Expression)" ]
-node149 -> node155
-node156 [label="VarName
-(Expression) Value: list" ]
-node155 -> node156
-node157 [label="VarName
-(Expression) Value: i" ]
-node155 -> node157
-node158 [label="ExprStatement
-(Statement)" ]
-node117 -> node158
-node159 [label="FunctionCall
-(Expression)" ]
-node158 -> node159
-node160 [label="VarName
-(Expression) Value: print" ]
-node159 -> node160
-node161 [label="ExprList
-(Expression)" ]
-node159 -> node161
-node162 [label="VarIndex
-(Expression)" ]
-node161 -> node162
-node163 [label="VarName
-(Expression) Value: list" ]
-node162 -> node163
-node164 [label="VarName
-(Expression) Value: i" ]
-node162 -> node164
-node165 [label="ExprStatement
-(Statement)" ]
-node117 -> node165
-node166 [label="FunctionCall
-(Expression)" ]
-node165 -> node166
-node167 [label="VarName
-(Expression) Value: print" ]
-node166 -> node167
-node168 [label="ExprList
-(Expression)" ]
-node166 -> node168
-node169 [label="VarIndex
-(Expression)" ]
-node168 -> node169
-node170 [label="VarName
-(Expression) Value: list" ]
-node169 -> node170
-node171 [label="NumOperator
-(Expression) Type: 0" ]
-node169 -> node171
-node172 [label="VarName
-(Expression) Value: i" ]
-node171 -> node172
-node173 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node171 -> node173
-node174 [label="Assignment
-(Statement)" ]
-node117 -> node174
-node175 [label="ExprList
-(Expression)" ]
-node174 -> node175
-node176 [label="VarName
-(Expression) Value: hasChanged" ]
-node175 -> node176
-node177 [label="ExprList
-(Expression)" ]
-node174 -> node177
-node178 [label="Accessor Base Class" ]
-node177 -> node178
-node179 [label="Comparator
-(Statement) Type: 0" ]
-node87 -> node179
-node180 [label="VarName
-(Expression) Value: hasChanged" ]
-node179 -> node180
-node181 [label="Accessor Base Class" ]
-node179 -> node181
-node182 [label="ForLoop
-(Statement) Name:i" ]
-node0 -> node182
-node183 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node182 -> node183
-node184 [label="VarName
-(Expression) Value: itemCount" ]
-node182 -> node184
-node185 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node182 -> node185
-node186 [label="Chunk
-(Statement)" ]
-node182 -> node186
-node187 [label="ExprStatement
-(Statement)" ]
-node186 -> node187
-node188 [label="FunctionCall
-(Expression)" ]
-node187 -> node188
-node189 [label="VarName
-(Expression) Value: print" ]
-node188 -> node189
-node190 [label="ExprList
-(Expression)" ]
-node188 -> node190
-node191 [label="VarIndex
-(Expression)" ]
-node190 -> node191
-node192 [label="VarName
-(Expression) Value: list" ]
-node191 -> node192
-node193 [label="VarName
-(Expression) Value: i" ]
-node191 -> node193
+node104 -> node106
 }

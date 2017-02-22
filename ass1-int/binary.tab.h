@@ -75,6 +75,7 @@
 	#include "Selection.h"
 	#include "Statement.h"
 	#include "StringLiteral.h"
+	#include "StringOperator.h"
 	#include "TableConstructor.h"
 	#include "VarName.h"
 	#include "VarIndex.h"
@@ -83,7 +84,7 @@
 	#include <string>
 	#include <memory>
 
-#line 87 "binary.tab.h" // lalr1.cc:377
+#line 88 "binary.tab.h" // lalr1.cc:377
 
 
 # include <cstdlib> // std::abort
@@ -160,7 +161,7 @@
 
 
 namespace yy {
-#line 164 "binary.tab.h" // lalr1.cc:377
+#line 165 "binary.tab.h" // lalr1.cc:377
 
 
 
@@ -313,7 +314,7 @@ namespace yy {
       char dummy1[sizeof(BoolComparatorType)];
 
       // NUMBER
-      char dummy2[sizeof(int)];
+      char dummy2[sizeof(double)];
 
       // chunk
       // __stat
@@ -437,7 +438,7 @@ namespace yy {
 
   basic_symbol (typename Base::kind_type t, const BoolComparatorType v);
 
-  basic_symbol (typename Base::kind_type t, const int v);
+  basic_symbol (typename Base::kind_type t, const double v);
 
   basic_symbol (typename Base::kind_type t, const std::shared_ptr<Node> v);
 
@@ -608,7 +609,7 @@ namespace yy {
 
     static inline
     symbol_type
-    make_NUMBER (const int& v);
+    make_NUMBER (const double& v);
 
     static inline
     symbol_type
@@ -923,7 +924,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.copy< int > (other.value);
+        value.copy< double > (other.value);
         break;
 
       case 52: // chunk
@@ -984,7 +985,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.copy< int > (v);
+        value.copy< double > (v);
         break;
 
       case 52: // chunk
@@ -1043,7 +1044,7 @@ namespace yy {
   {}
 
   template <typename Base>
-  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const int v)
+  parser::basic_symbol<Base>::basic_symbol (typename Base::kind_type t, const double v)
     : Base (t)
     , value (v)
   {}
@@ -1093,7 +1094,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.template destroy< int > ();
+        value.template destroy< double > ();
         break;
 
       case 52: // chunk
@@ -1161,7 +1162,7 @@ namespace yy {
         break;
 
       case 34: // NUMBER
-        value.move< int > (s.value);
+        value.move< double > (s.value);
         break;
 
       case 52: // chunk
@@ -1414,7 +1415,7 @@ namespace yy {
   }
 
   parser::symbol_type
-  parser::make_NUMBER (const int& v)
+  parser::make_NUMBER (const double& v)
   {
     return symbol_type (token::NUMBER, v);
   }
@@ -1458,7 +1459,7 @@ namespace yy {
 
 
 } // yy
-#line 1462 "binary.tab.h" // lalr1.cc:377
+#line 1463 "binary.tab.h" // lalr1.cc:377
 
 
 

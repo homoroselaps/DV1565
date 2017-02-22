@@ -25,6 +25,6 @@ public:
 		return std::vector<std::shared_ptr<Node>>{};
 	}
 	virtual std::string to_string() override {
-		return "Accessor Base Class";
+		return "BoolLiteral(Expression) Value: " + std::string(m_value ? "true" : "false");
 	}
 };
