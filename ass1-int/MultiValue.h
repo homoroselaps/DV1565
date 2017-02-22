@@ -13,6 +13,8 @@ public:
 	virtual ~MultiValue() { }
 
 	void assignMultiValue(std::shared_ptr<Value> other);
+
+	std::shared_ptr<Value> copy();
 	
 	std::vector<std::shared_ptr<Value>> getValues();
 

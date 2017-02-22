@@ -26,7 +26,7 @@ public:
 		}
 		std::shared_ptr<Value> base = std::make_shared<Value>();
 		auto _base = reinterpret_cast<MultiValue*>(base.get())->Create(vars);
-		base->assign(values);
+		base->assign(values->copy());
 		return nullptr;
 	}
 

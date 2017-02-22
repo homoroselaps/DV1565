@@ -113,7 +113,31 @@ void Value::assign(std::shared_ptr<Value> right) {
 }
 
 std::shared_ptr<Value> Value::copy() {
-	return std::shared_ptr<Value>();
+	auto val = std::make_shared<Value>();
+	switch (m_type)
+	{
+	case NIL:
+		val->assignNil();
+		break;
+	case BOOL:
+		val->assignBool(m_boolValue);
+		break;
+	case NUMBER:
+		val->assignNumber(m_numValue);
+		break;
+	case STRING:
+		val->assignString(m_stringValue);
+		break;
+	case FUNCTION:
+		val->assignFunction(std::make_shared<Value>(this));
+		break;
+	case TABLE:
+		val->assignTable(std::make_shared<Value>(this));
+		break;
+	case MULTI:
+		return castMultiValue()->copy();
+	}
+	return val;
 }
 
 Function * Value::castFunction()

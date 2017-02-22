@@ -19,7 +19,7 @@ public:
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) {
 		auto base = m_base->evaluate(environment);
 		auto values = m_values->evaluate(environment);
-		base->assign(values);
+		base->assign(values->copy());
 		return nullptr;
 	}
 

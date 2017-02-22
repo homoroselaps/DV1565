@@ -19,7 +19,7 @@ MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
 }
 
 void MultiValue::assignMultiValue(std::shared_ptr<Value> other) {
-	auto _other = other->copy()->castMultiValue();
+	auto _other = other->castMultiValue();
 	auto otherChild = _other->m_values.begin();
 	for (auto child = m_values.begin(); child != m_values.end(); child++) {
 		if (otherChild != _other->m_values.end()) {
@@ -30,6 +30,16 @@ void MultiValue::assignMultiValue(std::shared_ptr<Value> other) {
 			(*child)->assignNil();
 		}
 	}
+}
+
+std::shared_ptr<Value> MultiValue::copy() {
+	auto values = std::vector<std::shared_ptr<Value>>{};
+	for (auto value : m_values) {
+		values.push_back(value->copy());
+	}
+	auto result = std::make_shared<Value>();
+	reinterpret_cast<MultiValue*>(result.get())->Create(values);
+	return result;
 }
 
 std::vector<std::shared_ptr<Value>> MultiValue::getValues()
