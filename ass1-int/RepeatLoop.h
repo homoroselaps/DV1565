@@ -20,11 +20,11 @@ public:
 	virtual std::shared_ptr<Value> execute(std::shared_ptr<Value> environment, ExecControl &control) override {
 		std::shared_ptr<Value> result = nullptr;
 		auto env = std::make_shared<Value>();
-		auto _env = reinterpret_cast<Table*>(env.get())->Create();
+		auto _env = reinterpret_cast<Table*>(env.get())->Create(environment);
 		while (true)
 		{
 			result = m_block->execute(env, control);
-			auto cond = m_condition->evaluate(environment);
+			auto cond = m_condition->evaluate(env);
 			if (!cond->getBool() || control) {
 				if (control == ExecControl::BREAK) control = ExecControl::NONE;
 				return result;
@@ -42,4 +42,3 @@ public:
 		return "RepeatLoop(Statement)";
 	}
 };
-

@@ -19,7 +19,7 @@ MultiValue * MultiValue::Create(std::vector<std::shared_ptr<Value>> &values) {
 }
 
 void MultiValue::assignMultiValue(std::shared_ptr<Value> other) {
-	auto _other = other->castMultiValue();
+	auto _other = other->copy()->castMultiValue();
 	auto otherChild = _other->m_values.begin();
 	for (auto child = m_values.begin(); child != m_values.end(); child++) {
 		if (otherChild != _other->m_values.end()) {

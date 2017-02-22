@@ -186,6 +186,8 @@ public:
 
 	void assign(std::shared_ptr<Value> right);
 
+	std::shared_ptr<Value> copy();
+
 	const ValueType getType() { return m_type; }
 
 	Function * castFunction();

@@ -112,6 +112,10 @@ void Value::assign(std::shared_ptr<Value> right) {
 	}
 }
 
+std::shared_ptr<Value> Value::copy() {
+	return std::shared_ptr<Value>();
+}
+
 Function * Value::castFunction()
 {
 	assert(m_type == ValueType::FUNCTION);

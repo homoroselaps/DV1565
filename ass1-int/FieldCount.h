@@ -16,7 +16,6 @@ public:
 	}
 
 	virtual void execute(std::shared_ptr<Value> environment, std::shared_ptr<Value> base, int index) override {
-		std::cout << "FieldCount Exec" << index << std::endl;
 		auto value = base->castTable()->get(std::make_shared<Value>((double)index));
 		value->assign(m_expr->evaluate(environment));
 	}
