@@ -19,7 +19,7 @@ public:
 
 	virtual void execute(std::shared_ptr<Value> environment, std::shared_ptr<Value> base, int index) override {
 		auto key = m_key->evaluate(environment);
-		auto value = environment->castTable()->get(key);
+		auto value = base->castTable()->get(key);
 		value->assign(m_expr->evaluate(environment));
 	}
 

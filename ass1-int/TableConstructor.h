@@ -22,7 +22,6 @@ public:
 		if (m_fieldList) {
 			m_fieldList->execute(environment, table, 1);
 		}
-		std::cout << to_string() << environment->castTable()->get(std::make_shared<Value>((double)2))->to_string() << std::endl;
 		return table;
 	}
 
