@@ -288,34 +288,37 @@ node0 -> node95
 node96 [label="NumberLiteral
 (Expression) Value: 1.000000" ]
 node95 -> node96
-node97 [label="VarName
-(Expression) Value: itemCount" ]
+node97 [label="LengthOperator
+(Expression)" ]
 node95 -> node97
-node98 [label="NumberLiteral
-(Expression) Value: 1.000000" ]
-node95 -> node98
-node99 [label="Chunk
-(Statement)" ]
-node95 -> node99
-node100 [label="ExprStatement
-(Statement)" ]
-node99 -> node100
-node101 [label="FunctionCall
-(Expression)" ]
-node100 -> node101
-node102 [label="VarName
-(Expression) Value: print" ]
-node101 -> node102
-node103 [label="ExprList
-(Expression)" ]
-node101 -> node103
-node104 [label="VarIndex
-(Expression)" ]
-node103 -> node104
-node105 [label="VarName
+node98 [label="VarName
 (Expression) Value: list" ]
+node97 -> node98
+node99 [label="NumberLiteral
+(Expression) Value: 1.000000" ]
+node95 -> node99
+node100 [label="Chunk
+(Statement)" ]
+node95 -> node100
+node101 [label="ExprStatement
+(Statement)" ]
+node100 -> node101
+node102 [label="FunctionCall
+(Expression)" ]
+node101 -> node102
+node103 [label="VarName
+(Expression) Value: print" ]
+node102 -> node103
+node104 [label="ExprList
+(Expression)" ]
+node102 -> node104
+node105 [label="VarIndex
+(Expression)" ]
 node104 -> node105
 node106 [label="VarName
+(Expression) Value: list" ]
+node105 -> node106
+node107 [label="VarName
 (Expression) Value: i" ]
-node104 -> node106
+node105 -> node107
 }

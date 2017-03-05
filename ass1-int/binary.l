@@ -62,7 +62,7 @@
 "."[0-9]+ | [0-9]+"."[0-9]* | "."[0-9]+ | [0-9]+E[-+]?[0-9]+ | [0-9]+"."[0-9]*E[-+]?[0-9]+ | "."[0-9]+E[-+]?[0-9]+ { return yy::parser::make_NUMBER(atof(yytext));}
 
 [ \t]+     { /*return yy::parser::make_BLK();*/ }
-[\n]+      { /*return yy::parser::make_NL();*/ }
+(\n|\r\n)+      { /*return yy::parser::make_NL();*/ }
 [^0-9+\-*\/^%,;:\.\{\}\[\]\(\)<>=~ \t\n'"#][a-zA-Z0-9]*  { return yy::parser::make_NAME(yytext); }
 
 <<EOF>>    { return yy::parser::make_EOOF(); }

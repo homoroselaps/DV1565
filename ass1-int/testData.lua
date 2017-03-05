@@ -10,6 +10,6 @@ repeat
     end
   end
 until hasChanged == false
-for i = 1,itemCount do
+for i = 1,#list do
   print (list[i])
 end

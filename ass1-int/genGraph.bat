@@ -1,0 +1,1 @@
+dot parse.txt -Oparse.svg -Tsvg

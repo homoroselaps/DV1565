@@ -1,8 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include "binary.tab.h"
-#include "LibraryStd.h"
-#include "LibraryIO.h"
+#include "source/LibraryStd.h"
+#include "source/LibraryIO.h"
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 

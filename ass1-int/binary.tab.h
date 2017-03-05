@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.0.4.
+// A Bison parser, made by GNU Bison 3.0.2.
 
 // Skeleton interface for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2015 Free Software Foundation, Inc.
+// Copyright (C) 2002-2013 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,58 +40,63 @@
 #ifndef YY_YY_BINARY_TAB_H_INCLUDED
 # define YY_YY_BINARY_TAB_H_INCLUDED
 // //                    "%code requires" blocks.
-#line 5 "binary.y" // lalr1.cc:377
+#line 5 "binary.y" // lalr1.cc:372
 
 	#define YYDEBUG 1
-	#include "Assignment.h"
-	#include "BoolLiteral.h"
-	#include "BreakStat.h"
-	#include "Chunk.h"
-	#include "BoolComparator.h"
-	#include "Expr.h"
-	#include "ExprList.h"
-	#include "ExprStatement.h"
-	#include "FieldCount.h"
-	#include "FieldIndex.h"
-	#include "FieldList.h"
-	#include "FunctionCall.h"
-	#include "FunctionBody.h"
-	#include "ForLoop.h"
-	#include "GlobalFunctionDef.h"
-	#include "IfStatement.h"
-	#include "NilLiteral.h"
-	#include "Node.hpp"
-	#include "NodeList.h"
-	#include "NameList.h"
-	#include "NumLiteral.h"
-	#include "NumOperator.h"
-	#include "NotOperator.h"
-	#include "LengthOperator.h"
-	#include "LocalAssignment.h"
-	#include "LocalDef.h"
-	#include "LocalFunctionDef.h"
-	#include "ReturnStat.h"
-	#include "RepeatLoop.h"
-	#include "Selection.h"
-	#include "Statement.h"
-	#include "StringLiteral.h"
-	#include "StringOperator.h"
-	#include "TableConstructor.h"
-	#include "VarName.h"
-	#include "VarIndex.h"
-	#include "WhileLoop.h"
+
+	#include "source/Expr.h"
+	#include "source/Field.h"
+	#include "source/NameList.h"
+	#include "source/NodeList.h"
+	#include "source/Statement.h"
+	#include "source/Node.h"
+
+	#include "source/field/FieldCount.h"
+	#include "source/field/FieldIndex.h"
+	#include "source/field/FieldList.h"
+
+	#include "source/statement/Assignment.h"
+	#include "source/statement/BreakStat.h"
+	#include "source/statement/Chunk.h"
+	#include "source/statement/ExprStatement.h"
+	#include "source/statement/ForInLoop.h"
+	#include "source/statement/ForLoop.h"
+	#include "source/statement/GlobalFunctionDef.h"
+	#include "source/statement/IfStatement.h"
+	#include "source/statement/LocalAssignment.h"
+	#include "source/statement/LocalDef.h"
+	#include "source/statement/LocalFunctionDef.h"
+	#include "source/statement/RepeatLoop.h"
+	#include "source/statement/ReturnStat.h"
+	#include "source/statement/Selection.h"
+	#include "source/statement/WhileLoop.h"
+
+	#include "source/expression/BoolComparator.h"
+	#include "source/expression/BoolLiteral.h"
+	#include "source/expression/ExprList.h"
+	#include "source/expression/FunctionBody.h"
+	#include "source/expression/FunctionCall.h"
+	#include "source/expression/LengthOperator.h"
+	#include "source/expression/NilLiteral.h"
+	#include "source/expression/NotOperator.h"
+	#include "source/expression/NumLiteral.h"
+	#include "source/expression/NumOperator.h"
+	#include "source/expression/StringLiteral.h"
+	#include "source/expression/StringOperator.h"
+	#include "source/expression/TableConstructor.h"
+	#include "source/expression/VarIndex.h"
+	#include "source/expression/VarName.h"
 
 	#include <string>
 	#include <memory>
 
-#line 88 "binary.tab.h" // lalr1.cc:377
+#line 94 "binary.tab.h" // lalr1.cc:372
 
 
-# include <cstdlib> // std::abort
+# include <vector>
 # include <iostream>
 # include <stdexcept>
 # include <string>
-# include <vector>
 # include "stack.hh"
 
 
@@ -161,7 +166,7 @@
 
 
 namespace yy {
-#line 165 "binary.tab.h" // lalr1.cc:377
+#line 170 "binary.tab.h" // lalr1.cc:372
 
 
 
@@ -405,11 +410,8 @@ namespace yy {
     /// (External) token type, as returned by yylex.
     typedef token::yytokentype token_type;
 
-    /// Symbol type: an internal symbol number.
+    /// Internal symbol number.
     typedef int symbol_number_type;
-
-    /// The symbol type number to denote an empty symbol.
-    enum { empty_symbol = -2 };
 
     /// Internal symbol number for tokens (subsumed by symbol_number_type).
     typedef unsigned char token_number_type;
@@ -449,14 +451,7 @@ namespace yy {
       basic_symbol (typename Base::kind_type t,
                     const semantic_type& v);
 
-      /// Destroy the symbol.
       ~basic_symbol ();
-
-      /// Destroy contents, and record that is empty.
-      void clear ();
-
-      /// Whether empty.
-      bool empty () const;
 
       /// Destructive move, \a s is emptied into this.
       void move (basic_symbol& s);
@@ -484,23 +479,21 @@ namespace yy {
       /// Constructor from (external) token numbers.
       by_type (kind_type t);
 
-      /// Record that this symbol is empty.
-      void clear ();
-
       /// Steal the symbol type from \a that.
       void move (by_type& that);
 
       /// The (internal) type number (corresponding to \a type).
-      /// \a empty when empty.
+      /// -1 when this symbol is empty.
       symbol_number_type type_get () const;
 
       /// The token.
       token_type token () const;
 
+      enum { empty = 0 };
+
       /// The symbol type.
-      /// \a empty_symbol when empty.
-      /// An int, not token_number_type, to be able to store empty_symbol.
-      int type;
+      /// -1 when this symbol is empty.
+      token_number_type type;
     };
 
     /// "External" symbols: returned by the scanner.
@@ -675,9 +668,9 @@ namespace yy {
 
     /// Generate an error message.
     /// \param yystate   the state where the error occurred.
-    /// \param yyla      the lookahead token.
+    /// \param yytoken   the lookahead token type, or yyempty_.
     virtual std::string yysyntax_error_ (state_type yystate,
-                                         const symbol_type& yyla) const;
+                                         symbol_number_type yytoken) const;
 
     /// Compute post-reduction state.
     /// \param yystate   the current state
@@ -777,21 +770,16 @@ namespace yy {
       /// Copy constructor.
       by_state (const by_state& other);
 
-      /// Record that this symbol is empty.
-      void clear ();
-
       /// Steal the symbol type from \a that.
       void move (by_state& that);
 
       /// The (internal) type number (corresponding to \a state).
-      /// \a empty_symbol when empty.
+      /// "empty" when empty.
       symbol_number_type type_get () const;
 
-      /// The state number used to denote an empty symbol.
-      enum { empty_state = -1 };
+      enum { empty = 0 };
 
       /// The state.
-      /// \a empty when empty.
       state_type state;
     };
 
@@ -832,12 +820,13 @@ namespace yy {
     /// Pop \a n symbols the three stacks.
     void yypop_ (unsigned int n = 1);
 
-    /// Constants.
+    // Constants.
     enum
     {
       yyeof_ = 0,
       yylast_ = 384,     ///< Last index in yytable_.
       yynnts_ = 27,  ///< Number of nonterminal symbols.
+      yyempty_ = -2,
       yyfinal_ = 3, ///< Termination state number.
       yyterror_ = 1,
       yyerrcode_ = 256,
@@ -1066,18 +1055,8 @@ namespace yy {
   inline
   parser::basic_symbol<Base>::~basic_symbol ()
   {
-    clear ();
-  }
-
-  template <typename Base>
-  inline
-  void
-  parser::basic_symbol<Base>::clear ()
-  {
     // User destructor.
     symbol_number_type yytype = this->type_get ();
-    basic_symbol<Base>& yysym = *this;
-    (void) yysym;
     switch (yytype)
     {
    default:
@@ -1136,15 +1115,6 @@ namespace yy {
         break;
     }
 
-    Base::clear ();
-  }
-
-  template <typename Base>
-  inline
-  bool
-  parser::basic_symbol<Base>::empty () const
-  {
-    return Base::type_get () == empty_symbol;
   }
 
   template <typename Base>
@@ -1209,7 +1179,7 @@ namespace yy {
   // by_type.
   inline
   parser::by_type::by_type ()
-    : type (empty_symbol)
+     : type (empty)
   {}
 
   inline
@@ -1224,17 +1194,10 @@ namespace yy {
 
   inline
   void
-  parser::by_type::clear ()
-  {
-    type = empty_symbol;
-  }
-
-  inline
-  void
   parser::by_type::move (by_type& that)
   {
     type = that.type;
-    that.clear ();
+    that.type = empty;
   }
 
   inline
@@ -1459,7 +1422,7 @@ namespace yy {
 
 
 } // yy
-#line 1463 "binary.tab.h" // lalr1.cc:377
+#line 1426 "binary.tab.h" // lalr1.cc:372
 
 
 
