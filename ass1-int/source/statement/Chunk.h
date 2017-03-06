@@ -44,4 +44,11 @@ public:
 	virtual std::string to_string() override {
 		return "Chunk(Statement)";
 	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
+		for (auto stat : m_stats) {
+			current = stat->convert(current);
+		}
+		return current;
+	}
 };

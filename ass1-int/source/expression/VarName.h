@@ -28,4 +28,8 @@ public:
 	virtual std::string to_string() override {
 		return "VarName(Expression) Value: " + m_name;
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
+		result = SymbolTable::get().createSymbol(ValueType::NIL, m_name);
+		return current;
+	}
 };

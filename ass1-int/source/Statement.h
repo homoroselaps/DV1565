@@ -2,6 +2,7 @@
 #include <memory>
 #include "Value.h"
 #include "Node.h"
+#include "Block.h"
 
 enum ExecControl
 {
@@ -31,4 +32,7 @@ public:
 	virtual std::string to_string() override {
 		return "(Statement)";
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) {
+		return nullptr;
+	};
 };

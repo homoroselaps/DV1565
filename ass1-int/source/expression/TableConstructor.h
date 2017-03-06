@@ -9,13 +9,11 @@ class TableConstructor :
 public:
 
 	TableConstructor() {};
-	TableConstructor(std::shared_ptr<FieldList> fieldList) : m_fieldList{fieldList}
+	TableConstructor(std::shared_ptr<FieldList> fieldList) : m_fieldList{fieldList} 
 	{
 	}
 
-	virtual ~TableConstructor()
-	{
-	}
+	virtual ~TableConstructor() { }
 
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) override {
 		auto table = std::make_shared<Value>();

@@ -16,7 +16,7 @@ public:
 		m_exprs.push_back(expr);
 	}
 
-	virtual ~ExprList()
+	virtual ~ExprList() 
 	{
 	}
 
@@ -32,7 +32,7 @@ public:
 			reinterpret_cast<MultiValue*>(result.get())->Create(values);
 			return result;
 		}
-	};
+	}
 
 	virtual std::vector<std::shared_ptr<Node>> getChildren() override {
 		auto children = std::vector<std::shared_ptr<Node>>{};
@@ -44,6 +44,13 @@ public:
 
 	virtual std::string to_string() override {
 		return "ExprList(Expression)";
+	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
+		//TODO: support multi value assignments
+		current = m_exprs.front()->convert(current);
+		result = m_exprs.front()->result;
+		return current;
 	}
 
 };

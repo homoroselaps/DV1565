@@ -51,7 +51,7 @@ public:
 		}
 		case ValueType::NIL:
 			return std::make_shared<Value>(rightValue->getType() == ValueType::NIL);
-		case MULTI:
+		case ValueType::MULTI:
 			throw std::runtime_error("Cant compare MultiValue");
 		}
 	}

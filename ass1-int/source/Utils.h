@@ -1,6 +1,25 @@
 #pragma once
 
-enum NumOperatorType {
+enum class ValueType
+{
+	NIL,
+	BOOL,
+	NUMBER,
+	STRING,
+	FUNCTION,
+	TABLE,
+	MULTI,
+};
+
+enum class Operator {
+	ADD,
+	SUB,
+	MUL,
+	DIV,
+	MOV,
+};
+
+enum class NumOperatorType {
   PLUS,
   MINUS,
   MUL,
@@ -9,7 +28,7 @@ enum NumOperatorType {
   MOD,
 };
 
-enum BoolComparatorType {
+enum class BoolComparatorType {
   EQUAL,
   NEQUAL,
   LESS,
@@ -80,4 +99,45 @@ public:
           return "std::to_string(type)";
       }
     }
+
+	static std::string to_string(Operator op) {
+		switch (op)
+		{
+		case Operator::ADD:
+			return "ADD";
+		case Operator::SUB:
+			return "SUB";
+		case Operator::MUL:
+			return "MUL";
+		case Operator::DIV:
+			return "DIV";
+		case Operator::MOV:
+			return "MOV";
+		default:
+			break;
+		};
+		return "";
+	}
+
+	static std::string to_string(ValueType type) {
+		switch (type)
+		{
+		case ValueType::NIL:
+			return "NIL";
+		case ValueType::BOOL:
+			return "BOOL";
+		case ValueType::NUMBER:
+			return "NUMBER";
+		case ValueType::STRING:
+			return "STRING";
+		case ValueType::FUNCTION:
+			return "FUNCTION";
+		case ValueType::TABLE:
+			return "TABLE";
+		case ValueType::MULTI:
+			return "MULTI";
+		default:
+			return "std::to_string(type)";
+		}
+	}
 };
