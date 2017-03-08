@@ -8,15 +8,15 @@ void Value::assignMultiValue(std::shared_ptr<Value> other)
 	auto _other = other->castMultiValue();
 	switch (m_type)
 	{
-	case ValueType::NIL:
-	case ValueType::BOOL:
-	case ValueType::NUMBER:
-	case ValueType::STRING:
-	case ValueType::FUNCTION:
-	case ValueType::TABLE:
+	case NIL:
+	case BOOL:
+	case NUMBER:
+	case STRING:
+	case FUNCTION:
+	case TABLE:
 		assign(_other->getFirst());
 		break;
-	case ValueType::MULTI:
+	case MULTI:
 		castMultiValue()->assignMultiValue(other);
 		break;
 	}
@@ -60,22 +60,22 @@ void Value::assignFunction(std::shared_ptr<Value> other)
 std::string Value::to_string() {
 	switch (m_type)
 	{
-		case ValueType::NIL: 
+		case NIL:
 			return "nil";
-		case ValueType::BOOL: 
+		case BOOL:
 			return std::to_string(m_boolValue);
-		case ValueType::NUMBER: {
+		case NUMBER: {
 			auto result = std::to_string(m_numValue);
 			result.erase(result.find_last_not_of('0') + 2, std::string::npos );
 			return result;
 		}
-		case ValueType::STRING: 
+		case STRING:
 			return m_stringValue;
-		case ValueType::FUNCTION: 
+		case FUNCTION:
 			return "Function{" + pointerToStr((void*)m_function.get()) + "}";
-		case ValueType::TABLE: 
+		case TABLE:
 			return "Table{" + pointerToStr((void*)m_table.get()) + "}";
-		case ValueType::MULTI: {
+		case MULTI: {
 			auto output = "MultiValue{" + pointerToStr((void*)this) + ": ";
 			for (auto value : castMultiValue()->getValues()) output += value->to_string() + ", ";
 			return  output + "}";
@@ -87,25 +87,25 @@ std::string Value::to_string() {
 void Value::assign(std::shared_ptr<Value> right) {
 	switch (right->m_type)
 	{
-	case ValueType::NIL:
+	case NIL:
 		assignNil();
 		break;
-	case ValueType::BOOL:
+	case BOOL:
 		assignBool(right->getBool());
 		break;
-	case ValueType::NUMBER:
+	case NUMBER:
 		assignNumber(right->getNumber());
 		break;
-	case ValueType::STRING:
+	case STRING:
 		assignString(right->getString());
 		break;
-	case ValueType::FUNCTION:
+	case FUNCTION:
 		assignFunction(right);
 		break;
-	case ValueType::TABLE:
+	case TABLE:
 		assignTable(right);
 		break;
-	case ValueType::MULTI:
+	case MULTI:
 		assignMultiValue(right);
 		break;
 	}
@@ -115,23 +115,23 @@ std::shared_ptr<Value> Value::copy() {
 	auto val = std::make_shared<Value>();
 	switch (m_type)
 	{
-	case ValueType::NIL:
+	case NIL:
 		val->assignNil();
 		break;
-	case ValueType::BOOL:
+	case BOOL:
 		val->assignBool(m_boolValue);
 		break;
-	case ValueType::NUMBER:
+	case NUMBER:
 		val->assignNumber(m_numValue);
 		break;
-	case ValueType::STRING:
+	case STRING:
 		val->assignString(m_stringValue);
 		break;
-	case ValueType::FUNCTION:
+	case FUNCTION:
 		return castFunction()->copy();
-	case ValueType::TABLE:
+	case TABLE:
 		return castTable()->copy();
-	case ValueType::MULTI:
+	case MULTI:
 		return castMultiValue()->copy();
 	}
 	return val;

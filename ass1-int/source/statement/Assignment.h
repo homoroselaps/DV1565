@@ -34,18 +34,5 @@ public:
 	virtual std::string to_string() override {
 		return "Assignment(Statement)";
 	}
-
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
-		current = m_values->convert(current);
-		current = m_base->convert(current);
-		auto inst = std::make_shared<ThreeAd>(
-			Operator::MOV
-			, m_base->result
-			, m_values->result
-			);
-		m_base->result->type = m_values->result->type;
-		current->instrs.push_back(inst);
-		return current;
-	}
 };
 

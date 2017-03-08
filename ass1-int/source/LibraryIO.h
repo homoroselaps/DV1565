@@ -16,10 +16,10 @@ public:
 			auto firstArg = args.front();
 			switch (firstArg->getType())
 			{
-			case ValueType::NUMBER: {
+			case NUMBER: {
 				throw std::runtime_error("IO write: flag not supported");
 			}
-			case ValueType::STRING: {
+			case STRING: {
 				if (firstArg->getString() == "*number") {
 					double number;
 					std::cin >> number;

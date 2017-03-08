@@ -6,7 +6,6 @@
 #include <cassert>
 #include <vector>
 #include <sstream>
-#include "Utils.h"
 
 
 class Table;
@@ -46,6 +45,17 @@ public:
 	TableData(std::shared_ptr<Value> parentScope): TableData() {
 		m_parentScope = parentScope;
 	}
+};
+
+enum ValueType
+{
+	NIL,
+	BOOL,
+	NUMBER,
+	STRING,
+	FUNCTION,
+	TABLE,
+	MULTI,
 };
 
 class Value
@@ -123,52 +133,52 @@ public:
 	virtual bool getBool() {
 		switch (m_type)
 		{
-		case ValueType::NIL:
+		case NIL:
 			return false;
-		case ValueType::BOOL:
+		case BOOL:
 			return m_boolValue;
-		case ValueType::NUMBER:
-		case ValueType::STRING:
-		case ValueType::FUNCTION:
-		case ValueType::TABLE:
+		case NUMBER:
+		case STRING:
+		case FUNCTION:
+		case TABLE:
 			return true;
-		case ValueType::MULTI:
+		case MULTI:
 		default:
-			throw std::runtime_error("Invalid Conversion from" + Utils::to_string(m_type) + "to Bool");
+			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Bool");
 		}
 	}
 
 	virtual double getNumber() {
 		switch (m_type)
 		{
-		case ValueType::NUMBER:
+		case NUMBER:
 			return m_numValue;
-		case ValueType::STRING:
+		case STRING:
 			return std::stod(m_stringValue);
-		case ValueType::BOOL:
-		case ValueType::NIL:
-		case ValueType::FUNCTION:
-		case ValueType::TABLE:
-		case ValueType::MULTI:
+		case BOOL:
+		case NIL:
+		case FUNCTION:
+		case TABLE:
+		case MULTI:
 		default:
-			throw std::runtime_error("Invalid Conversion from" + Utils::to_string(m_type) + "to Number");
+			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Number");
 		}
 	}
 
 	virtual std::string getString() {
 		switch (m_type)
 		{
-		case ValueType::NUMBER:
+		case NUMBER:
 			return std::to_string(m_numValue);
-		case ValueType::STRING:
+		case STRING:
 			return m_stringValue;
-		case ValueType::BOOL:
-		case ValueType::NIL:
-		case ValueType::FUNCTION:
-		case ValueType::TABLE:
-		case ValueType::MULTI:
+		case BOOL:
+		case NIL:
+		case FUNCTION:
+		case TABLE:
+		case MULTI:
 		default:
-			throw std::runtime_error("Invalid Conversion from" + Utils::to_string(m_type) + "to Number");
+			throw std::runtime_error("Invalid Conversion from" + std::to_string(m_type) + "to Number");
 		}
 	}
 

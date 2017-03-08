@@ -3,18 +3,17 @@
 #include "Value.h"
 #include "Table.h"
 #include "Node.h"
-#include "Symbol.h"
-#include "Block.h"
-
 class Expr : public Node
 {
 public:
 
-	Expr() { }
+	Expr()
+	{
+	}
 
-	virtual ~Expr() { }
-
-	std::shared_ptr<Symbol> result;
+	virtual ~Expr()
+	{
+	}
 
 	virtual std::shared_ptr<Value> evaluate(std::shared_ptr<Value> environment) = 0;
 
@@ -24,9 +23,5 @@ public:
 	}
 	virtual std::string to_string() override {
 		return "(Expression)";
-	}
-
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) {
-		return current;
 	}
 };

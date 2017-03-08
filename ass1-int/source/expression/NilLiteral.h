@@ -1,6 +1,5 @@
 #pragma once
 #include "../Expr.h"
-#include "../ConstSymbol.h"
 
 class NilLiteral : public Expr
 {
@@ -24,15 +23,5 @@ public:
 	}
 	virtual std::string to_string() override {
 		return "NilLiteral(Expression)";
-	}
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
-		result = SymbolTable::get().createSymbol(ValueType::NIL);
-		auto inst = std::make_shared<ThreeAd>(
-			Operator::MOV
-			, result
-			, std::make_shared<ConstSymbol>()
-			);
-		current->instrs.push_back(inst);
-		return current;
 	}
 };
