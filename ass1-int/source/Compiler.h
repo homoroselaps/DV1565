@@ -32,7 +32,7 @@ public:
 		output << "int main() {" << std::endl;
 		// mem array definition
 		output << "long " << symTable->name << "[" << symTableSize << "];" << std::endl;
-		output << "asm(" << std::endl;
+		output << "__asm__(" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};

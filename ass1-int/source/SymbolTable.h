@@ -28,6 +28,14 @@ public:
 		return s;
 	}
 
+	std::vector<std::shared_ptr<Symbol>> getSymbols() {
+		auto result = std::vector<std::shared_ptr<Symbol>>{};
+		for (auto pair : m_symbols) {
+			result.push_back(pair.second);
+		}
+		return result;
+	}
+
 	virtual int calculate_offset(int nextOffset) override {
 		for (auto pair : m_symbols) {
 			nextOffset = pair.second->calculate_offset(nextOffset);

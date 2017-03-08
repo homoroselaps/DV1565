@@ -17,6 +17,7 @@ enum class Operator {
 	MUL,
 	DIV,
 	MOV,
+	CALL,
 };
 
 enum class NumOperatorType {

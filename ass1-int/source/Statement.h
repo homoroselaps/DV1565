@@ -33,6 +33,6 @@ public:
 		return "(Statement)";
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) {
-		return nullptr;
+		return current;
 	};
 };
