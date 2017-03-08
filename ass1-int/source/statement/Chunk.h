@@ -45,9 +45,9 @@ public:
 		return "Chunk(Statement)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		for (auto stat : m_stats) {
-			current = stat->convert(current);
+			current = stat->convert(current, env);
 		}
 		return current;
 	}

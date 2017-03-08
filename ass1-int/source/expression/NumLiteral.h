@@ -2,6 +2,8 @@
 #include "../Expr.h"
 #include "../Value.h"
 #include "../Node.h"
+#include "../ImidiateSymbol.h"
+#include "../MemorySymbol.h"
 #include <string>
 #include <memory>
 
@@ -29,12 +31,12 @@ public:
 	virtual std::string to_string() override {
 		return "NumberLiteral(Expression) Value: " + std::to_string(m_value);
 	}
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
-		result = SymbolTable::get().createSymbol(ValueType::NUMBER);
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		auto inst = std::make_shared<ThreeAd>(
 			Operator::MOV
 			, result
-			, std::make_shared<ConstSymbol>((double)m_value)
+			, std::make_shared<ImidiateSymbol>((double)m_value)
 			);
 		current->instrs.push_back(inst);
 		return current;

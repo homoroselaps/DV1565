@@ -12,24 +12,26 @@ class Compiler
 
 public:
 
-	Compiler(std::shared_ptr<Chunk> root): m_root(root)
-	{
-	}
+	Compiler(std::shared_ptr<Chunk> root): m_root(root)	{ }
 
 	std::string compile() {
+		auto symTable = std::make_shared<SymbolTable>("mem");
+		auto end = std::make_shared<Block>();
+		end->visited = true;
+		auto main = std::make_shared<Block>();
+		main = m_root->convert(main, symTable);
+		main->tExit = end;
+		main->fExit = end;
+
+		auto symTableSize = symTable->calculate_offset(0);
+		
+		// includes
 		std::stringstream output;
 		output << "#include <iostream>" << std::endl;
 		output << "#include <string>" << std::endl;
 		output << "int main() {" << std::endl;
-		
-		auto end = std::make_shared<Block>();
-		end->visited = true;
-		auto main = std::make_shared<Block>();
-		main = m_root->convert(main);
-		main->tExit = end;
-		main->fExit = end;
-
-		output << SymbolTable::get().to_asm_start() << std::endl;
+		// mem array definition
+		output << "long " << symTable->name << "[" << symTableSize << "];" << std::endl;
 		output << "asm(" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
@@ -56,10 +58,12 @@ public:
 			open_queue.push(blk->fExit);
 		}
 		output << end->to_asm() << std::endl;
-		output << SymbolTable::get().to_asm_end();
+		
+		//asm Constraints
+		output << ":" << std::endl;
+		output << ": [mem] \"r\" (mem)" << std::endl;
 		output << ": \"rax\", \"rbx\", \"rdx\", \"cc\"" << std::endl;
 		output << ");" << std::endl;
-		output << "std::cout << num;" << std::endl;
 		output << "}" << std::endl;
 		return output.str();
 	}

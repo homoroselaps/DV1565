@@ -5,10 +5,11 @@
 #include <string>
 #include "ThreeAd.h"
 #include "SymbolTable.h"
+#include "NameGenerator.h"
+#include "Symbol.h"
 
 class Block
 {
-	static int nCounter;
 public:
 	std::vector<std::shared_ptr<ThreeAd>> instrs;
 	std::shared_ptr<Block> tExit, fExit;
@@ -18,8 +19,8 @@ public:
 	Block() 
 	: tExit(nullptr)
 	, fExit(nullptr)
-	, sym(SymbolTable::get().createSymbol(ValueType::FUNCTION,"blk"+std::to_string(nCounter++)))
 	{
+		sym = std::make_shared<Symbol>(ValueType::FUNCTION, NameGenerator::get().nextBlk());
 	}
 
 	virtual ~Block()
@@ -35,7 +36,5 @@ public:
 		}
 		return output.str();
 	}
-
 };
-int Block::nCounter = 0;
 

@@ -32,7 +32,7 @@ public:
 	virtual std::string to_string() override {
 		return "(Statement)";
 	}
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) {
 		return nullptr;
 	};
 };

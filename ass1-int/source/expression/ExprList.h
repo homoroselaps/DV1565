@@ -46,9 +46,9 @@ public:
 		return "ExprList(Expression)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		//TODO: support multi value assignments
-		current = m_exprs.front()->convert(current);
+		current = m_exprs.front()->convert(current, env);
 		result = m_exprs.front()->result;
 		return current;
 	}

@@ -35,9 +35,9 @@ public:
 		return "Assignment(Statement)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
-		current = m_values->convert(current);
-		current = m_base->convert(current);
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		current = m_values->convert(current, env);
+		current = m_base->convert(current, env);
 		auto inst = std::make_shared<ThreeAd>(
 			Operator::MOV
 			, m_base->result

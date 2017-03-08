@@ -2,8 +2,9 @@
 #include "../Expr.h"
 #include "../Value.h"
 #include "../Node.h"
-#include "../ConstSymbol.h"
 #include "../SymbolTable.h"
+#include "../MemorySymbol.h"
+#include "../ImidiateSymbol.h"
 #include <string>
 #include <memory>
 
@@ -29,14 +30,15 @@ public:
 	virtual std::string to_string() override {
 		return "BoolLiteral(Expression) Value: " + std::string(m_value ? "true" : "false");
 	}
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current) override {
-		result = SymbolTable::get().createSymbol(ValueType::BOOL);
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		auto inst = std::make_shared<ThreeAd>(
 			Operator::MOV
 			, result
-			, std::make_shared<ConstSymbol>((double)m_value)
-		);
+			, std::make_shared<ImidiateSymbol>((double)m_value)
+			);
 		current->instrs.push_back(inst);
 		return current;
 	}
+
 };
