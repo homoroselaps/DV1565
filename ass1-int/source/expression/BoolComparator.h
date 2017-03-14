@@ -59,18 +59,18 @@ public:
 	bool compare(bool a, bool b) {
 		switch (m_type)
 		{
-		case EQUAL:
+		case BoolComparatorType::EQUAL:
 			return a == b;
-		case NEQUAL:
+		case BoolComparatorType::NEQUAL:
 			return a != b;
-		case AND:
+		case BoolComparatorType::AND:
 			return a && b;
-		case OR:
+		case BoolComparatorType::OR:
 			return a || b;
-		case LESS:
-		case LEQUAL:
-		case GREATER:
-		case GEQUAL:
+		case BoolComparatorType::LESS:
+		case BoolComparatorType::LEQUAL:
+		case BoolComparatorType::GREATER:
+		case BoolComparatorType::GEQUAL:
 			throw std::runtime_error("Invalid comparison");
 			break;
 		}
@@ -79,20 +79,20 @@ public:
 	bool compare(std::string a, std::string b) {
 		switch (m_type)
 		{
-		case EQUAL:
+		case BoolComparatorType::EQUAL:
 			return a == b;
-		case NEQUAL:
+		case BoolComparatorType::NEQUAL:
 			return a != b;
-		case LESS:
+		case BoolComparatorType::LESS:
 			return a < b;
-		case LEQUAL:
+		case BoolComparatorType::LEQUAL:
 			return a <= b;
-		case GREATER:
+		case BoolComparatorType::GREATER:
 			return a > b;
-		case GEQUAL:
+		case BoolComparatorType::GEQUAL:
 			return a >= b;
-		case OR:
-		case AND:
+		case BoolComparatorType::OR:
+		case BoolComparatorType::AND:
 			throw std::runtime_error("Invalid comparison");
 			break;
 		}
@@ -101,20 +101,20 @@ public:
 	bool compare(double a, double b) {
 		switch (m_type)
 		{
-		case EQUAL:
+		case BoolComparatorType::EQUAL:
 			return a == b;
-		case NEQUAL:
+		case BoolComparatorType::NEQUAL:
 			return a != b;
-		case LESS:
+		case BoolComparatorType::LESS:
 			return a < b;
-		case LEQUAL:
+		case BoolComparatorType::LEQUAL:
 			return a <= b;
-		case GREATER:
+		case BoolComparatorType::GREATER:
 			return a > b;
-		case GEQUAL:
+		case BoolComparatorType::GEQUAL:
 			return a >= b;
-		case OR:
-		case AND:
+		case BoolComparatorType::OR:
+		case BoolComparatorType::AND:
 			throw std::runtime_error("Invalid comparison");
 			break;
 		}
@@ -123,16 +123,16 @@ public:
 	bool compare(std::shared_ptr<Value> a, std::shared_ptr<Value> b) {
 		switch (m_type)
 		{
-		case EQUAL:
+		case BoolComparatorType::EQUAL:
 			return a == b;
-		case NEQUAL:
+		case BoolComparatorType::NEQUAL:
 			return a != b;
-		case LESS:
-		case LEQUAL:
-		case GREATER:
-		case GEQUAL:
-		case OR:
-		case AND:
+		case BoolComparatorType::LESS:
+		case BoolComparatorType::LEQUAL:
+		case BoolComparatorType::GREATER:
+		case BoolComparatorType::GEQUAL:
+		case BoolComparatorType::OR:
+		case BoolComparatorType::AND:
 			throw std::runtime_error("Invalid comparison");
 			break;
 		}

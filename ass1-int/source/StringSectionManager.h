@@ -20,7 +20,7 @@ public:
 		m_strings[name] = str;
 	}
 
-	std::string to_asm_start() {
+	std::string to_asm() {
 		std::stringstream output;
 		output << "\".data\"" << std::endl;
 		for (auto pair : m_strings) {

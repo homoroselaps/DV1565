@@ -32,4 +32,7 @@ public:
 	virtual std::string to_string() override {
 		return "ExprStatement(Statement)";
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		return m_expr->convert(current, env);
+	};
 };

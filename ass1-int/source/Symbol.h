@@ -18,7 +18,7 @@ public:
 
 	virtual ~Symbol() { }
 
-	std::string to_string() {
+	virtual std::string to_string() {
 		return name +":" + Utils::to_string(type);
 	}
 

@@ -1,6 +1,7 @@
 #pragma once
 #include "../Statement.h"
 #include "../expression/ExprList.h"
+#include "../ThreeAdSymbol.h"
 
 class Assignment :
 	public Statement
@@ -38,7 +39,7 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		current = m_values->convert(current, env);
 		current = m_base->convert(current, env);
-		auto inst = std::make_shared<ThreeAd>(
+		auto inst = std::make_shared<ThreeAdSymbol>(
 			Operator::MOV
 			, m_base->result
 			, m_values->result

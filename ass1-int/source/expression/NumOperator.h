@@ -3,6 +3,7 @@
 #include "../Node.h"
 #include <cmath>
 #include "../Utils.h"
+#include "../ThreeAdSymbol.h"
 
 class NumOperator : public Expr
 {
@@ -73,16 +74,16 @@ public:
 		switch (m_type)
 		{
 		case NumOperatorType::PLUS:
-			inst = std::make_shared<ThreeAd>(Operator::ADD, result, m_left->result, m_right->result);
+			inst = std::make_shared<ThreeAdSymbol>(Operator::ADD, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MINUS:
-			inst = std::make_shared<ThreeAd>(Operator::SUB, result, m_left->result, m_right->result);
+			inst = std::make_shared<ThreeAdSymbol>(Operator::SUB, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::DIV:
-			inst = std::make_shared<ThreeAd>(Operator::DIV, result, m_left->result, m_right->result);
+			inst = std::make_shared<ThreeAdSymbol>(Operator::DIV, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MUL:
-			inst = std::make_shared<ThreeAd>(Operator::MUL, result, m_left->result, m_right->result);
+			inst = std::make_shared<ThreeAdSymbol>(Operator::MUL, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MOD:
 			throw std::runtime_error("Not Implemented");

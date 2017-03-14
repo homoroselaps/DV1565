@@ -4,6 +4,7 @@
 #include "../Function.h"
 #include "NilLiteral.h"
 #include "../MultiValue.h"
+#include "../ThreeAdSymbol.h"
 #include <memory>
 #include <string>
 
@@ -73,11 +74,13 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		current = m_base->convert(current, env);
 		auto base = m_base->result;
+		//assert(base->type == ValueType::FUNCTION);
+		
 		current = m_args->convert(current, env);
 		auto args = m_args->result;
 		
 		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
-		auto inst = std::make_shared<ThreeAd>(
+		auto inst = std::make_shared<ThreeAdSymbol>(
 			Operator::CALL
 			, result
 			, base

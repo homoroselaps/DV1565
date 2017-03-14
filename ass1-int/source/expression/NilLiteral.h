@@ -3,6 +3,7 @@
 #include "../ImidiateSymbol.h"
 #include "../MemorySymbol.h"
 #include "../NameGenerator.h"
+#include "../ThreeAdSymbol.h"
 
 class NilLiteral : public Expr
 {
@@ -29,7 +30,7 @@ public:
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		result = env->createSymbol(ValueType::NIL, NameGenerator::get().nextTemp());
-		auto inst = std::make_shared<ThreeAd>(
+		auto inst = std::make_shared<ThreeAdSymbol>(
 			Operator::MOV
 			, result
 			, std::make_shared<ImidiateSymbol>()

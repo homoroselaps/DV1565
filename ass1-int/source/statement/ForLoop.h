@@ -1,7 +1,14 @@
 #pragma once
+#include <string>
+#include <memory>
 #include "../Statement.h"
 #include "../Expr.h"
-#include <string>
+#include "Chunk.h"
+#include "Assignment.h"
+#include "WhileLoop.h"
+#include "../expression/VarName.h"
+#include "../expression/BoolComparator.h"
+#include "../expression/NumLiteral.h"
 
 class ForLoop :
 	public Statement
@@ -55,4 +62,33 @@ public:
 	virtual std::string to_string() override {
 		return "ForLoop(Statement) Name:" + m_name;
 	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto root = std::make_shared<Chunk>();
+		auto ass = std::make_shared<Assignment>(
+			std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
+			m_start
+			);
+		root->addStatement(ass);
+
+		auto ass2 = std::make_shared<Assignment>(
+			std::static_pointer_cast<Expr>(std::make_shared<VarName>("forLoopEndVar")),
+			m_limit
+			);
+		root->addStatement(ass2);
+
+		auto whle = std::make_shared<WhileLoop>(
+			std::static_pointer_cast<Expr>(std::make_shared<BoolComparator>(
+				BoolComparatorType::LEQUAL,
+				std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
+				std::static_pointer_cast<Expr>(std::make_shared<VarName>("forLoopEndVar"))
+				)),
+				m_block
+				);
+		root->addStatement(whle);
+		
+		current = root->convert(current, env);
+		return current;
+	};
+
 };

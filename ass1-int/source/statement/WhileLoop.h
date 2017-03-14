@@ -42,5 +42,19 @@ public:
 		return "WhileLoop(Statement)";
 	}
 
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto block = std::make_shared<Block>();
+		auto endBlock = std::make_shared<Block>();
+		
+		current = m_condition->convert(current, env);
+		current->tExit = block;
+		current->fExit = endBlock;
+		
+		block = m_block->convert(block, env);
+		block->tExit = endBlock;
+		block->fExit = endBlock;
+		return endBlock;
+	};
+
 };
 

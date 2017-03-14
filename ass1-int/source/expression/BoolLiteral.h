@@ -5,6 +5,7 @@
 #include "../SymbolTable.h"
 #include "../MemorySymbol.h"
 #include "../ImidiateSymbol.h"
+#include "../ThreeAdSymbol.h"
 #include <string>
 #include <memory>
 
@@ -32,7 +33,7 @@ public:
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
-		auto inst = std::make_shared<ThreeAd>(
+		auto inst = std::make_shared<ThreeAdSymbol>(
 			Operator::MOV
 			, result
 			, std::make_shared<ImidiateSymbol>((double)m_value)

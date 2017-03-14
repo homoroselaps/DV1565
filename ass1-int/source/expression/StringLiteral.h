@@ -4,6 +4,7 @@
 #include "../MemorySymbol.h"
 #include "../NameGenerator.h"
 #include "../StringSectionManager.h"
+#include "../ThreeAdSymbol.h"
 #include <string>
 #include <memory>
 class StringLiteral: public Expr
@@ -33,8 +34,8 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		auto name = NameGenerator::get().nextName("str");
 		StringSectionManager::get().addString(name, m_value);
-		result = env->createSymbol(ValueType::STRING, name);
-		auto inst = std::make_shared<ThreeAd>(
+		result = env->addSymbol(std::make_shared<Symbol>(ValueType::STRING, name));
+		auto inst = std::make_shared<ThreeAdSymbol>(
 			Operator::MOV
 			, result
 			, std::make_shared<Symbol>(ValueType::STRING, m_value)

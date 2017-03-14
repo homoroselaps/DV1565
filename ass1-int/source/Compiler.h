@@ -5,6 +5,8 @@
 #include <stack>
 #include "statement/Chunk.h"
 #include "Block.h"
+#include "LibraryStd.h"
+#include "StringSectionManager.h"
 
 class Compiler
 {
@@ -16,10 +18,16 @@ public:
 
 	std::string compile() {
 		auto symTable = std::make_shared<SymbolTable>("mem");
+		auto libs = std::make_shared<Block>();
+		// Load Libraries
+		libs = LibraryStd::convert(libs, symTable);
+		
+		auto main = std::make_shared<Block>();
+		// Convert Lua Code
+		main = m_root->convert(main, symTable);
+
 		auto end = std::make_shared<Block>();
 		end->visited = true;
-		auto main = std::make_shared<Block>();
-		main = m_root->convert(main, symTable);
 		main->tExit = end;
 		main->fExit = end;
 
@@ -33,10 +41,15 @@ public:
 		// mem array definition
 		output << "long " << symTable->name << "[" << symTableSize << "];" << std::endl;
 		output << "__asm__(" << std::endl;
+		output << StringSectionManager::get().to_asm() << std::endl;
+		output << R"(".text;")" << std::endl;
+		output << "\".globl " << main->sym->to_asm() << ";\"" << std::endl;
+		output << "\"jmp "    << main->sym->to_asm() << ";\"" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};
 
+		open_queue.push(libs);
 		open_queue.push(main);
 		while (true) {
 			std::shared_ptr<Block> blk;
@@ -54,15 +67,17 @@ public:
 			if (blk->visited) continue;
 			blk->visited = true;
 			output << blk->to_asm() << std::endl;
-			open_stack.push(blk->tExit);
-			open_queue.push(blk->fExit);
+			if (blk->tExit)
+				open_stack.push(blk->tExit);
+			if (blk->fExit)
+				open_queue.push(blk->fExit);
 		}
 		output << end->to_asm() << std::endl;
 		
 		//asm Constraints
 		output << ":" << std::endl;
 		output << ": [mem] \"r\" (mem)" << std::endl;
-		output << ": \"rax\", \"rbx\", \"rdx\", \"cc\"" << std::endl;
+		output << ": \"rax\", \"rbx\", \"rcx\", \"rdx\", \"cc\"" << std::endl;
 		output << ");" << std::endl;
 		output << "}" << std::endl;
 		return output.str();
