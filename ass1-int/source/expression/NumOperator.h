@@ -1,7 +1,7 @@
 #pragma once
+#include <cmath>
 #include "../Expr.h"
 #include "../Node.h"
-#include <cmath>
 #include "../Utils.h"
 #include "../ThreeAdSymbol.h"
 
@@ -86,7 +86,7 @@ public:
 			inst = ThreeAdSymbol::create3Ad(Operator::MUL, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MOD:
-			throw std::runtime_error("Not Implemented");
+			inst = ThreeAdSymbol::create3Ad(Operator::MOD, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::POW:
 			throw std::runtime_error("Not Implemented");

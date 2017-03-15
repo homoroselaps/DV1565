@@ -10,8 +10,8 @@
 
 class Block
 {
-	BoolComparatorType m_cmpType;
-	std::vector<std::shared_ptr<ThreeAd>> instrs;
+	std::vector<std::shared_ptr<ThreeAd>> m_instrs;
+	bool m_global = false;
 public:
 	std::shared_ptr<Block> tExit, fExit;
 	std::shared_ptr<Symbol> sym;
@@ -20,25 +20,31 @@ public:
 	Block() 
 	: tExit(nullptr)
 	, fExit(nullptr)
-	, m_cmpType(BoolComparatorType::EQUAL)
 	{
 		sym = std::make_shared<Symbol>(ValueType::FUNCTION, NameGenerator::get().nextBlk());
 	}
 
-	virtual ~Block() { }
-
-	void setType(BoolComparatorType type) {
-		m_cmpType = type;
+	Block(std::string name)
+	: tExit(nullptr)
+	, fExit(nullptr)
+	, m_global(true)
+	{
+		sym = std::make_shared<Symbol>(ValueType::FUNCTION, name);
 	}
 
+	virtual ~Block() { }
+
 	void addInstruction(std::shared_ptr<ThreeAd> inst) {
-		instrs.push_back(inst);
+		m_instrs.push_back(inst);
 	}
 	
 	std::string to_asm() {
 		std::stringstream output;
+		output << "\".text;\"";
+		if (m_global)
+			output << "\".globl " << sym->name << ";\"" << std::endl;
 		output << "\"" << sym->name << ":" << "\"" << std::endl;
-		for (auto inst : instrs) {
+		for (auto inst : m_instrs) {
 			assert(inst);
 			output << "/*" << inst->to_string() << "*/" << std::endl;
 			output << inst->to_asm() << std::endl;

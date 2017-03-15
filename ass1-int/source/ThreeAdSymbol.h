@@ -68,7 +68,15 @@ public:
 		case Operator::DIV:
 			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
 			output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
+			output << "\"cltd;\"" << std::endl;
 			output << "\" idivq %%rbx, %%rax ;\"" << std::endl;
+			break;
+		case Operator::MOD:
+			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
+			output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
+			output << "\"cltd;\"" << std::endl;
+			output << "\" idivq %%rbx, %%rax ;\"" << std::endl;
+			output << "\" movq %%rdx, %%rax ;\"" << std::endl;
 			break;
 		case Operator::MOV:
 			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
@@ -83,7 +91,7 @@ public:
 				args = symTable->getSymbols();
 			}
 			else {
-				args = std::vector<std::shared_ptr<Symbol>>{ right };
+				args = std::vector<std::shared_ptr<Symbol>>{ right, std::make_shared<ImidiateSymbol>() };
 			}	
 			
 			int index = 0;

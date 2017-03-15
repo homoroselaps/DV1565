@@ -8,6 +8,7 @@
 #include "LibraryIO.h"
 #include "LibraryStd.h"
 #include "StringSectionManager.h"
+#include "BlockManager.h"
 
 class Compiler
 {
@@ -19,13 +20,11 @@ public:
 
 	std::string compile() {
 		auto symTable = std::make_shared<SymbolTable>("mem");
-		auto libs = std::make_shared<Block>();
-		auto libsRoot = libs;
 		// Load Libraries
-		libs = LibraryStd::convert(libs, symTable);
-		libs = LibraryIO::convert(libs, symTable);
+		LibraryStd::load(symTable);
+		LibraryIO::load(symTable);
 		
-		auto main = std::make_shared<Block>();
+		auto main = BlockManager::get().createRootBlock("root");
 		auto root = main;
 		// Convert Lua Code
 		main = m_root->convert(main, symTable);
@@ -39,6 +38,7 @@ public:
 		
 		// includes
 		std::stringstream output;
+		output << "#include <cstdio>" << std::endl;
 		output << "#include <iostream>" << std::endl;
 		output << "#include <string>" << std::endl;
 		output << "int main() {" << std::endl;
@@ -53,8 +53,8 @@ public:
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};
 
-		open_queue.push(libsRoot);
-		open_queue.push(root);
+		for (auto blk : BlockManager::get().getBlocks())
+			open_queue.push(blk);
 		while (true) {
 			std::shared_ptr<Block> blk;
 			if (open_stack.size()) {

@@ -65,6 +65,7 @@ public:
 	}
 
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto endVarName = NameGenerator::get().nextName("!for");
 		auto root = std::make_shared<Chunk>();
 		auto ass = std::make_shared<Assignment>(
 			std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
@@ -73,7 +74,7 @@ public:
 		root->addStatement(ass);
 
 		auto ass2 = std::make_shared<Assignment>(
-			std::static_pointer_cast<Expr>(std::make_shared<VarName>("forLoopEndVar")),
+			std::static_pointer_cast<Expr>(std::make_shared<VarName>(endVarName)),
 			m_limit
 			);
 		root->addStatement(ass2);
@@ -94,7 +95,7 @@ public:
 			std::static_pointer_cast<Expr>(std::make_shared<BoolComparator>(
 				BoolComparatorType::LEQUAL,
 				std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
-				std::static_pointer_cast<Expr>(std::make_shared<VarName>("forLoopEndVar"))
+				std::static_pointer_cast<Expr>(std::make_shared<VarName>(endVarName))
 				)),
 				chunk
 				);

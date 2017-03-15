@@ -17,6 +17,7 @@ enum class Operator : int {
 	SUB,
 	MUL,
 	DIV,
+	MOD,
 	MOV,
 	CALL,
 	JMP,

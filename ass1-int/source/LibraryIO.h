@@ -6,6 +6,7 @@
 #include "Utils.h"
 #include "SymbolTable.h"
 #include "ThreeAdText.h"
+#include "BlockManager.h"
 
 class LibraryIO
 {
@@ -71,15 +72,13 @@ public:
 		environment->castTable()->set(std::make_shared<Value>("io"), io);
 	}
 
-	static std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) {
+	static void load(std::shared_ptr<SymbolTable> env) {
 		auto io = std::make_shared<SymbolTable>("io");
-		auto read = std::make_shared<Symbol>(ValueType::FUNCTION, "read");
-		io->addSymbol(read);
 		env->addSymbol(io);
+		
+		auto read = BlockManager::get().createRootBlock("read");
+		io->addSymbol(read->sym);
 		std::string instrs = R"(
-".text;"
-".globl	read;"
-"read:"
 "pushq	%%rbp;"
 "movq	%%rsp, %%rbp;"
 "subq	$40, %%rsp;"
@@ -98,18 +97,15 @@ public:
 "popq	%%rbp;"
 "ret;"	
 )";
-		current->addInstruction(std::make_shared<ThreeAdText>(instrs));
+		read->addInstruction(std::make_shared<ThreeAdText>(instrs));
 
-		auto write = std::make_shared<Symbol>(ValueType::FUNCTION, "write");
-		io->addSymbol(write);
-		env->addSymbol(io);
+		auto write = BlockManager::get().createRootBlock("write");
+		io->addSymbol(write->sym);
 		std::string instrsWrite = R"(
 ".data;"
 ".writeLC0: .string \"%%d\";"
 ".writeLC1: .string \"%%s\";"
 ".text;"
-".globl	write;"
-"write:"
 "pushq	%%rbp;"
 "movq	%%rsp, %%rbp;"
 "subq	$32, %%rsp;"
@@ -117,8 +113,10 @@ public:
 "movq	%%rsi, -16(%%rbp);"
 "movq	%%rdx, -24(%%rbp);"
 "movq	%%rcx, -32(%%rbp);"
-"cmpq	$2, -8(%%rbp);"
-"jg		.writeSTR;"
+"cmpq	$3, -8(%%rbp);"
+"je		.writeSTR;"
+"cmpq	$0, -8(%%rbp);"
+"je		.writeSND;"
 "movq	-16(%%rbp), %%rsi;"
 "movq	$.writeLC0, %%rdi;"
 "movq	$0, %%rax;"
@@ -127,7 +125,6 @@ public:
 "pop	%%r8;"
 "jmp	.writeSND;"
 ".writeSTR:"
-"cmpq	$3, -8(%%rbp);"
 "jne	.writeSND;"
 "movq	-16(%%rbp), %%rsi;"
 "movq	$.writeLC1, %%rdi;"
@@ -136,8 +133,10 @@ public:
 "call	printf;"
 "pop	%%r8;"
 ".writeSND:"
-"cmpq	$2, -24(%%rbp);"
-"jg		.writeSTRSND;"
+"cmpq	$3, -24(%%rbp);"
+"je		.writeSTRSND;"
+"cmpq	$0, -24(%%rbp);"
+"je		.writeEND;"
 "movq	-32(%%rbp), %%rsi;"
 "movq	$.writeLC0, %%rdi;"
 "movq	$0, %%rax;"
@@ -160,8 +159,6 @@ public:
 "popq	%%rbp;"
 "ret;"		
 )";
-		current->addInstruction(std::make_shared<ThreeAdText>(instrsWrite));
-
-		return current;
+		write->addInstruction(std::make_shared<ThreeAdText>(instrsWrite));
 	}
 };

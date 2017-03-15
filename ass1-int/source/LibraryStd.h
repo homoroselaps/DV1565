@@ -5,6 +5,7 @@
 #include "Table.h"
 #include "Utils.h"
 #include "ThreeAdText.h"
+#include "BlockManager.h"
 
 class LibraryStd
 {
@@ -38,16 +39,14 @@ public:
 		environment->castTable()->create("print", print());
 	}
 
-	static std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) {
-		auto sym = std::make_shared<Symbol>(ValueType::FUNCTION, "print");
-		env->addSymbol(sym);
+	static void load(std::shared_ptr<SymbolTable> env) {
+		auto print = BlockManager::get().createRootBlock("print");
+		env->addSymbol(print->sym);
 		std::string instrs = R"(
 ".data;"
 ".printLC0: .string \"%%d\\n\";"
 ".printLC1: .string \"%%s\\n\";"
 ".text;"
-".globl	print;"
-"print:"
 "pushq	%%rbp;"
 "movq	%%rsp, %%rbp;"
 "subq	$32, %%rsp;"
@@ -79,7 +78,6 @@ public:
 "popq	%%rbp;"
 "ret;"	
 )";
-		current->addInstruction(std::make_shared<ThreeAdText>(instrs));
-		return current;
+		print->addInstruction(std::make_shared<ThreeAdText>(instrs));
 	}
 };
