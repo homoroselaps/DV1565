@@ -33,7 +33,7 @@ public:
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
-		auto inst = std::make_shared<ThreeAdSymbol>(
+		auto inst = ThreeAdSymbol::create2Ad(
 			Operator::MOV
 			, result
 			, std::make_shared<ImidiateSymbol>((double)m_value)

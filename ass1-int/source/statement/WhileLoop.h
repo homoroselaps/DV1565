@@ -43,16 +43,19 @@ public:
 	}
 
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto startBlock = std::make_shared<Block>();
 		auto block = std::make_shared<Block>();
 		auto endBlock = std::make_shared<Block>();
-		
-		current = m_condition->convert(current, env);
-		current->tExit = block;
-		current->fExit = endBlock;
-		
+		current->tExit = startBlock;
+		current->fExit = startBlock;
+
+		startBlock = m_condition->convert(startBlock, env);
+		startBlock->tExit = block;
+		startBlock->fExit = endBlock;
+
 		block = m_block->convert(block, env);
-		block->tExit = endBlock;
-		block->fExit = endBlock;
+		block->tExit = startBlock;
+		block->fExit = startBlock;
 		return endBlock;
 	};
 

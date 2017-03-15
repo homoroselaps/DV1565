@@ -19,15 +19,27 @@ public:
 	, result(result)
 	, left(left)
 	, right(right)
-	{
+	{ }
+
+	static std::shared_ptr<ThreeAdSymbol> create3Ad(Operator op, std::shared_ptr<Symbol> result, std::shared_ptr<Symbol> left, std::shared_ptr<Symbol> right) {
+		return std::make_shared<ThreeAdSymbol>(op, result, left, right);
 	}
 
-	ThreeAdSymbol(Operator op, std::shared_ptr<Symbol> result, std::shared_ptr<Symbol> sgl): ThreeAdSymbol(op, result, sgl, sgl) { }
+	static std::shared_ptr<ThreeAdSymbol> create2Ad(Operator op, std::shared_ptr<Symbol> result, std::shared_ptr<Symbol> sgl) {
+		return std::make_shared<ThreeAdSymbol>(op, result, sgl, sgl);
+	}
+
+	static std::shared_ptr<ThreeAdSymbol> create1Ad(Operator op, std::shared_ptr<Symbol> sgl) {
+		return std::make_shared<ThreeAdSymbol>(op, nullptr, sgl, sgl);
+	}
 
 	virtual ~ThreeAdSymbol() { }
 
 	virtual std::string to_string() override {
-		return result->to_string() + " <- " + left->to_string() + " " + Utils::to_string(op) + " " + right->to_string();
+		std::string out = "";
+		if (result)
+			out = result->to_string() + " <- ";
+		return out + left->to_string() + " " + Utils::to_string(op) + " " + right->to_string();
 	}
 
 	virtual std::string to_asm() override {
@@ -78,11 +90,90 @@ public:
 			output << "\" call " << left->to_asm() << " ;\"" << std::endl;
 			break;
 		}
+		case Operator::EQUAL:
+		case Operator::NEQUAL:
+		case Operator::LESS:
+		case Operator::LEQUAL:
+		case Operator::GREATER:
+		case Operator::GEQUAL:
+		case Operator::AND:
+		case Operator::OR:
+			output << boolComparator();
+			break;
+		case Operator::TEST:
+			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
+			output << "\" test %%rax, %%rax ;\"" << std::endl;
+			break;
 		default:
 			break;
 		}
-		// Write back result
-		output << "\" movq %%rax, " << result->to_asm() << " ;\"" << std::endl;
+		// Write back result if there is one
+		if (result)
+			output << "\" movq %%rax, " << result->to_asm() << " ;\"" << std::endl;
+		return output.str();
+	}
+	std::string boolComparator() {
+		std::stringstream output;
+		output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
+		output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
+		std::string inst = "";
+		switch (op)
+		{
+		case Operator::EQUAL:
+		case Operator::NEQUAL:
+		case Operator::LESS:
+		case Operator::LEQUAL:
+		case Operator::GREATER:
+		case Operator::GEQUAL:
+			inst = "cmpq";
+			break;
+		case Operator::AND:
+			inst = "andq";
+			break;
+		case Operator::OR:
+			inst = "orq";
+			break;
+		default:
+			break;
+		}
+
+		output << "\" " << inst << " %%rbx, %%rax;\"" << std::endl;
+		output << "\" movq $1, %%rax;\"" << std::endl;
+
+		std::string jmpTrue = "";
+		switch (op)
+		{
+		case Operator::EQUAL:
+			jmpTrue = "je";
+			break;
+		case Operator::NEQUAL:
+			jmpTrue = "jne";
+			break;
+		case Operator::LESS:
+			jmpTrue = "jl";
+			break;
+		case Operator::LEQUAL:
+			jmpTrue = "jle";
+			break;
+		case Operator::GREATER:
+			jmpTrue = "jg";
+			break;
+		case Operator::GEQUAL:
+			jmpTrue = "jge";
+			break;
+		case Operator::AND:
+			jmpTrue = "jne";
+			break;
+		case Operator::OR:
+			jmpTrue = "jne";
+			break;
+		default:
+			break;
+		}
+		auto trueLabel = NameGenerator::get().nextName(".jmp");
+		output << "\" " << jmpTrue << " " << trueLabel << ";\"" << std::endl;
+		output << "\" movq $0, %%rax;\"" << std::endl;
+		output << "\" " << trueLabel << ":\"" << std::endl;
 		return output.str();
 	}
 };

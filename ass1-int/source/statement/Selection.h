@@ -1,6 +1,7 @@
 #pragma once
 #include "../Statement.h"
 #include "IfStatement.h"
+#include "../ThreeAdSymbol.h"
 class Selection :
 	public Statement
 {
@@ -51,5 +52,31 @@ public:
 	virtual std::string to_string() override {
 		return "Selector(Statement)";
 	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto endBlk = std::make_shared<Block>();
+		for (auto stat : m_ifStats) {
+			current = stat->m_cond->convert(current, env);
+			auto testInst = ThreeAdSymbol::create1Ad(Operator::TEST, stat->m_cond->result);
+			current->instrs.push_back(testInst);
+			
+			auto tempBlk = std::make_shared<Block>();
+			current->tExit = tempBlk;
+			tempBlk = stat->m_stat->convert(tempBlk, env);
+			tempBlk->tExit = endBlk;
+			tempBlk->fExit = endBlk;
+			
+			auto nextCnd = std::make_shared<Block>();
+			current->fExit = nextCnd;
+			current = nextCnd;
+		}
+		if (m_else) {
+			current = m_else->convert(current, env);
+		}
+		current->tExit = endBlk;
+		current->fExit = endBlk;
+
+		return endBlk;
+	};
 
 };

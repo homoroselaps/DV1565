@@ -80,7 +80,7 @@ public:
 		auto args = m_args->result;
 		
 		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
-		auto inst = std::make_shared<ThreeAdSymbol>(
+		auto inst = ThreeAdSymbol::create3Ad(
 			Operator::CALL
 			, result
 			, base

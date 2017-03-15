@@ -3,9 +3,9 @@
 #include "../Expr.h"
 class IfStatement : public Statement
 {
+public:
 	std::shared_ptr<Expr> m_cond;
 	std::shared_ptr<Statement> m_stat;
-public:
 
 	IfStatement(std::shared_ptr<Expr> cond, std::shared_ptr<Statement> stat) {
 		m_cond = cond;

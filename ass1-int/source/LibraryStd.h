@@ -43,8 +43,8 @@ public:
 		env->addSymbol(sym);
 		std::string instrs = R"(
 ".data;"
-".printLC0: .string \"%%d\";"
-".printLC1: .string \"%%s\";"
+".printLC0: .string \"%%d\\n\";"
+".printLC1: .string \"%%s\\n\";"
 ".text;"
 ".globl	print;"
 "print:"
@@ -56,7 +56,7 @@ public:
 "movq	%%rdx, -24(%%rbp);"
 "movq	%%rcx, -32(%%rbp);"
 "cmpq	$2, -8(%%rbp);"
-"jne	.printSTR;"
+"jg		.printSTR;"
 "movq	-16(%%rbp), %%rsi;"
 "movq	$.printLC0, %%rdi;"
 "movq	$0, %%rax;"

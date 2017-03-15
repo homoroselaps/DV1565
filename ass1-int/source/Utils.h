@@ -11,7 +11,7 @@ enum class ValueType
 	MULTI,
 };
 
-enum class Operator {
+enum class Operator : int {
 	NONE,
 	ADD,
 	SUB,
@@ -19,9 +19,18 @@ enum class Operator {
 	DIV,
 	MOV,
 	CALL,
+	TEST,
+	EQUAL,
+	NEQUAL,
+	LESS,
+	LEQUAL,
+	GREATER,
+	GEQUAL,
+	AND,
+	OR,
 };
 
-enum class NumOperatorType {
+enum class NumOperatorType : int {
   PLUS,
   MINUS,
   MUL,
@@ -30,7 +39,7 @@ enum class NumOperatorType {
   MOD,
 };
 
-enum class BoolComparatorType {
+enum class BoolComparatorType : int {
   EQUAL,
   NEQUAL,
   LESS,
@@ -46,7 +55,7 @@ namespace Utils {
 		template <typename E>
 		constexpr auto to_underlying(E e) noexcept
 		{
-			return static_cast<std::underlying_type_t<E>>(e);
+			return static_cast<typename std::underlying_type<E>::type>(e);
 		}
 
 		static bool replace(std::string& str, const std::string& from, const std::string& to) {
@@ -114,6 +123,24 @@ namespace Utils {
 				return "MOV";
 			case Operator::CALL:
 				return "CALL";
+			case Operator::TEST:
+				return "TEST";
+			case Operator::EQUAL:
+				return "EQUAL";
+			case Operator::NEQUAL:
+				return "NEQUAL";
+			case Operator::LESS:
+				return "LESS";
+			case Operator::LEQUAL:
+				return "LEQUAL";
+			case Operator::GREATER:
+				return "GREATER";
+			case Operator::GEQUAL:
+				return "GEQUAL";
+			case Operator::AND:
+				return "AND";
+			case Operator::OR:
+				return "OR";
 			default:
 				break;
 			};

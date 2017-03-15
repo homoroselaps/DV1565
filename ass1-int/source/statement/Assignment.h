@@ -39,7 +39,7 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		current = m_values->convert(current, env);
 		current = m_base->convert(current, env);
-		auto inst = std::make_shared<ThreeAdSymbol>(
+		auto inst =  ThreeAdSymbol::create2Ad(
 			Operator::MOV
 			, m_base->result
 			, m_values->result

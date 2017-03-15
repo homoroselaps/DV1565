@@ -35,7 +35,7 @@ public:
 		auto name = NameGenerator::get().nextName("str");
 		StringSectionManager::get().addString(name, m_value);
 		result = env->addSymbol(std::make_shared<Symbol>(ValueType::STRING, name));
-		auto inst = std::make_shared<ThreeAdSymbol>(
+		auto inst = ThreeAdSymbol::create2Ad(
 			Operator::MOV
 			, result
 			, std::make_shared<Symbol>(ValueType::STRING, m_value)

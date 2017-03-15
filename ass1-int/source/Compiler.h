@@ -23,6 +23,7 @@ public:
 		libs = LibraryStd::convert(libs, symTable);
 		
 		auto main = std::make_shared<Block>();
+		auto root = main;
 		// Convert Lua Code
 		main = m_root->convert(main, symTable);
 
@@ -43,14 +44,14 @@ public:
 		output << "__asm__(" << std::endl;
 		output << StringSectionManager::get().to_asm() << std::endl;
 		output << R"(".text;")" << std::endl;
-		output << "\".globl " << main->sym->to_asm() << ";\"" << std::endl;
-		output << "\"jmp "    << main->sym->to_asm() << ";\"" << std::endl;
+		output << "\".globl " << root->sym->to_asm() << ";\"" << std::endl;
+		output << "\"jmp "    << root->sym->to_asm() << ";\"" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};
 
 		open_queue.push(libs);
-		open_queue.push(main);
+		open_queue.push(root);
 		while (true) {
 			std::shared_ptr<Block> blk;
 			if (open_stack.size()) {
@@ -77,7 +78,7 @@ public:
 		//asm Constraints
 		output << ":" << std::endl;
 		output << ": [mem] \"r\" (mem)" << std::endl;
-		output << ": \"rax\", \"rbx\", \"rcx\", \"rdx\", \"cc\"" << std::endl;
+		output << ": \"rax\", \"rbx\", \"rcx\", \"rdx\", \"rdi\", \"rsi\", \"cc\"" << std::endl;
 		output << ");" << std::endl;
 		output << "}" << std::endl;
 		return output.str();

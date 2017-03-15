@@ -74,16 +74,16 @@ public:
 		switch (m_type)
 		{
 		case NumOperatorType::PLUS:
-			inst = std::make_shared<ThreeAdSymbol>(Operator::ADD, result, m_left->result, m_right->result);
+			inst = ThreeAdSymbol::create3Ad(Operator::ADD, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MINUS:
-			inst = std::make_shared<ThreeAdSymbol>(Operator::SUB, result, m_left->result, m_right->result);
+			inst = ThreeAdSymbol::create3Ad(Operator::SUB, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::DIV:
-			inst = std::make_shared<ThreeAdSymbol>(Operator::DIV, result, m_left->result, m_right->result);
+			inst = ThreeAdSymbol::create3Ad(Operator::DIV, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MUL:
-			inst = std::make_shared<ThreeAdSymbol>(Operator::MUL, result, m_left->result, m_right->result);
+			inst = ThreeAdSymbol::create3Ad(Operator::MUL, result, m_left->result, m_right->result);
 			break;
 		case NumOperatorType::MOD:
 			throw std::runtime_error("Not Implemented");

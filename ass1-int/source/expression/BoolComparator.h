@@ -147,4 +147,46 @@ public:
 	virtual std::string to_string() override {
 		return "Comparator(Statement) Type: " + Utils::to_string(m_type);
 	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		current = m_left->convert(current, env);
+		current = m_right->convert(current, env);
+		result = env->createSymbol(ValueType::BOOL, NameGenerator::get().nextTemp());
+
+		std::shared_ptr<ThreeAd> inst;
+
+		switch (m_type)
+		{
+		case BoolComparatorType::EQUAL:
+			inst = ThreeAdSymbol::create3Ad(Operator::EQUAL, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::NEQUAL:
+			inst = ThreeAdSymbol::create3Ad(Operator::NEQUAL, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::LESS:
+			inst = ThreeAdSymbol::create3Ad(Operator::LESS, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::LEQUAL:
+			inst = ThreeAdSymbol::create3Ad(Operator::LEQUAL, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::GREATER:
+			inst = ThreeAdSymbol::create3Ad(Operator::GREATER, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::GEQUAL:
+			inst = ThreeAdSymbol::create3Ad(Operator::GEQUAL, result, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::AND:
+			inst = ThreeAdSymbol::create2Ad(Operator::AND, m_left->result, m_right->result);
+			break;
+		case BoolComparatorType::OR:
+			inst = ThreeAdSymbol::create2Ad(Operator::OR, m_left->result, m_right->result);
+			break;
+		default:
+			assert(false);
+			break;
+		}
+		current->instrs.push_back(inst);
+
+		return current;
+	}
 };
