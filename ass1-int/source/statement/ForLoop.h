@@ -9,6 +9,7 @@
 #include "../expression/VarName.h"
 #include "../expression/BoolComparator.h"
 #include "../expression/NumLiteral.h"
+#include "../expression/NumOperator.h"
 
 class ForLoop :
 	public Statement
@@ -77,13 +78,25 @@ public:
 			);
 		root->addStatement(ass2);
 
+		auto chunk = std::make_shared<Chunk>();
+		chunk->addStatement(m_block);
+		auto inc = std::make_shared<Assignment>(
+			std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
+			std::static_pointer_cast<Expr>(std::make_shared<NumOperator>(
+				NumOperatorType::PLUS,
+				std::make_shared<VarName>(m_name),
+				std::make_shared<NumLiteral>(1.0)
+				))
+			);
+		chunk->addStatement(inc);
+
 		auto whle = std::make_shared<WhileLoop>(
 			std::static_pointer_cast<Expr>(std::make_shared<BoolComparator>(
 				BoolComparatorType::LEQUAL,
 				std::static_pointer_cast<Expr>(std::make_shared<VarName>(m_name)),
 				std::static_pointer_cast<Expr>(std::make_shared<VarName>("forLoopEndVar"))
 				)),
-				m_block
+				chunk
 				);
 		root->addStatement(whle);
 		

@@ -9,8 +9,8 @@
 #include <memory>
 class StringLiteral: public Expr
 {
-	std::string m_value;
 public:
+	std::string m_value;
 
 	StringLiteral(std::string value): m_value{value}
 	{
@@ -34,13 +34,8 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		auto name = NameGenerator::get().nextName("str");
 		StringSectionManager::get().addString(name, m_value);
-		result = env->addSymbol(std::make_shared<Symbol>(ValueType::STRING, name));
-		auto inst = ThreeAdSymbol::create2Ad(
-			Operator::MOV
-			, result
-			, std::make_shared<Symbol>(ValueType::STRING, m_value)
-			);
-		current->instrs.push_back(inst);
+		auto sym = std::make_shared<Symbol>(ValueType::STRING, name);
+		result = env->addSymbol(sym);
 		return current;
 	}
 };

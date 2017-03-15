@@ -33,13 +33,7 @@ public:
 		return "NumberLiteral(Expression) Value: " + std::to_string(m_value);
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
-		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
-		auto inst = ThreeAdSymbol::create2Ad(
-			Operator::MOV
-			, result
-			, std::make_shared<ImidiateSymbol>((double)m_value)
-			);
-		current->instrs.push_back(inst);
+		result = std::make_shared<ImidiateSymbol>((double)m_value);
 		return current;
 	}
 };

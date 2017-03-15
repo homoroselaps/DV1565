@@ -50,6 +50,8 @@ public:
 		current->fExit = startBlock;
 
 		startBlock = m_condition->convert(startBlock, env);
+		auto testInst = ThreeAdSymbol::create1Ad(Operator::TEST, m_condition->result);
+		startBlock->addInstruction(testInst);
 		startBlock->tExit = block;
 		startBlock->fExit = endBlock;
 

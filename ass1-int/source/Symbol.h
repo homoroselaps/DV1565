@@ -23,7 +23,18 @@ public:
 	}
 
 	virtual std::string to_asm() {
-		return name;
+		return "$" + name;
+	}
+
+	virtual std::string to_asm(Operator op) {
+		switch (op)
+		{
+		case Operator::CALL:
+		case Operator::JMP:
+			return name;
+		default:
+			return to_asm();
+		}
 	}
 
 	virtual int calculate_offset(int nextOffset) {

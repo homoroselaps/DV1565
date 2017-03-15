@@ -5,6 +5,7 @@
 #include <stack>
 #include "statement/Chunk.h"
 #include "Block.h"
+#include "LibraryIO.h"
 #include "LibraryStd.h"
 #include "StringSectionManager.h"
 
@@ -19,8 +20,10 @@ public:
 	std::string compile() {
 		auto symTable = std::make_shared<SymbolTable>("mem");
 		auto libs = std::make_shared<Block>();
+		auto libsRoot = libs;
 		// Load Libraries
 		libs = LibraryStd::convert(libs, symTable);
+		libs = LibraryIO::convert(libs, symTable);
 		
 		auto main = std::make_shared<Block>();
 		auto root = main;
@@ -40,17 +43,17 @@ public:
 		output << "#include <string>" << std::endl;
 		output << "int main() {" << std::endl;
 		// mem array definition
-		output << "long " << symTable->name << "[" << symTableSize << "];" << std::endl;
+		output << "long " << symTable->name << "[" << symTableSize << "] = {};" << std::endl;
 		output << "__asm__(" << std::endl;
 		output << StringSectionManager::get().to_asm() << std::endl;
 		output << R"(".text;")" << std::endl;
-		output << "\".globl " << root->sym->to_asm() << ";\"" << std::endl;
-		output << "\"jmp "    << root->sym->to_asm() << ";\"" << std::endl;
+		output << "\".globl " << root->sym->to_asm(Operator::JMP) << ";\"" << std::endl;
+		output << "\"jmp "    << root->sym->to_asm(Operator::JMP) << ";\"" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};
 
-		open_queue.push(libs);
+		open_queue.push(libsRoot);
 		open_queue.push(root);
 		while (true) {
 			std::shared_ptr<Block> blk;
@@ -80,6 +83,12 @@ public:
 		output << ": [mem] \"r\" (mem)" << std::endl;
 		output << ": \"rax\", \"rbx\", \"rcx\", \"rdx\", \"rdi\", \"rsi\", \"cc\"" << std::endl;
 		output << ");" << std::endl;
+		output << R"(
+unsigned char *p = (unsigned char *)&mem;
+size_t i;
+for (i=0; i < sizeof mem; ++i)
+    printf("%x", p[i]);
+		)";
 		output << "}" << std::endl;
 		return output.str();
 	}

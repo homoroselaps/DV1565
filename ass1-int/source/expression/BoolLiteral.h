@@ -38,7 +38,7 @@ public:
 			, result
 			, std::make_shared<ImidiateSymbol>((double)m_value)
 			);
-		current->instrs.push_back(inst);
+		current->addInstruction(inst);
 		return current;
 	}
 

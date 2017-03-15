@@ -79,7 +79,7 @@ public:
 "popq	%%rbp;"
 "ret;"	
 )";
-		current->instrs.push_back(std::make_shared<ThreeAdText>(instrs));
+		current->addInstruction(std::make_shared<ThreeAdText>(instrs));
 		return current;
 	}
 };

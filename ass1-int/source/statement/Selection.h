@@ -58,7 +58,7 @@ public:
 		for (auto stat : m_ifStats) {
 			current = stat->m_cond->convert(current, env);
 			auto testInst = ThreeAdSymbol::create1Ad(Operator::TEST, stat->m_cond->result);
-			current->instrs.push_back(testInst);
+			current->addInstruction(testInst);
 			
 			auto tempBlk = std::make_shared<Block>();
 			current->tExit = tempBlk;

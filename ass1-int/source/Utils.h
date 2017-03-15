@@ -19,6 +19,7 @@ enum class Operator : int {
 	DIV,
 	MOV,
 	CALL,
+	JMP,
 	TEST,
 	EQUAL,
 	NEQUAL,

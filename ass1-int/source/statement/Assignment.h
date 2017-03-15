@@ -45,7 +45,7 @@ public:
 			, m_values->result
 			);
 		m_base->result->type = m_values->result->type;
-		current->instrs.push_back(inst);
+		current->addInstruction(inst);
 		return current;
 	}
 };

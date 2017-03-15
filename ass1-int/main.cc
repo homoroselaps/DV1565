@@ -3,6 +3,8 @@
 #include "binary.tab.h"
 #include "source/LibraryStd.h"
 #include "source/LibraryIO.h"
+#include "source/Compiler.h"
+
 extern std::shared_ptr<Node> root;
 extern FILE* yyin;
 
@@ -30,17 +32,29 @@ int main(int argc, char **argv)
 	}
 	root->dump();
 
-	std::ofstream outputfile{"parse.txt", std::ios::out | std::ios::trunc};
-	outputfile << Node::to_graphviz(*std::static_pointer_cast<Node>(root));
-	outputfile.close();
-
+	std::ofstream graphvizfile{"parse.txt", std::ios::out | std::ios::trunc};
+	graphvizfile << Node::to_graphviz(*std::static_pointer_cast<Node>(root));
+	graphvizfile.close();
+	
+	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
+	assert(chunk);
+	
+	auto cmpl = Compiler{ chunk };
+	std::ofstream asmfile{ "target.cc", std::ios::out | std::ios::trunc };
+	try {
+		asmfile << cmpl.compile();
+	}
+	catch(const std::exception &e) {
+		std::cout << "Exception caught: ";
+		std::cout << e.what() << std::endl;
+	}
+	asmfile.close();
 
 	auto env = std::make_shared<Value>();
 	reinterpret_cast<Table*>(env.get())->Create();
 	LibraryStd::load(env);
 	LibraryIO::load(env);
 	ExecControl control = ExecControl::NONE;
-	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
 	chunk->execute(env, control);
 	return 0;
 }

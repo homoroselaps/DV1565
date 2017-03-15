@@ -92,7 +92,7 @@ public:
 			throw std::runtime_error("Not Implemented");
 			break;
 		}
-		current->instrs.push_back(inst);
+		current->addInstruction(inst);
 		return current;
 	}
 };

@@ -39,7 +39,11 @@ public:
 		std::string out = "";
 		if (result)
 			out = result->to_string() + " <- ";
-		return out + left->to_string() + " " + Utils::to_string(op) + " " + right->to_string();
+		if (left)
+			out = out + left->to_string() + " " + Utils::to_string(op);
+		if (right)
+			out = out + " " + right->to_string();
+		return out;
 	}
 
 	virtual std::string to_asm() override {
@@ -59,9 +63,12 @@ public:
 		case Operator::MUL:
 			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
 			output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
-			output << "\" mulq %%rbx, %%rax ;\"" << std::endl;
+			output << "\" imulq %%rbx, %%rax ;\"" << std::endl;
 			break;
 		case Operator::DIV:
+			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
+			output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
+			output << "\" idivq %%rbx, %%rax ;\"" << std::endl;
 			break;
 		case Operator::MOV:
 			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
@@ -87,7 +94,7 @@ public:
 				output << "\" movq " << arg->to_asm() << ", " << REGS.at(index) << " ;\"" << std::endl;
 				index++;
 			}
-			output << "\" call " << left->to_asm() << " ;\"" << std::endl;
+			output << "\" call " << left->to_asm(op) << " ;\"" << std::endl;
 			break;
 		}
 		case Operator::EQUAL:
@@ -137,8 +144,8 @@ public:
 			break;
 		}
 
+		output << "\" movq $1, %%rcx;\"" << std::endl;
 		output << "\" " << inst << " %%rbx, %%rax;\"" << std::endl;
-		output << "\" movq $1, %%rax;\"" << std::endl;
 
 		std::string jmpTrue = "";
 		switch (op)
@@ -172,8 +179,9 @@ public:
 		}
 		auto trueLabel = NameGenerator::get().nextName(".jmp");
 		output << "\" " << jmpTrue << " " << trueLabel << ";\"" << std::endl;
-		output << "\" movq $0, %%rax;\"" << std::endl;
+		output << "\" movq $0, %%rcx;\"" << std::endl;
 		output << "\" " << trueLabel << ":\"" << std::endl;
+		output << "\" movq %%rcx, %%rax;\"" << std::endl;
 		return output.str();
 	}
 };

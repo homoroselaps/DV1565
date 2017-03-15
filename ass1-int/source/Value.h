@@ -89,6 +89,8 @@ public:
 		assignNil();
 	}
 
+	Value(const char* value) : Value(std::string(value)) {}
+
 	Value(std::string value) : Value(ValueType::STRING){
 		assignString(value);
 	}

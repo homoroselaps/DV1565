@@ -22,11 +22,16 @@ public:
 
 	std::string to_asm() {
 		std::stringstream output;
-		output << "\".data\"" << std::endl;
+		output << "\".data;\"" << std::endl;
 		for (auto pair : m_strings) {
-			output << "\"" << pair.first << ": " << pair.second << "\"" << std::endl;
+			output << "\"" << pair.first << ": .string \\\"" << escape(pair.second) << "\\\";\"" << std::endl;
 		}
-		return "";
+		return output.str();
+	}
+
+	std::string escape(std::string str) {
+		Utils::replace(str, "%", "%%");
+		return str;
 	}
 };
 

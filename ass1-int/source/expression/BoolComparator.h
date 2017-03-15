@@ -185,7 +185,7 @@ public:
 			assert(false);
 			break;
 		}
-		current->instrs.push_back(inst);
+		current->addInstruction(inst);
 
 		return current;
 	}

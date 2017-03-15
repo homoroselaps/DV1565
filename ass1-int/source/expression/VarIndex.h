@@ -30,4 +30,17 @@ public:
 	virtual std::string to_string() override {
 		return "VarIndex(Expression)";
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		current = m_base->convert(current, env);
+		if (!std::dynamic_pointer_cast<SymbolTable>(m_base->result))
+			throw std::runtime_error("Index base is not a symboltable");
+		if (!std::dynamic_pointer_cast<StringLiteral>(m_index))
+			throw std::runtime_error("only StringLiterals for Index supported");
+		auto member = std::dynamic_pointer_cast<StringLiteral>(m_index)->m_value;
+		auto table = std::dynamic_pointer_cast<SymbolTable>(m_base->result);
+		result = table->getSymbol(member);
+		if (!result)
+			result = table->createSymbol(ValueType::NIL, member);
+		return current;
+	}
 };
