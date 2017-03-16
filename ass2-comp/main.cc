@@ -50,11 +50,5 @@ int main(int argc, char **argv)
 	}
 	asmfile.close();
 
-	auto env = std::make_shared<Value>();
-	reinterpret_cast<Table*>(env.get())->Create();
-	LibraryStd::load(env);
-	LibraryIO::load(env);
-	ExecControl control = ExecControl::NONE;
-	chunk->execute(env, control);
 	return 0;
 }
