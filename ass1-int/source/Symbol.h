@@ -5,7 +5,6 @@
 
 class Symbol
 {
-	static int nCounter;
 public:
 	ValueType type;
 	std::string name;
@@ -37,20 +36,7 @@ public:
 		}
 	}
 
-	virtual int calculate_offset(int nextOffset) {
-		switch (type)
-		{
-		case ValueType::NIL:
-		case ValueType::BOOL:
-		case ValueType::NUMBER: {
-			nextOffset += 8;
-			break;
-		}
-		case ValueType::STRING:
-		case ValueType::FUNCTION:
-		case ValueType::TABLE:
-			break;
-		}
+	virtual int calculate_offset(int nextOffset, bool global = true) {
 		return nextOffset;
 	}
 };

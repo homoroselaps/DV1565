@@ -22,4 +22,10 @@ public:
 	virtual std::string to_string() override {
 		return "Statement Base Class";
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) {
+		assert(breakBlock);
+		current->tExit = breakBlock;
+		current->fExit = breakBlock;
+		return nullptr;
+	};
 };

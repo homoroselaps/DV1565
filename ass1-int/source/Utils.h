@@ -20,6 +20,8 @@ enum class Operator : int {
 	MOD,
 	MOV,
 	CALL,
+	CALLINIT,
+	RET,
 	JMP,
 	TEST,
 	EQUAL,

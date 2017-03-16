@@ -14,9 +14,11 @@ public:
 		return std::to_string(offset) + "(%[mem])";
 	}
 
-	virtual int calculate_offset(int nextOffset) override {
-		offset = nextOffset;
-		nextOffset += 8;
+	virtual int calculate_offset(int nextOffset, bool global = true) override {
+		if (global) {
+			offset = nextOffset;
+			nextOffset += 8;
+		}
 		return nextOffset;
 	}
 };

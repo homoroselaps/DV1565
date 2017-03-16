@@ -45,9 +45,10 @@ public:
 		return "Chunk(Statement)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) override {
 		for (auto stat : m_stats) {
-			current = stat->convert(current, env);
+			current = stat->convert(current, env, retBlock, breakBlock);
+			if (!current) break;
 		}
 		return current;
 	}

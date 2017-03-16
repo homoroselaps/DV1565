@@ -24,15 +24,16 @@ public:
 		LibraryStd::load(symTable);
 		LibraryIO::load(symTable);
 		
+		auto end = std::make_shared<Block>();
+		end->visited = true;
 		auto main = BlockManager::get().createRootBlock("root");
 		auto root = main;
 		// Convert Lua Code
-		main = m_root->convert(main, symTable);
-
-		auto end = std::make_shared<Block>();
-		end->visited = true;
-		main->tExit = end;
-		main->fExit = end;
+		main = m_root->convert(main, symTable, end, nullptr);
+		if (main) {
+			main->tExit = end;
+			main->fExit = end;
+		}
 
 		auto symTableSize = symTable->calculate_offset(0);
 		

@@ -4,6 +4,11 @@
 #include "../NameList.h"
 #include "../Function.h"
 #include "../MultiValue.h"
+#include "../StackManager.h"
+#include "../ThreeAdText.h"
+#include "../ImidiateSymbol.h"
+#include <string>
+
 class FunctionBody : public Expr
 {
 	std::shared_ptr<Chunk> m_block;
@@ -83,5 +88,42 @@ public:
 	}
 	virtual std::string to_string() override {
 		return "FunctionBody(Expression)";
+	}
+
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+		auto funcBody = std::make_shared<Block>();
+		current->tExit = funcBody;
+		current->fExit = funcBody;
+		StackManager::get().enterFrame(current);
+		
+		auto funcEnd = std::make_shared<Block>();
+
+		auto paras = m_paraList->getStrings();
+		auto symList = std::make_shared<SymbolList>("");
+		int index = 0;
+		for (auto para : paras) {
+			auto typeSym = std::make_shared<StackSymbol>(ValueType::NUMBER, "pType"+std::to_string(index));
+			StackManager::get().addSymbol(typeSym);
+			env->addSymbol(typeSym);
+			symList->addSymbol(typeSym);
+			
+			auto paraSym = std::make_shared<StackSymbol>(ValueType::NIL, para);
+			StackManager::get().addSymbol(paraSym);
+			env->addSymbol(paraSym);
+			symList->addSymbol(paraSym);
+
+			index++;
+		}
+		
+		current->addInstruction(ThreeAdSymbol::create1Ad(Operator::CALLINIT, symList));
+		funcBody = m_block->convert(funcBody, env, funcEnd, nullptr);
+		if (funcBody) {
+			funcBody->addInstruction(ThreeAdSymbol::create1Ad(Operator::RET, std::make_shared<ImidiateSymbol>()));
+			funcBody->tExit = funcEnd;
+			funcBody->fExit = funcEnd;
+		}
+		StackManager::get().leaveFrame(funcEnd);
+		funcEnd->addInstruction(std::make_shared<ThreeAdText>("\"ret;\"\n"));
+		return funcEnd;
 	}
 };

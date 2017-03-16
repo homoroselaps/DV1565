@@ -4,6 +4,7 @@
 #include "../Table.h"
 #include "../Value.h"
 #include "../expression/NilLiteral.h"
+#include "../ThreeAdSymbol.h"
 
 class ReturnStat : public Statement
 {
@@ -38,4 +39,13 @@ public:
 	virtual std::string to_string() override {
 		return "Return(Statement)";
 	}
+	
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) {
+		assert(retBlock);
+		m_exprList->convert(current, env);
+		current->addInstruction(ThreeAdSymbol::create1Ad(Operator::RET, m_exprList->result));
+		current->tExit = retBlock;
+		current->fExit = retBlock;
+		return nullptr;
+	};
 };

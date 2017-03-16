@@ -27,6 +27,7 @@ public:
 	}
 
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) {
+		// must never return nullptr
 		return current;
 	}
 };

@@ -53,7 +53,7 @@ public:
 		return "Selector(Statement)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) override {
 		auto endBlk = std::make_shared<Block>();
 		for (auto stat : m_ifStats) {
 			current = stat->m_cond->convert(current, env);
@@ -62,21 +62,24 @@ public:
 			
 			auto tempBlk = std::make_shared<Block>();
 			current->tExit = tempBlk;
-			tempBlk = stat->m_stat->convert(tempBlk, env);
-			tempBlk->tExit = endBlk;
-			tempBlk->fExit = endBlk;
+			tempBlk = stat->m_stat->convert(tempBlk, env, retBlock, breakBlock);
+			if (tempBlk) {
+				tempBlk->tExit = endBlk;
+				tempBlk->fExit = endBlk;
+			}
 			
 			auto nextCnd = std::make_shared<Block>();
 			current->fExit = nextCnd;
 			current = nextCnd;
 		}
 		if (m_else) {
-			current = m_else->convert(current, env);
+			current = m_else->convert(current, env, retBlock, breakBlock);
 		}
-		current->tExit = endBlk;
-		current->fExit = endBlk;
+		if (current) {
+			current->tExit = endBlk;
+			current->fExit = endBlk;
+		}
 
 		return endBlk;
 	};
-
 };

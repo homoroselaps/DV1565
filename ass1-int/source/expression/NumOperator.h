@@ -67,7 +67,7 @@ public:
 		current = m_left->convert(current, env);
 		current = m_right->convert(current, env);
 		if (m_left->result->type != ValueType::NUMBER || m_right->result->type != ValueType::NUMBER) {
-			throw std::runtime_error("NumOperator only supports Numbers. got:" + Utils::to_string(m_left->result->type) + ", " + Utils::to_string(m_right->result->type));
+			std::cout << "[WARNING] NumOperator only supports Numbers. got:" + Utils::to_string(m_left->result->type) << ", " << Utils::to_string(m_right->result->type) << std::endl;
 		}
 		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		std::shared_ptr<ThreeAd> inst;

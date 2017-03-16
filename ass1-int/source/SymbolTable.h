@@ -5,6 +5,26 @@
 #include "Symbol.h"
 #include "MemorySymbol.h"
 
+class SymbolList : public Symbol {
+	std::vector<std::shared_ptr<Symbol>> m_symbols;
+public:
+	SymbolList(std::string name) : Symbol(ValueType::TABLE, name) {
+	}
+	std::vector<std::shared_ptr<Symbol>> getSymbols() {
+		return m_symbols;
+	}
+	std::shared_ptr<Symbol> addSymbol(std::shared_ptr<Symbol> sym) {
+		m_symbols.push_back(sym);
+		return sym;
+	}
+	virtual int calculate_offset(int nextOffset, bool global = true) override {
+		for (auto sym : m_symbols) {
+			nextOffset = sym->calculate_offset(nextOffset);
+		}
+		return nextOffset;
+	}
+};
+
 class SymbolTable: public Symbol
 {
 	std::map<std::string, std::shared_ptr<Symbol>> m_symbols;
@@ -36,7 +56,7 @@ public:
 		return result;
 	}
 
-	virtual int calculate_offset(int nextOffset) override {
+	virtual int calculate_offset(int nextOffset, bool global = true) override {
 		for (auto pair : m_symbols) {
 			nextOffset = pair.second->calculate_offset(nextOffset);
 		}

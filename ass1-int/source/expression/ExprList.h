@@ -47,9 +47,17 @@ public:
 	}
 
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
-		//TODO: support multi value assignments
-		current = m_exprs.front()->convert(current, env);
-		result = m_exprs.front()->result;
+		auto values = std::make_shared<SymbolList>("");
+		for (auto expr : m_exprs) {
+			current = expr->convert(current, env);
+			values->addSymbol(expr->result);
+		}
+		if (values->getSymbols().size() == 1) {
+			result = values->getSymbols().front();
+		}
+		else {
+			result = values;
+		}
 		return current;
 	}
 

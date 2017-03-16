@@ -2,6 +2,7 @@
 #include "../Statement.h"
 #include "../NameList.h"
 #include "../expression/FunctionBody.h"
+#include "../BlockManager.h"
 
 class GlobalFunctionDef : public Statement
 {
@@ -62,4 +63,29 @@ public:
 	virtual std::string to_string() override {
 		return "GlobalFunctionDefinition(Statement)";
 	}
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) override {
+		
+		auto var = env;
+		std::string funcName;
+
+		auto list = m_nameList->getStrings();
+		if (m_nameList->getSpecial() != "")
+			list.push_back(m_nameList->getSpecial());
+
+		for (auto name = list.begin(); name != list.end(); name++) {
+			if (name == list.end() - 1) {
+				// last name is function name
+				funcName = *name;
+			}
+			else {
+				//all others from previous var
+				var = std::dynamic_pointer_cast<SymbolTable>(var->getSymbol(*name));
+			}
+		}
+
+		auto func = BlockManager::get().createRootBlock(funcName);
+		env->addSymbol(func->sym);
+		func = m_funcBody->convert(func, env);
+		return current;
+	};
 };

@@ -80,14 +80,13 @@ public:
 			break;
 		case Operator::MOV:
 			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
-			output << "\" movq " << right->to_asm() << ", %%rbx ;\"" << std::endl;
 			break;
 		case Operator::CALL: {
 			auto REGS = std::vector<std::string>{ "%%rdi","%%rsi", "%%rdx", "%%rcx" };
 			
 			std::vector<std::shared_ptr<Symbol>> args;
-			if (std::dynamic_pointer_cast<SymbolTable>(right)) {
-				auto symTable = std::dynamic_pointer_cast<SymbolTable>(right);
+			if (std::dynamic_pointer_cast<SymbolList>(right)) {
+				auto symTable = std::dynamic_pointer_cast<SymbolList>(right);
 				args = symTable->getSymbols();
 			}
 			else {
@@ -103,6 +102,30 @@ public:
 				index++;
 			}
 			output << "\" call " << left->to_asm(op) << " ;\"" << std::endl;
+			break;
+		}
+		case Operator::CALLINIT: {
+			auto REGS = std::vector<std::string>{ "%%rdi","%%rsi", "%%rdx", "%%rcx" };
+
+			std::vector<std::shared_ptr<Symbol>> args;
+			if (std::dynamic_pointer_cast<SymbolList>(left)) {
+				auto symTable = std::dynamic_pointer_cast<SymbolList>(left);
+				args = symTable->getSymbols();
+			}
+			else {
+				args = std::vector<std::shared_ptr<Symbol>>{ left, std::make_shared<ImidiateSymbol>() };
+			}
+
+			int index = 0;
+			for (auto arg : args) {
+				output << "\" movq " << REGS.at(index) << ", " << arg->to_asm() << " ;\"" << std::endl;
+				index++;
+			}
+			break;
+		}
+		case Operator::RET: {
+			// move to return register
+			output << "\" movq " << left->to_asm() << ", %%rax ;\"" << std::endl;
 			break;
 		}
 		case Operator::EQUAL:

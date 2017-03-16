@@ -42,7 +42,7 @@ public:
 		return "WhileLoop(Statement)";
 	}
 
-	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
+	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env, std::shared_ptr<Block> retBlock, std::shared_ptr<Block> breakBlock) override {
 		auto startBlock = std::make_shared<Block>();
 		auto block = std::make_shared<Block>();
 		auto endBlock = std::make_shared<Block>();
@@ -55,9 +55,11 @@ public:
 		startBlock->tExit = block;
 		startBlock->fExit = endBlock;
 
-		block = m_block->convert(block, env);
-		block->tExit = startBlock;
-		block->fExit = startBlock;
+		block = m_block->convert(block, env, retBlock, endBlock);
+		if (block) {
+			block->tExit = startBlock;
+			block->fExit = startBlock;
+		}
 		return endBlock;
 	};
 

@@ -16,7 +16,7 @@ public:
 		return "$" + std::to_string((int)m_numValue);
 	}
 
-	virtual int calculate_offset(int nextOffset) override {
+	virtual int calculate_offset(int nextOffset, bool global = true) override {
 		return nextOffset;
 	}
 };

@@ -37,17 +37,22 @@ public:
 	void addInstruction(std::shared_ptr<ThreeAd> inst) {
 		m_instrs.push_back(inst);
 	}
+
+	void setName(std::string name) {
+		sym = std::make_shared<Symbol>(ValueType::FUNCTION, name);
+		m_global = true;
+	}
 	
 	std::string to_asm() {
 		std::stringstream output;
 		output << "\".text;\"";
+		output << "\"" << sym->name << ":" << "\"" << std::endl;
 		if (m_global)
 			output << "\".globl " << sym->name << ";\"" << std::endl;
-		output << "\"" << sym->name << ":" << "\"" << std::endl;
 		for (auto inst : m_instrs) {
 			assert(inst);
 			output << "/*" << inst->to_string() << "*/" << std::endl;
-			output << inst->to_asm() << std::endl;
+			output << inst->to_asm();
 		}
 		if (tExit && fExit) {
 			output << "\"je " << fExit->sym->to_asm(Operator::JMP) << ";\"" << std::endl;
