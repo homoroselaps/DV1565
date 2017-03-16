@@ -86,12 +86,13 @@ public:
 		output << ": [mem] \"r\" (mem)" << std::endl;
 		output << ": \"rax\", \"rbx\", \"rcx\", \"rdx\", \"rdi\", \"rsi\", \"cc\"" << std::endl;
 		output << ");" << std::endl;
-		output << R"(
+/*		output << R"(
 unsigned char *p = (unsigned char *)&mem;
 size_t i;
 for (i=0; i < sizeof mem; ++i)
     printf("%x", p[i]);
-		)";
+		)";*/
+		output << "printf(\"%c\", (bool)mem[0]+6);";
 		output << "}" << std::endl;
 		return output.str();
 	}

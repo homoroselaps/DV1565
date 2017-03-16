@@ -31,6 +31,7 @@ public:
 
 	std::string escape(std::string str) {
 		Utils::replace(str, "%", "%%");
+		Utils::replace(str, "\\", "\\\\");
 		return str;
 	}
 };
