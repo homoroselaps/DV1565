@@ -6,6 +6,7 @@
 #include "../MemorySymbol.h"
 #include "../ImidiateSymbol.h"
 #include "../ThreeAdSymbol.h"
+#include "../StackManager.h"
 #include <string>
 #include <memory>
 
@@ -32,7 +33,7 @@ public:
 		return "BoolLiteral(Expression) Value: " + std::string(m_value ? "true" : "false");
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
-		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
+		result = StackManager::get().createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		auto inst = ThreeAdSymbol::create2Ad(
 			Operator::MOV
 			, result

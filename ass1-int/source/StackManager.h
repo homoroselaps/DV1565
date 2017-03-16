@@ -47,8 +47,8 @@ public:
 	std::shared_ptr<StackSymbol> createSymbol(ValueType type, std::string name) {
 		assert(m_frames.size());
 		auto sym = std::make_shared<StackSymbol>(type, name);
-		auto frame = m_frames.top();
-		frame->symbols.push_back(sym);
+		addSymbol(sym);
+		return sym;
 	}
 };
 

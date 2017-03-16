@@ -151,7 +151,7 @@ public:
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
 		current = m_left->convert(current, env);
 		current = m_right->convert(current, env);
-		result = env->createSymbol(ValueType::BOOL, NameGenerator::get().nextTemp());
+		result = StackManager::get().createSymbol(ValueType::BOOL, NameGenerator::get().nextTemp());
 
 		std::shared_ptr<ThreeAd> inst;
 

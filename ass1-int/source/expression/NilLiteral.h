@@ -4,6 +4,7 @@
 #include "../MemorySymbol.h"
 #include "../NameGenerator.h"
 #include "../ThreeAdSymbol.h"
+#include "../StackManager.h"
 
 class NilLiteral : public Expr
 {
@@ -29,7 +30,7 @@ public:
 		return "NilLiteral(Expression)";
 	}
 	virtual std::shared_ptr<Block> convert(std::shared_ptr<Block> current, std::shared_ptr<SymbolTable> env) override {
-		result = env->createSymbol(ValueType::NIL, NameGenerator::get().nextTemp());
+		result = StackManager::get().createSymbol(ValueType::NIL, NameGenerator::get().nextTemp());
 		auto inst = ThreeAdSymbol::create2Ad(
 			Operator::MOV
 			, result

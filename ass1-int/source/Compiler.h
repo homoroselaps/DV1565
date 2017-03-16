@@ -27,6 +27,7 @@ public:
 		auto end = std::make_shared<Block>();
 		end->visited = true;
 		auto main = BlockManager::get().createRootBlock("root");
+		StackManager::get().enterFrame(main);
 		auto root = main;
 		// Convert Lua Code
 		main = m_root->convert(main, symTable, end, nullptr);
@@ -34,6 +35,7 @@ public:
 			main->tExit = end;
 			main->fExit = end;
 		}
+		StackManager::get().leaveFrame(end);
 
 		auto symTableSize = symTable->calculate_offset(0);
 		

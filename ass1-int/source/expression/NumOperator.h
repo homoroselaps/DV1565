@@ -4,6 +4,7 @@
 #include "../Node.h"
 #include "../Utils.h"
 #include "../ThreeAdSymbol.h"
+#include "../StackManager.h"
 
 class NumOperator : public Expr
 {
@@ -69,7 +70,7 @@ public:
 		if (m_left->result->type != ValueType::NUMBER || m_right->result->type != ValueType::NUMBER) {
 			std::cout << "[WARNING] NumOperator only supports Numbers. got:" + Utils::to_string(m_left->result->type) << ", " << Utils::to_string(m_right->result->type) << std::endl;
 		}
-		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
+		result = StackManager::get().createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		std::shared_ptr<ThreeAd> inst;
 		switch (m_type)
 		{

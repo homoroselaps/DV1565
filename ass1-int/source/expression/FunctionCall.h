@@ -5,6 +5,7 @@
 #include "NilLiteral.h"
 #include "../MultiValue.h"
 #include "../ThreeAdSymbol.h"
+#include "../StackManager.h"
 #include <memory>
 #include <string>
 
@@ -79,7 +80,7 @@ public:
 		current = m_args->convert(current, env);
 		auto args = m_args->result;
 		
-		result = env->createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
+		result = StackManager::get().createSymbol(ValueType::NUMBER, NameGenerator::get().nextTemp());
 		auto inst = ThreeAdSymbol::create3Ad(
 			Operator::CALL
 			, result
