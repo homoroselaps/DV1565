@@ -31,24 +31,25 @@ int main(int argc, char **argv)
 		return 1;
 	}
 	root->dump();
-
-	std::ofstream graphvizfile{"parse.txt", std::ios::out | std::ios::trunc};
-	graphvizfile << Node::to_graphviz(*std::static_pointer_cast<Node>(root));
-	graphvizfile.close();
 	
 	auto chunk = std::dynamic_pointer_cast<Chunk>(root);
 	assert(chunk);
-	
-	auto cmpl = Compiler{ chunk };
-	std::ofstream asmfile{ "target.cc", std::ios::out | std::ios::trunc };
 	try {
-		asmfile << cmpl.compile();
-	}
+		auto cmpl = Compiler{ chunk };
+		auto out = cmpl.compile();
+		
+		std::ofstream asmfile{ "target.cc", std::ios::out | std::ios::trunc };
+		asmfile << std::get<0>(out);
+		asmfile.close();
+
+		std::ofstream graphvizfile{ "parse.txt", std::ios::out | std::ios::trunc };
+		graphvizfile << std::get<1>(out);
+		graphvizfile.close();
+	}	
 	catch(const std::exception &e) {
 		std::cout << "Exception caught: ";
 		std::cout << e.what() << std::endl;
 	}
-	asmfile.close();
 
 	return 0;
 }

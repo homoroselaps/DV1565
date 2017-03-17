@@ -37,6 +37,11 @@ public:
 	void addInstruction(std::shared_ptr<ThreeAd> inst) {
 		m_instrs.push_back(inst);
 	}
+	
+	std::vector<std::shared_ptr<ThreeAd>> getInstructions() {
+		return m_instrs;
+	}
+	
 
 	void setName(std::string name) {
 		sym = std::make_shared<Symbol>(ValueType::FUNCTION, name);

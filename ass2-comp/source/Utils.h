@@ -129,6 +129,12 @@ namespace Utils {
 				return "CALL";
 			case Operator::TEST:
 				return "TEST";
+			case Operator::CALLINIT:
+				return "CALLINIT";
+			case Operator::RET:
+				return "RET";
+			case Operator::JMP:
+				return "JMP";
 			case Operator::EQUAL:
 				return "EQUAL";
 			case Operator::NEQUAL:

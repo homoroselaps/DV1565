@@ -38,7 +38,7 @@ public:
 	virtual std::string to_string() override {
 		std::string out = "";
 		if (result)
-			out = result->to_string() + " <- ";
+			out = result->to_string() + " \\<= ";
 		if (left)
 			out = out + left->to_string() + " " + Utils::to_string(op);
 		if (right)

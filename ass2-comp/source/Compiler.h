@@ -18,7 +18,7 @@ public:
 
 	Compiler(std::shared_ptr<Chunk> root): m_root(root)	{ }
 
-	std::string compile() {
+	std::tuple<std::string, std::string> compile() {
 		auto symTable = std::make_shared<SymbolTable>("mem");
 		// Load Libraries
 		LibraryStd::load(symTable);
@@ -44,14 +44,17 @@ public:
 		output << "#include <cstdio>" << std::endl;
 		output << "#include <iostream>" << std::endl;
 		output << "#include <string>" << std::endl;
+		output << "long " << symTable->name << "[" << symTableSize << "] = {};" << std::endl;
 		output << "int main() {" << std::endl;
 		// mem array definition
-		output << "long " << symTable->name << "[" << symTableSize << "] = {};" << std::endl;
 		output << "__asm__(" << std::endl;
 		output << StringSectionManager::get().to_asm() << std::endl;
 		output << R"(".text;")" << std::endl;
 		output << "\".globl " << root->sym->to_asm(Operator::JMP) << ";\"" << std::endl;
 		output << "\"jmp "    << root->sym->to_asm(Operator::JMP) << ";\"" << std::endl;
+
+		std::stringstream graphviz;
+		graphviz << "digraph R{" << std::endl;
 
 		auto open_queue = std::queue<std::shared_ptr<Block>>{};
 		auto open_stack = std::stack<std::shared_ptr<Block>>{};
@@ -73,6 +76,7 @@ public:
 			}
 			if (blk->visited) continue;
 			blk->visited = true;
+			graphviz << blockToGraphviz(blk) << std::endl;
 			output << blk->to_asm() << std::endl;
 			if (blk->tExit)
 				open_stack.push(blk->tExit);
@@ -80,6 +84,8 @@ public:
 				open_queue.push(blk->fExit);
 		}
 		output << end->to_asm() << std::endl;
+		graphviz << blockToGraphviz(end) << std::endl;
+		graphviz << "}";
 		
 		//asm Constraints
 		output << ":" << std::endl;
@@ -92,8 +98,25 @@ size_t i;
 for (i=0; i < sizeof mem; ++i)
     printf("%x", p[i]);
 		)";*/
-		output << "printf(\"%c\", (bool)mem[0]+6);";
+		//output << "printf(\"%c\", (bool)mem[0]+6);";
 		output << "}" << std::endl;
+
+		return std::make_tuple<std::string, std::string>(output.str(), graphviz.str());
+	}
+
+	std::string blockToGraphviz(std::shared_ptr<Block> blk) {
+		std::stringstream output;
+		output << blk->sym->name << " [shape=record; label=\"{" << blk->sym->name << std::endl;
+		for (auto i : blk->getInstructions()) {
+			output << " | " << i->to_string();
+		}
+		output << "}\" ]" << std::endl;
+		if (blk->tExit) {
+			output << blk->sym->name << " -> " << blk->tExit->sym->name << std::endl;
+		}
+		if (blk->fExit && blk->tExit != blk->fExit) {
+			output << blk->sym->name << " -> " << blk->fExit->sym->name << std::endl;
+		}
 		return output.str();
 	}
 

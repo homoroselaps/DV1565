@@ -12,7 +12,9 @@ public:
 		m_numValue = val;
 	}
 	virtual std::string to_asm() override {
-		//TODO: support string values
+		return "$" + std::to_string((int)m_numValue);
+	}
+	virtual std::string to_string() {
 		return "$" + std::to_string((int)m_numValue);
 	}
 
